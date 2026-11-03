@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';import {readProgress,clearRouteProgress,saveProgress} from '../lib/progress.mjs';
+const data=new Map(),storage={get length(){return data.size},key:i=>[...data.keys()][i],getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v),removeItem:k=>data.delete(k)};
+for(const id of ['A','B','C']){saveProgress(storage,id,{runId:id+'1',search:'step=1',finish:{save:{items:[id]},history:[id]}});storage.setItem('iw-game:'+id+':'+id+'1:shared-game',JSON.stringify({marker:id}));}
+clearRouteProgress(storage,'A');assert.equal(readProgress(storage,'A'),null);assert.equal(storage.getItem('iw-game:A:A1:shared-game'),null);assert.equal(readProgress(storage,'B').finish.save.items[0],'B');assert.equal(readProgress(storage,'C').search,'step=1');assert.ok(storage.getItem('iw-game:B:B1:shared-game'));
+saveProgress(storage,'A',{runId:'A2',search:'step=0'});assert.equal(saveProgress(storage,'A',{runId:'A1',search:'step=9'}),false);assert.equal(readProgress(storage,'A').search,'step=0');assert.equal(readProgress(storage,'B').search,'step=1');console.log('通过：三线隔离、同名游戏隔离、全新开始仅清本线、继续读本线、旧标签页不能覆盖新旅程。');

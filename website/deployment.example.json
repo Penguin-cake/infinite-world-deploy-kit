@@ -1,0 +1,6 @@
+{
+  "name": "infinite-worlds-hub",
+  "database_name": "infinite-worlds-db",
+  "database_id": "REPLACE_WITH_YOUR_D1_DATABASE_ID",
+  "bucket_name": "infinite-worlds-games"
+}

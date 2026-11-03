@@ -1,0 +1,1 @@
+export function JourneyEntries({routes}:{routes:any[]}){const r=routes[0];return <section className="journey-entries"><h2>无限世界</h2><p>通过验收的世界自动相连，带着道具与故事一路出发。</p>{r?.stages.length?<div><a href={'/run/'+r.id}><span>↗</span><b>进入无限世界</b><small>{r.stages.length} 个世界 · 全新开始 / 继续游玩</small></a></div>:<p>等待第一份作品通过验收，即可启程。</p>}</section>}

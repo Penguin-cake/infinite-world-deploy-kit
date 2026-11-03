@@ -1,0 +1,65 @@
+.immersive-shell.is-panel .journey-entries a,
+.immersive-shell.is-panel .groups-panel,
+.immersive-shell.is-panel .lane-grid article,
+.immersive-shell.is-panel .game-card,
+.immersive-shell.is-panel .add-world {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.immersive-shell.is-panel .groups-panel {padding:24px 0;color:#e5efdf}
+.immersive-shell.is-panel .groups-panel p {color:#bad1ca}
+.immersive-shell.is-panel .journey-entries a {
+  position:relative;isolation:isolate;padding:20px 16px;
+  transition:transform .28s ease,color .28s ease;text-shadow:0 2px 14px #00131f;
+}
+.immersive-shell.is-panel .journey-entries a:before,
+.immersive-shell.is-panel .game-card:before,
+.immersive-shell.is-panel .lane-grid article:before {
+  content:'';position:absolute;inset:-12px;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 28% 50%,#c4f1d12e,transparent 72%);
+  filter:blur(15px);opacity:0;transition:opacity .3s ease;
+}
+.immersive-shell.is-panel .journey-entries a:hover,
+.immersive-shell.is-panel .journey-entries a:focus-visible {transform:translateX(7px);color:#f0ffe4}
+.immersive-shell.is-panel .journey-entries a:hover:before,
+.immersive-shell.is-panel .journey-entries a:focus-visible:before,
+.immersive-shell.is-panel .game-card:hover:before,
+.immersive-shell.is-panel .game-card:focus-within:before,
+.immersive-shell.is-panel .lane-grid article:hover:before {opacity:1}
+.immersive-shell.is-panel .journey-entries a>span {transition:transform .28s ease,text-shadow .28s ease}
+.immersive-shell.is-panel .journey-entries a:hover>span {transform:translate(3px,-3px);text-shadow:0 0 15px #c2f6cb}
+.immersive-shell.is-panel .journey-entries a:active {transform:translateX(7px) scale(.98)}
+.immersive-shell.is-panel .game-card,
+.immersive-shell.is-panel .lane-grid article {position:relative;isolation:isolate;overflow:visible;transition:transform .3s ease}
+.immersive-shell.is-panel .game-card:hover {transform:translateY(-5px)}
+.immersive-shell.is-panel .game-poster {border:0;border-radius:0;overflow:hidden;transition:filter .3s ease;mask-image:linear-gradient(#000 76%,transparent)}
+.immersive-shell.is-panel .game-card:hover .game-poster {filter:saturate(1.65) brightness(1.1)}
+.immersive-shell.is-panel .game-meta {padding:12px 0 0;text-shadow:0 2px 14px #00141d}
+.immersive-shell.is-panel .game-meta footer,.immersive-shell.is-panel .section-header {border:0}
+.immersive-shell.is-panel .game-meta p {color:#bfd0cb}
+.immersive-shell.is-panel .game-meta footer button {font-size:11px;color:#d9eac5;transition:transform .2s,text-shadow .2s}
+.immersive-shell.is-panel .game-meta footer button:hover {transform:translateX(4px);text-shadow:0 0 12px #c5efac}
+.immersive-shell.is-panel .search,.immersive-shell.is-panel .search input {background:transparent!important;border:0!important;border-radius:0;box-shadow:none;color:#e4efdd}
+.immersive-shell.is-panel .search {transition:filter .25s,transform .25s}
+.immersive-shell.is-panel .search:focus-within {filter:drop-shadow(0 0 7px #c7edaa88);transform:translateX(-3px)}
+.immersive-shell.is-panel .button {background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;color:#dcebc9;transition:transform .22s,text-shadow .22s}
+.immersive-shell.is-panel .button:hover,.immersive-shell.is-panel .button:focus-visible {transform:translateX(4px);text-shadow:0 0 16px #d0efaa}
+.immersive-shell.is-panel .button:active,.immersive-shell.is-panel .poster-play:active {transform:scale(.94)}
+.immersive-shell.is-panel .poster-play {background:transparent;border:0;box-shadow:none;transition:transform .22s,filter .22s}
+.immersive-shell.is-panel .poster-play:hover {transform:scale(1.15);filter:drop-shadow(0 0 8px #deffb9)}
+.immersive-shell.is-panel .world-type,.immersive-shell.is-panel .poster-tag,.immersive-shell.is-panel .team-avatar {background:transparent;border:0;box-shadow:none;color:#d9e8c8}
+.immersive-shell.is-panel a:focus-visible,.immersive-shell.is-panel button:focus-visible {outline:1px dashed #d2efbb;outline-offset:5px}
+@media(prefers-reduced-motion:reduce){.immersive-shell.is-panel *{transition:none!important}}
+/* The main exploration action floats directly over the landscape. */
+.immersive-shell.is-home .terrain-explore.button.primary{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#e8f1d7;padding:17px 4px;overflow:visible;text-shadow:0 2px 14px #071a24;transition:transform .25s ease,color .25s ease,text-shadow .25s ease;isolation:isolate}
+.immersive-shell.is-home .terrain-explore:after{content:'';inset:-12px -20px;background:radial-gradient(ellipse,#b3e8c52c,transparent 70%);transform:none;animation:none;opacity:0;filter:blur(10px);z-index:-1;transition:opacity .3s ease}
+.immersive-shell.is-home .terrain-explore:hover,.immersive-shell.is-home .terrain-explore:focus-visible{color:#f4ffe6;transform:translateX(4px);text-shadow:0 0 16px #b5eccb88}
+.immersive-shell.is-home .terrain-explore:hover:after,.immersive-shell.is-home .terrain-explore:focus-visible:after{opacity:1}
+.immersive-shell.is-home .terrain-explore b{display:inline-block;transition:transform .3s ease;animation:explore-arrow-drift 4s ease-in-out infinite}
+.immersive-shell.is-home .terrain-explore:hover b{animation:none;transform:translate(5px,-5px)}
+.immersive-shell.is-home .terrain-explore:active{transform:translateX(4px) scale(.95)}
+.immersive-shell.is-home .terrain-explore:focus-visible{outline:1px dashed #d3e9be;outline-offset:7px}
+@keyframes explore-arrow-drift{0%,100%{translate:0 0}50%{translate:3px -3px}}
+@media(prefers-reduced-motion:reduce){.immersive-shell.is-home .terrain-explore,.immersive-shell.is-home .terrain-explore:after,.immersive-shell.is-home .terrain-explore b{animation:none!important;transition:none!important}}

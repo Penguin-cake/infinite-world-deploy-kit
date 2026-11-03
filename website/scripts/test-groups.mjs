@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {validateGroup,validateResult} from '../lib/route-groups.mjs';
+const routes=n=>Object.fromEntries(['A','B','C'].map((label,i)=>[label,{id:label,stages:Array.from({length:i===0?n-2:1},(_,j)=>({id:label+j,world:label+j}))}]));
+assert.equal(validateGroup('38',routes(38)).totalStages,38);assert.throws(()=>validateGroup('39',routes(39)));
+let r=routes(3);r.C.stages[0].id='A0';assert.throws(()=>validateGroup('dup',r));
+r=routes(3);r.C.id='A';assert.throws(()=>validateGroup('route',r));assert.throws(()=>validateGroup('missing',{A:r.A,B:r.B}));
+r=routes(3);r.C.stages=[];assert.throws(()=>validateGroup('empty',r));
+const g=validateGroup('valid',routes(3)),body={routeId:'A',runId:'test-run-123',save:{schema:'v2',items:[],clues:[]},history:[{world:'A0'}]};
+assert.equal(validateResult(body,g).lane,'A');
+for(const patch of [{routeId:'missing'},{runId:'short'},{history:[]},{history:[{world:'B0'}]},{save:{schema:'v2',items:Array(101).fill({}),clues:[]}},{save:{schema:'v2',items:[],clues:['x'.repeat(60000)]}}])assert.throws(()=>validateResult({...body,...patch},g));
+console.log('世界线组边界与终局记录校验通过（38/39、跨线重复、路线缺失、记录长度和世界顺序）。');
