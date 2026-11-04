@@ -1,0 +1,1890 @@
+<!doctype html>
+<html lang="zh-CN"><head><script>;(function(){'use strict';const C={"routeId":"infinite-world","slot":1,"gameId":"example-opera","world":"幽冥戏班","prevWorld":"废土集市","nextWorld":"终局结算","exitHook":"","nextUrl":"../../finish.html"},seed=(()=>{try{return JSON.parse(new URLSearchParams(location.search).get("__iw_state")||"{}")}catch{return {}}})();const memory=Object.assign(Object.create(null),seed);const tell=(type,data)=>{if(parent!==window)parent.postMessage(Object.assign({type,routeId:C.routeId,slot:C.slot,gameId:C.gameId},data||{}),'*')};const storage={getItem:k=>Object.prototype.hasOwnProperty.call(memory,String(k))?memory[String(k)]:null,setItem(k,v){k=String(k);v=String(v);if(k.length>150||v.length>65536)return;memory[k]=v;tell('iw-storage',{key:k,value:v})},removeItem(k){k=String(k);delete memory[k];tell('iw-storage',{key:k,value:null})},clear(){Object.keys(memory).forEach(k=>storage.removeItem(k))},key:i=>Object.keys(memory)[i]||null};Object.defineProperty(storage,'length',{get:()=>Object.keys(memory).length});try{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>storage})}catch(e){}let config,wl;const fix=v=>Object.assign({},v||{},{level:C.slot+1,world:C.world,prevWorld:C.prevWorld,nextWorld:C.nextWorld,nextUrl:C.nextUrl,passViaUrl:true});try{Object.defineProperty(window,'CONFIG',{configurable:true,get:()=>config,set:v=>{config=fix(v)}})}catch(e){}const install=v=>{if(!v||v.__portalBridge)return v;const read=v.readSave,complete=v.completeLevel;v.readSave=function(){return read.call(v,C.slot+1)};v.completeLevel=function(c,s,o){o=Object.assign({},o||{},{nextUrl:C.nextUrl,passViaUrl:true});if(C.exitHook)o.exitHook=C.exitHook;const result=complete.call(v,fix(c),s,o);if(result){tell('iw-save',{save:result,history:v.readHistory()});tell('IW_SAVE',{save:result,history:v.readHistory()})}return result};v.__portalBridge=true;return v};try{Object.defineProperty(window,'WL',{configurable:true,get:()=>wl,set:v=>{wl=install(v)}})}catch(e){if(window.WL)install(window.WL)}addEventListener('load',()=>{tell('iw-enter',{world:C.world,search:location.search});tell('IW_READY',{world:C.world,search:location.search})});})();</script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101a23"><meta name="description" content="锣鼓一响，活人也要给死人让座。二维像素国风怪谈：循戏本、正脸谱、鸣送魂。"><title>幽冥戏班 · 子夜折子</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23121e29'/%3E%3Cpath d='M8 6h16l-2 17-6 5-6-5z' fill='%23c9b788'/%3E%3Cpath d='m11 12 4 2-3 3m9-5-4 2 3 3' stroke='%23a33e3b' stroke-width='3' fill='none'/%3E%3C/svg%3E"><style>@charset "UTF-8";
+:root{--bg:#101922;--panel:#15232d;--panel-deep:#111c26;--ink:#dfd6be;--muted:#73898b;--gold:#c5a36d;--line:#304047;--red:#ac4946;--jade:#79a49b;--mono:Consolas,"Courier New",monospace;--serif:"STSong","SimSun",serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.7 "Microsoft YaHei","PingFang SC",system-ui,sans-serif;background-image:radial-gradient(ellipse at 50% 5%,#21313a55,transparent 60%)}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.35}button:focus-visible,a:focus-visible,canvas:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:4px}a{color:inherit;text-decoration:none}.site-header{height:82px;border-bottom:1px solid #2a383e;display:flex;align-items:center;padding:0 max(3.3vw,24px);gap:35px;background:#101921b3}.brand{display:flex;align-items:center;gap:12px;font:700 22px/1.4 var(--serif);letter-spacing:3px;white-space:nowrap}.brand small{display:block;font:8px/1.7 var(--mono);letter-spacing:2px;color:#758a8d}.brand-mask{width:36px;height:40px;border:1px solid #9c8359;background:#263330;position:relative;display:block;box-shadow:3px 3px 0 #090e13}.brand-mask:before{content:"";position:absolute;width:22px;height:27px;background:#b4aa86;left:6px;top:5px;clip-path:polygon(0 0,100% 0,89% 74%,50% 100%,11% 74%)}.brand-mask i:before,.brand-mask i:after{content:"";position:absolute;width:7px;height:7px;background:#853f38;top:14px;transform:skewY(30deg)}.brand-mask i:before{left:10px}.brand-mask i:after{right:9px;transform:skewY(-30deg)}nav{display:flex;gap:30px;height:100%;margin-left:38px}.nav-button{border:0;background:none;color:#7b9191;font-size:12px;padding:0 2px;position:relative;letter-spacing:1px}.nav-button span{font:10px var(--serif);margin-left:6px}.nav-button.active{color:#dcc99e}.nav-button.active:after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:#b79764}.header-right{margin-left:auto;display:flex;gap:22px;align-items:center}.world-tag{font-size:10px;color:#7e9694;letter-spacing:1px;white-space:nowrap}.world-tag i,.live-dot{width:5px;height:5px;background:#b95b4f;display:inline-block;margin-right:8px;box-shadow:0 0 10px #b7484770}.icon-button{width:31px;height:31px;position:relative;background:none;border:1px solid var(--line);font-size:18px;color:#acb6a2}.sound-off{position:absolute;top:1px;left:6px;color:#b27159}.page{max-width:1600px;padding:34px max(3.3vw,24px) 0;margin:0 auto}.page-intro{display:flex;align-items:center;justify-content:space-between;margin-bottom:29px}.intro-title{display:flex;align-items:center;gap:20px}.seal{font:12px/1.25 var(--serif);border:1px solid #874943;color:#bc6b59;padding:5px 7px;outline:1px solid #87494377;outline-offset:3px;background:#6f30211c}.eyebrow,.section-eyebrow{font:9px/1.5 var(--mono);letter-spacing:1.6px;color:#778e8b}.eyebrow span{margin:0 8px;color:#586d6d}h1{font:400 34px/1.6 var(--serif);letter-spacing:2px;margin:6px 0 4px;color:#e0d1ae}h1 em{font-style:normal;color:#bb9a6b}.page-intro p{color:#768d8c;font-size:11px;letter-spacing:.7px;margin:0}.chapter-mark{border-left:1px solid var(--line);padding-left:26px;text-align:right;line-height:1.5;color:#758a88}.chapter-mark>span{font:11px var(--serif);letter-spacing:5px}.chapter-mark b{font:32px var(--serif);color:#bba477;font-weight:400}.chapter-mark small{display:block;margin-top:7px;font-size:9px;letter-spacing:2px}.game-layout{display:grid;grid-template-columns:minmax(0,1fr) 284px;gap:26px;align-items:start}.play-column{min-width:0}.scene-heading{display:flex;align-items:center;justify-content:space-between;background:#17252e;border:1px solid #46514f;border-bottom:0;height:47px;padding:0 17px;font-size:10px}.scene-heading strong{font:15px var(--serif);letter-spacing:2px;color:#d3c39e}.live-dot{vertical-align:2px}.scene-coordinates{font:8px var(--mono);letter-spacing:1.4px;color:#6b8182;margin-left:14px}.weather{display:flex;align-items:center;gap:9px;color:#7f9691;font-size:10px}.moon{font-size:18px;color:#afac7c}.time{font:11px var(--mono);border-left:1px solid #3a494c;padding-left:13px;margin-left:5px;color:#b3b796}.scene{position:relative;border:1px solid #667066;isolation:isolate;background:#15222c;overflow:hidden}.scene:before,.scene:after{content:"";position:absolute;inset:6px;pointer-events:none;z-index:3}.scene:before{border:1px solid #b29b5d2b;box-shadow:inset 0 0 60px #07131a70}.scene:after{inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#07101c13 3px,#07101c13 4px);mix-blend-mode:multiply}canvas{display:block;width:100%;height:auto;aspect-ratio:8/5;image-rendering:pixelated;cursor:crosshair;touch-action:none;outline:none}.scene-corner{position:absolute;left:19px;right:19px;bottom:15px;display:flex;justify-content:space-between;font-size:9px;letter-spacing:1px;color:#9fa88d;pointer-events:none;z-index:4;text-shadow:1px 1px #0b1c24}.map-tag{padding:1px 7px;border:1px solid #aa9a6c55;font-size:8px;background:#11202ac4}.map-button{position:absolute;top:16px;right:16px;width:31px;height:31px;border:1px solid #6f7b6866;background:#14252fd9;color:#c5c8a1;font-size:23px;line-height:1;z-index:4}.map-note{position:absolute;right:56px;top:16px;background:#17272ff5;border:1px solid #6d7762;padding:13px 17px;color:#a6b49a;z-index:6;font-size:11px;box-shadow:4px 4px 0 #06101955}.map-note b{display:block;font:15px var(--serif);color:#c6b37e;margin-bottom:8px}.map-note span{display:block;line-height:1.9}.intro-note{position:absolute;left:25px;bottom:30px;width:min(365px,84%);background:#17242bf2;border:1px solid #7c775a;padding:23px 26px 20px;box-shadow:5px 5px 0 #040d1770;z-index:5;backdrop-filter:blur(4px);max-height:calc(100% - 45px);overflow:auto}.intro-kicker{font-size:9px;letter-spacing:1px;color:#a9956d;display:flex;gap:8px;align-items:center}.intro-kicker i{width:4px;height:4px;background:#bb6652;box-shadow:0 0 9px #c9604d}h2{font-weight:500;font-size:15px;letter-spacing:.7px;margin:4px 0 7px;line-height:1.5}.intro-note h2{font:24px/1.5 var(--serif);color:#dcc79c;margin:9px 0}.intro-note p{color:#97a297;font-size:11px;line-height:1.95;margin:0 0 18px;white-space:pre-line}.primary-button{background:#8d443d;border:1px solid #b06350;color:#ebd9b5;display:flex;justify-content:space-between;align-items:center;gap:45px;padding:9px 17px;font-size:12px;letter-spacing:2px;box-shadow:2px 2px 0 #070c1355}.primary-button:hover{background:#a24b3f}.intro-hint{display:block;font-size:8px;color:#6d8986;margin-top:12px;letter-spacing:1px}.control-strip{height:47px;background:#17252e;border:1px solid #46514f;border-top:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#7a918e;font-size:10px}.control-strip>div{display:flex;gap:17px;align-items:center}.control-strip>div>span{display:flex;gap:4px;align-items:center}kbd{display:inline-block;min-width:18px;height:20px;padding:0 4px;text-align:center;border:1px solid #435453;border-bottom:2px solid #4c6059;background:#1e3038;border-radius:2px;color:#a2ae96;font:10px/17px var(--mono)}.control-strip button{border:0;background:none;color:#9aaa8f;font:18px var(--mono);padding:3px 7px}.click-hint{font-size:9px;color:#607c7b}.below-map{display:flex;justify-content:space-between;padding-top:12px;color:#5f7c7a;font-size:9px;letter-spacing:.3px}.below-map>span>i{font-style:normal;color:#aa9166;margin-right:4px}#save-status i{width:4px;height:4px;display:inline-block;background:#658c7d;vertical-align:2px}.journal{border:1px solid #34484b;background:linear-gradient(#172730,#13212a);padding:18px 20px 0;position:relative}.journal:before{content:"";position:absolute;top:-1px;left:20px;width:28px;height:2px;background:#a88154}.traveler{position:relative;display:flex;gap:13px;padding-bottom:18px;border-bottom:1px solid var(--line)}.avatar{width:44px;height:49px;border:1px solid #5b7265;background:#203c3d;flex:none;display:grid;place-items:center;box-shadow:inset 0 0 0 3px #122a30}.avatar-pixel{width:7px;height:7px;background:#d4c195;box-shadow:-7px 0 #b8ad87,7px 0 #d4c195,-7px -7px #3f4e4c,0 -7px #3f4e4c,7px -7px #3f4e4c,-7px 7px #b8ad87,0 7px #b8ad87,7px 7px #b8ad87,-7px 14px #63776d,0 14px #a15949,7px 14px #63776d,-7px 21px #465f5c,7px 21px #465f5c;transform:translateY(-7px)}.traveler .section-eyebrow{font-size:8px;letter-spacing:1.4px}.traveler h2{font-size:14px;white-space:nowrap;margin:4px 0}.traveler h2>span{font-size:8px;color:#658582;margin-left:4px}.vitals{display:flex;gap:12px;font-size:9px;color:#729c92;line-height:1.5}.vitals #hp{color:#b86659;letter-spacing:1px;font-size:11px}.small-icon{position:absolute;right:-3px;top:-4px;background:none;border:0;color:#78948e;font-size:19px}.act-progress{padding:16px 0;border-bottom:1px solid var(--line);text-align:center}.act-progress>div:first-child{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}.paper-tag{font:9px var(--serif);color:#b39b6a;border:1px solid #685e43;padding:2px 6px}.act-progress h2{font:24px/1.4 var(--serif);color:#d5c292;letter-spacing:6px;margin:10px 0 2px}.act-progress>span{font:10px var(--serif);letter-spacing:2px;color:#738b84}.chapter-dots{display:flex;gap:8px;margin-top:15px}.chapter-dots i{height:3px;background:#334c4d;flex:1}.chapter-dots i.done{background:#b18f59;box-shadow:0 0 8px #c3a06622}.mission{padding:18px 0;border-bottom:1px solid var(--line)}.section-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px}.section-eyebrow{font-size:9px;letter-spacing:1.4px}.gold-mark{font:13px var(--serif);color:#9f8251}.mission h2{font:18px var(--serif);letter-spacing:1px;margin-bottom:12px;color:#d2c6a5}.mission p{color:#7b968e;font-size:10px;line-height:1.9;margin:0 0 17px}.objectives{display:grid;gap:11px}.objective{display:flex;gap:9px;align-items:center;font-size:10px;color:#8ca298}.objective .check{width:11px;height:11px;border:1px solid #576c62;font:9px/9px var(--mono);text-align:center;color:#132321;flex:none}.objective.complete .check{background:#9fa477;border-color:#9fa477}.objective-count{font:8px var(--mono);color:#596f6d;margin-left:auto}.text-button{display:flex;justify-content:space-between;width:100%;border:0;background:none;font-size:10px;color:#ac9569;padding:0;margin-top:17px}.text-button:hover{color:#debd79}.inventory{padding:17px 0;border-bottom:1px solid var(--line)}.inventory-capacity{font:9px var(--mono);color:#688a81}.bag-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}.bag-slot{height:36px;border:1px solid #3c5453;background:#1b3037;display:flex;align-items:center;justify-content:center;color:#4f6a68;position:relative;font:18px var(--mono)}.bag-slot.filled{border-color:#6b7a61;color:#bba372;background:#293b36}.bag-slot>span{position:absolute;bottom:2px;right:4px;font:7px var(--mono);color:#81967d}.mini-mask{width:16px;height:23px;clip-path:polygon(0 0,100% 0,89% 73%,50% 100%,11% 73%);position:relative;display:inline-block;background:var(--mask-color);box-shadow:inset 0 0 0 2px #161e26}.mini-mask:before,.mini-mask:after{content:"";position:absolute;width:5px;height:4px;background:#18252a;top:7px;transform:skewY(25deg)}.mini-mask:before{left:2px}.mini-mask:after{right:2px;transform:skewY(-25deg)}.inventory p{color:#608079;font-size:9px;margin:9px 0 0}.rules-strip{padding:14px 0;border-bottom:1px solid var(--line)}.rules-strip>span{font-size:8px;color:#667f7d;letter-spacing:1px}.rules-strip p{font:9px/2 var(--serif);color:#96a08b;margin:4px 0 0;display:flex;align-items:center;justify-content:space-between;gap:3px}.rules-strip i{font-style:normal;color:#a87553;font-size:10px}.field-notes{padding:16px 0 17px}.note-line{height:1px;background:var(--line);flex:1}.field-notes .section-heading{margin-bottom:12px}.activity-log{min-height:70px;display:grid;gap:10px}.log-entry{display:flex;gap:9px;line-height:1.8;color:#728e86;font-size:9px}.log-entry time{font:8px/2 var(--mono);color:#536c6c;flex:none}.log-entry:first-child{color:#9eae91}.journal-foot{font:6px/1 var(--mono);letter-spacing:.6px;display:flex;align-items:center;justify-content:space-between;color:#496862;margin:0 -20px;padding:14px 20px;border-top:1px solid var(--line)}.journal-foot span{font-size:13px;color:#7d895f}.site-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #263c40;padding:16px 0;margin-top:25px;color:#536e6b;font-size:9px;letter-spacing:.5px}.site-footer>span>span{margin:0 9px}.site-footer>div{display:flex;gap:24px;align-items:center}.site-footer a{color:#5e7c76;font-size:9px}.site-footer button{border:0;background:none;padding:0;color:#91a082;font-size:9px}.interaction-prompt{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);background:#182b34ec;border:1px solid #8b8e68;color:#c3c3a0;z-index:5;padding:7px 13px;white-space:nowrap;font-size:11px;box-shadow:3px 3px 0 #06121c66}.interaction-prompt kbd{margin-right:7px}.toast{position:absolute;left:50%;top:16px;transform:translateX(-50%);background:#293b38ed;border:1px solid #859276;color:#ded3a9;padding:10px 17px;max-width:85%;z-index:6;text-align:center;font-size:11px;box-shadow:3px 3px 0 #07121c77}.pause-badge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;background:#0b1622aa;backdrop-filter:blur(4px);z-index:7}.pause-badge>span{font:30px var(--serif);letter-spacing:8px;color:#cbb48a}.pause-badge button{background:#773e37;border:1px solid #a45e47;color:#d8c69e;padding:8px 20px;font-size:12px}.touch-controls,.touch-interact{display:none}dialog{width:min(500px,92vw);padding:23px 27px 26px;background:#182831;color:#c6c8ac;border:1px solid #737b61;box-shadow:6px 6px 0 #050d1a66;max-height:90vh;overflow:auto}dialog::backdrop{background:#06121bb3;backdrop-filter:blur(3px)}.dialog-top{display:flex;align-items:center;justify-content:space-between;font:9px var(--mono);letter-spacing:1px;color:#819c8d}.close-button{background:none;border:0;color:#82968b;font:25px/1 var(--mono);padding:0 0 0 10px}dialog h2{font:26px/1.5 var(--serif);color:#d7c093;letter-spacing:1px;margin:13px 0 14px}dialog p{font-size:12px;line-height:2;color:#8fa599}.character-quote{border-left:2px solid #9f6b49;padding-left:15px;font:15px/1.9 var(--serif)!important;color:#c1ba94!important;margin:20px 0}.dialog-small{font-size:10px!important;color:#678c81!important}.dialog-chip{font-size:9px;padding:3px 7px;border:1px solid #5c6f58;color:#a9ad83;display:inline-block;margin-right:6px}.dialog-actions{display:grid;gap:8px;margin-top:20px}.action-button{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:11px 13px;border:1px solid #425e58;background:#223a3e;font-size:12px;color:#afba9e}.action-button small{font-size:9px;color:#779a89;white-space:nowrap}.action-button:hover:not(:disabled){background:#2c4847;border-color:#7c8f6e}.action-button.featured{background:#82443c;border-color:#ab6852;color:#e5cfaa}.action-button.featured small{color:#c3946c}.action-button.danger{border-color:#654841;color:#b88d78}.mask-legend{display:flex;gap:10px;justify-content:center;background:#12232b;padding:13px;margin:15px 0;font-size:10px;color:#889e8b}.mask-legend>span{display:flex;gap:7px;align-items:center}.mask-legend .mini-mask{width:14px;height:19px}.casting-board{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0}.casting-slot{background:#12232c;border:1px solid #3e5954;padding:12px 6px;text-align:center}.casting-slot>b{display:block;font:14px var(--serif);color:#c1b58f;margin-bottom:12px}.casting-slot .big-mask{height:53px;display:grid;place-items:center;color:#567970;font-size:27px}.big-mask .mini-mask{width:30px;height:44px}.big-mask .mini-mask:before,.big-mask .mini-mask:after{width:9px;height:8px;top:13px}.big-mask .mini-mask:before{left:4px}.big-mask .mini-mask:after{right:4px}.mask-options{display:flex;gap:5px;justify-content:center;margin-top:12px}.mask-choice{height:29px;width:27px;background:#263c3e;border:1px solid #4e6658;padding:4px;display:grid;place-items:center}.mask-choice:hover{border-color:#c7ac70;background:#3a4f40}.mask-choice.selected{border-color:#ceab67}.rhythm-row{display:flex;justify-content:center;gap:9px;margin:18px 0}.rhythm-step{width:48px;height:45px;display:grid;place-items:center;background:#11212b;border:1px solid #3b5a54;font:20px var(--serif);color:#59796e}.rhythm-step.filled{color:#d4bd86;border-color:#78865e}.rhythm-step.flash{background:#695b3a;box-shadow:0 0 16px #bda35f30}.rhythm-buttons{display:flex;gap:9px;margin:16px 0}.rhythm-buttons button{flex:1;background:#26403f;border:1px solid #577361;padding:14px 8px;color:#c0c7a1;font:22px var(--serif)}.rhythm-buttons button small{display:block;font:9px var(--mono);color:#7f9b84;margin-top:5px}.rhythm-buttons button:hover{background:#3b5144;border-color:#b6aa6b}.script-page{background:#293b36;border:1px solid #6d7653;padding:19px;margin-top:16px;color:#b8b891;position:relative}.script-page:before{content:"归 客";font:24px var(--serif);letter-spacing:12px;color:#d0bd88;display:block;text-align:center;padding-bottom:13px;border-bottom:1px solid #63705255;margin-bottom:15px}.script-page p{font:13px/2 var(--serif);color:#b6b591;margin:6px 0}.script-page strong{color:#e3c489;font-weight:400}.script-page .beat-note{font:17px/2 var(--serif);letter-spacing:5px;text-align:center;border-top:1px solid #64745c55;padding-top:12px;margin-top:15px;color:#d2be8c}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;border-top:1px solid #3e5750;border-bottom:1px solid #3e5750;margin:20px 0;padding:17px 0}.result-stats b{font:24px var(--serif);color:#cbb78a;display:block}.result-stats span{font-size:9px;color:#779b87}#relay-dialog{width:min(650px,93vw)}#relay-dialog .wl-opening{border:1px dashed #4c665c;background:#1b3035;color:#a6b29b;font-size:11px;border-radius:0}#relay-dialog .wl-card{background:#1c3135;border:1px solid #536b59;border-left:3px solid #a78d57;color:#b2b999;font-size:11px;line-height:1.9;max-width:none;border-radius:0}#relay-dialog .wl-card-title{color:#d0bb85}#relay-dialog .wl-next{color:#7d9f89}#echo-log{font-size:11px;color:#83a38c;margin:16px 0}details{border-top:1px solid #3c554f;margin-top:20px;padding-top:12px;font-size:11px;color:#8caa91}summary{cursor:pointer}pre{font:10px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;max-height:160px;overflow:auto}textarea{width:100%;border:1px solid #4d6657;background:#13252d;color:#9bb093;font:10px/1.5 var(--mono);padding:8px;resize:vertical}.debug-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.debug-row button{background:#253e3b;border:1px solid #526c57;padding:6px 9px;font-size:10px}.relay-note{font-size:10px!important;color:#6b8b7e!important}.wl-overlay{background:#07131aed!important}.wl-overlay .wl-handoff{background:#172932;border:1px solid #8c855f;box-shadow:6px 6px 0 #02091277}.wl-overlay .wl-handoff-kicker{color:#b99963}.wl-overlay .wl-handoff-route{color:#d5c598;font-family:var(--serif)}.wl-overlay .wl-handoff-hook{color:#a6b49a}.wl-overlay .wl-card{border:1px solid #4c6c59;background:#1b3338;color:#a4b89b;border-radius:0}.wl-overlay .wl-card-title{color:#c3b47e}.wl-overlay .wl-next{color:#89a78a}.wl-overlay .wl-btn{background:#8d4c3d;color:#ead4a9;border-radius:0}.wl-warn{color:#9aab84!important}[hidden]{display:none!important}@media(min-width:1500px){.journal{padding-top:22px}.mission{padding:24px 0}.act-progress{padding:20px 0}.inventory{padding:21px 0}.field-notes{padding:21px 0}.activity-log{min-height:94px;gap:13px}}@media(max-width:1180px){.game-layout{grid-template-columns:minmax(0,1fr) 256px;gap:20px}.journal{padding:16px 16px 0}.journal-foot{margin:0 -16px;padding:14px 16px}.site-header nav{margin-left:12px;gap:23px}.scene-coordinates{display:none}.control-strip>div{gap:12px}.desktop-hint{display:none!important}.traveler{gap:10px}.traveler h2{font-size:13px}.act-progress{padding:13px 0}.mission{padding:15px 0}.mission h2{font-size:16px}.rules-strip{padding:11px 0}.rules-strip p{font-size:8px}.activity-log{min-height:62px}.intro-note{width:330px;padding:19px 23px}.intro-note h2{font-size:22px}}@media(max-width:950px){.site-header{height:73px;gap:20px}.header-right .world-tag{display:none}.site-header nav{gap:22px;margin-left:auto}.page{padding-top:26px}.game-layout{grid-template-columns:minmax(0,1fr) 228px;gap:15px}.journal{padding:14px 14px 0}.journal-foot{margin:0 -14px;padding:12px 14px;font-size:5px;letter-spacing:.5px}.traveler h2>span{display:none}.avatar{width:36px;height:44px}.traveler{gap:8px}.section-heading{margin-bottom:10px}.mission h2{font-size:15px;letter-spacing:0}.mission p{font-size:9px;margin-bottom:13px}.objectives{gap:8px}.objective{font-size:9px}.bag-slot{height:29px}.bag-grid{gap:5px}.act-progress h2{font-size:21px}.act-progress>span{font-size:9px}.act-progress{padding:10px 0}.rules-strip p{flex-wrap:wrap;justify-content:flex-start;gap:4px 7px}.field-notes{padding:13px 0}.activity-log .log-entry:nth-child(3){display:none}.activity-log{min-height:55px}.scene-heading{padding:0 12px}.control-strip{font-size:9px;padding:0 10px}.control-strip .click-hint{display:none}.page-intro h1{font-size:29px}.page-intro p{font-size:10px}.eyebrow{font-size:8px;letter-spacing:1.3px}.intro-title{gap:15px}.chapter-mark{padding-left:15px}.intro-note{width:300px;padding:16px 20px}.intro-note p{font-size:10px;margin-bottom:14px}.intro-note h2{font-size:20px}.intro-kicker{font-size:8px}.intro-hint{font-size:7px}}@media(max-width:1000px){.site-header{height:67px;padding:0 18px;gap:17px}.brand{font-size:19px;letter-spacing:2px;gap:10px}.brand small{font-size:6px;letter-spacing:1.6px}.brand-mask{width:31px;height:35px}.brand-mask:before{left:5px;top:4px;width:20px;height:25px}.brand-mask i:before{left:8px}.brand-mask i:after{right:7px}.brand-mask i:before,.brand-mask i:after{top:12px}.site-header nav{gap:18px}.nav-button{font-size:10px;letter-spacing:0}.nav-button.active>span{display:none}.header-right{gap:0}.icon-button{width:27px;height:27px;font-size:16px}.page{padding:24px 16px 0}.page-intro{margin-bottom:23px}.intro-title{gap:13px}.seal{font-size:10px;padding:4px 5px}.page-intro h1{font-size:25px;letter-spacing:1px;margin:6px 0}.eyebrow{font-size:7px;letter-spacing:1px}.eyebrow span{margin:0 3px}.page-intro p{font-size:9px;letter-spacing:.1px;max-width:350px}.chapter-mark{display:none}.game-layout{display:flex;flex-direction:column;gap:19px}.play-column{width:100%}.scene-heading{height:40px}.scene-heading strong{font-size:13px}.scene-coordinates{display:inline;font-size:7px;margin-left:12px;letter-spacing:.5px}.weather{font-size:9px;gap:7px}.time{font-size:10px}.scene{margin:0 -2px}.scene-corner{font-size:7px;bottom:11px;left:12px;right:12px}.map-tag{font-size:7px}.map-button{top:12px;right:12px;width:26px;height:26px;font-size:21px}.intro-note{left:15px;bottom:21px;max-height:calc(100% - 36px);padding:13px 17px;width:min(310px,84%);display:flex;flex-direction:column}.intro-note h2{font-size:19px;margin:0 0 9px;flex:none}.intro-kicker{display:none}.intro-note p{min-height:0;max-height:70px;overflow:auto;font-size:10px;line-height:1.8;margin-bottom:10px}.intro-note .primary-button{flex:none;padding:7px 13px;font-size:11px}.intro-hint{display:none}.control-strip .click-hint{display:flex;font-size:8px}.control-strip>div{gap:11px}.control-strip{height:43px}.below-map{font-size:8px;padding-top:10px}.journal{width:100%;display:grid;grid-template-columns:1fr 1fr;column-gap:24px;padding:17px 18px 0}.traveler{align-items:center;grid-column:1;border-bottom:1px solid var(--line)}.traveler h2>span{display:inline}.act-progress{grid-column:2;grid-row:1;padding:0 0 14px}.act-progress>div:first-child{margin:0}.act-progress h2{font-size:22px;margin:2px 0}.act-progress>span{font-size:8px}.chapter-dots{margin-top:9px}.mission{grid-column:1;grid-row:2/4;border-bottom:0;padding-top:17px}.mission h2{font-size:15px}.mission p br{display:none}.inventory{grid-column:2;grid-row:2;padding-top:17px;border-bottom:0}.rules-strip{grid-column:1/-1;grid-row:4;padding:11px 0 14px;border-top:1px solid var(--line);border-bottom:0;display:flex;gap:15px;align-items:center}.rules-strip p{margin:0;gap:6px;flex:1;justify-content:space-around;font-size:9px}.rules-strip>span{white-space:nowrap}.field-notes{grid-column:2;grid-row:3;padding:5px 0 15px}.field-notes .section-eyebrow{font-size:8px;letter-spacing:.2px}.activity-log{gap:8px;min-height:55px}.activity-log .log-entry:nth-child(3){display:none}.journal-foot{grid-column:1/-1;margin:0 -18px;padding:12px 18px;font-size:6px;letter-spacing:1px}.site-footer{margin-top:20px;font-size:8px;letter-spacing:0}.site-footer>div{gap:10px}.site-footer a{display:none}.site-footer button{font-size:9px}.site-footer>span>span{margin:0 5px}.interaction-prompt{bottom:34px;font-size:10px;padding:6px 10px}.toast{top:11px;padding:7px 11px;font-size:10px}.casting-board{gap:7px}.casting-slot{padding:12px 4px}.casting-slot>b{font-size:12px}.mask-options{gap:4px}.mask-choice{width:24px}.mask-legend{gap:8px;font-size:9px;padding:10px 5px}}@media(max-width:420px){.site-header{padding:0 15px;gap:10px}.brand{font-size:17px;gap:8px}.site-header nav{gap:14px}.header-right{display:none}.page-intro h1{font-size:22px}.eyebrow{font-size:6px;letter-spacing:.6px}.page-intro p{font-size:9px;max-width:275px}.scene-coordinates{display:none}.control-strip>div{gap:7px}.control-strip .click-hint{font-size:7px}kbd{min-width:16px;padding:0 2px}.journal{column-gap:16px;padding:15px 14px 0}.journal-foot{margin:0 -14px;padding:12px 14px;font-size:5px}.traveler h2>span{display:none}.traveler .section-eyebrow{font-size:7px}.vitals{gap:8px;font-size:8px}.vitals #hp{font-size:10px}.mission h2{font-size:14px}.bag-slot{height:27px}.bag-grid{gap:4px}.mission p{font-size:9px}.objective{font-size:9px;gap:6px}.objective-count{font-size:7px}.rules-strip{gap:7px}.rules-strip p{font-size:8px;gap:4px}.rules-strip i{font-size:9px}.site-footer{font-size:7px}dialog{padding:19px 20px}dialog h2{font-size:23px}.mask-options{gap:3px}.casting-slot>b{font-size:11px}.action-button{font-size:11px}.action-button small{font-size:8px}.dialog-chip{font-size:8px}.script-page{padding:15px}}@media(pointer:coarse){.touch-controls{display:block;position:absolute;left:13px;bottom:32px;z-index:5;opacity:.8;text-align:center}.touch-controls>div{display:flex;gap:3px;margin-top:3px}.touch-controls button{width:29px;height:29px;background:#1a303bc9;border:1px solid #71876a;color:#c0c6a0;font:16px var(--mono);touch-action:none;padding:0}.touch-interact{display:block;position:absolute;right:14px;bottom:37px;z-index:5;background:#2d443dc9;color:#c4c4a2;border:1px solid #71876a;padding:10px 12px;font-size:10px}.scene-corner{display:none}.interaction-prompt{bottom:12px}}@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body>
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mask" aria-hidden="true"><i></i></span><span>幽冥戏班<small>THE MIDNIGHT OPERA</small></span></a><nav aria-label="游戏导航"><button class="nav-button active" id="market-tab">戏院 <span>壹</span></button><button class="nav-button" id="guide-button">戏班规矩</button><button class="nav-button" id="world-button">前尘回响 <span>↗</span></button></nav><div class="header-right"><span class="world-tag"><i></i> 无限世界 · 第六签</span><button class="icon-button" id="sound-button" aria-label="开启声音" title="开启声音">♫<span class="sound-off">／</span></button></div></header>
+  <main class="page"><section class="page-intro"><div class="intro-title"><span class="seal">子<br>夜<br>折<br>子</span><div><div class="eyebrow">A PLAY FOR THE FORGOTTEN <span>／</span> 国风怪谈</div><h1>今夜，<em>你是替班人。</em></h1><p>锣鼓一响，活人也要给死人让座。唱完这折戏，才有归途。</p></div></div><div class="chapter-mark"><span>第 <b>陆</b> 签</span><small>梨园旧院 · 子时三刻</small></div></section>
+    <div class="game-layout"><section class="play-column" aria-label="幽冥戏院像素游戏"><div class="scene-heading"><div><span class="live-dot"></span><strong>梨园旧院</strong><span class="scene-coordinates">THEATRE OF LOST SOULS</span></div><div class="weather"><span class="moon">◒</span><span id="weather-text">阴 · 有客来</span><span class="time" id="clock">23:00</span></div></div>
+      <div class="scene" id="scene"><canvas id="game-canvas" width="960" height="600" tabindex="0" aria-label="幽冥戏院地图。WASD或方向键移动，E交互，也可点击人物、戏本和道具自动前往。">请使用支持 Canvas 的浏览器游玩。</canvas><div class="scene-corner"><span>※ 看戏可以，别坐错位。</span><span class="map-tag">夜戏未散</span></div><button class="map-button" id="map-button" aria-label="查看戏院导览" aria-pressed="false">⌖</button><div class="map-note" id="map-note" hidden><b>梨园旧院</b><span>西南 · 守门纸人</span><span>西北 · 戏本与引魂灯</span><span>东侧 · 脸谱与铜锣</span><span>北方 · 戏台、幕后之门</span></div><button class="interaction-prompt" id="interaction-prompt" hidden><kbd>E</kbd><span>查看</span></button>
+        <div class="intro-note" id="intro-note"><div class="intro-kicker"><i></i> 今夜缺一位，恰好是你</div><h2>客官，戏还没散。</h2><p id="entry-echo">你循着锣声走进一座旧戏院。台下坐满了人，却听不见一声呼吸。</p><button class="primary-button" id="start-button">持灯入戏 <span>→</span></button><span class="intro-hint">约 5–10 分钟 · 无突发惊吓</span></div><div class="toast" id="toast" role="status" hidden></div><div class="touch-controls" aria-label="触屏移动"><button data-dir="up" aria-label="向上">↑</button><div><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button></div></div><button class="touch-interact" id="touch-interact">查看 E</button><div class="pause-badge" id="pause-badge" hidden><span>暂歇一折</span><button id="resume-button">继续入戏 →</button></div>
+      </div><div class="control-strip"><div><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移步</span><span><kbd>E</kbd> 查看</span><span class="desktop-hint"><kbd>SHIFT</kbd> 疾行</span><span class="click-hint">亦可点击地图自动前往</span></div><button id="pause-button" aria-label="暂停游戏">Ⅱ</button></div><div class="below-map"><span><i>✦</i> 戏中人未走，局外人莫留。</span><span id="save-status"><i></i> 前尘自动记下</span></div></section>
+      <aside class="journal" aria-label="入戏手札"><section class="traveler"><div class="avatar" aria-hidden="true"><div class="avatar-pixel"></div></div><div><span class="section-eyebrow">THE STAND-IN</span><h2>无名戏客 <span>借身入戏</span></h2><div class="vitals"><span id="hp" aria-label="生命">♥ ♥ ♥</span><span id="sanity">理智 ◇ ◇</span></div></div><button class="small-icon" id="restart-button" aria-label="重新开始本关" title="重入此戏">↺</button></section>
+        <section class="act-progress"><div><span class="section-eyebrow">今夜的戏</span><span class="paper-tag" id="act-label">候场</span></div><h2>《归客》</h2><span>一折未完，一念未散。</span><div class="chapter-dots" id="chapter-dots"><i></i><i></i><i></i><i></i></div></section>
+        <section class="mission"><div class="section-heading"><span class="section-eyebrow">入戏手札</span><span class="gold-mark">记</span></div><h2>替他们，唱完这一折。</h2><p>循戏本，正脸谱，鸣送魂。<br>待帷幕落下，再走向那扇门。</p><div class="objectives" id="objectives"></div><button class="text-button" id="mission-button">展开戏本线索 <span>↗</span></button></section>
+        <section class="inventory"><div class="section-heading"><span class="section-eyebrow">随身旧物</span><span class="inventory-capacity" id="bag-count">0 件</span></div><div class="bag-grid" id="bag-grid"></div><p id="bag-caption">借来的脸，记得还。</p></section>
+        <section class="rules-strip"><span>三句叮嘱</span><p><i>壹</i> 空位留客 <i>贰</i> 脸谱归真 <i>叁</i> 落幕莫回头</p></section><section class="field-notes"><div class="section-heading"><span class="section-eyebrow">帷幕后，有人低语</span><span class="note-line"></span></div><div class="activity-log" id="activity-log" aria-live="polite"></div></section><div class="journal-foot">THE PLAY ENDS. THE STORY DOES NOT.<span>❖</span></div>
+      </aside></div><footer class="site-footer"><span>无限世界 <span>／</span> 幽冥戏班 · 子夜折子</span><div><a href="https://wasteland-bazaar-embers-1025.cheekyotter1025.chatgpt.site" target="_blank" rel="noopener">另一段旅程：废土集市 ↗</a><button id="relay-button">接力存档 ↗</button></div></footer></main>
+  <dialog id="game-dialog" aria-labelledby="dialog-title"><div class="dialog-top"><span id="dialog-kicker">幽冥戏班</span><button class="close-button" id="dialog-close" aria-label="关闭对话">×</button></div><div id="dialog-body"></div><div class="dialog-actions" id="dialog-actions"></div></dialog>
+  <dialog id="relay-dialog" aria-labelledby="relay-title"><div class="dialog-top"><span>INFINITE WORLDS / SAVE_STATE v2</span><button class="close-button" id="relay-close" aria-label="关闭前尘回响">×</button></div><h2 id="relay-title">你从哪一场梦里来？</h2><div id="opening-strip"></div><section id="echo-log"></section><section id="card-preview"></section><details id="debug-panel"><summary>接力联调工具</summary><pre id="debug-json"></pre><textarea id="debug-code" rows="3" aria-label="接力存档码"></textarea><div class="debug-row"><button id="debug-copy">复制当前存档码</button><button id="debug-import">导入存档码</button><button id="debug-reset">重置本关</button></div></details><p class="relay-note">自测出口接入主办方虚拟下家。正式接线时按接线表填写 game.js 顶部的 CONFIG。</p></dialog>
+  <script>/* =========================================================
+ * 无限世界 · SAVE_STATE v3 存档协议核心库
+ * ---------------------------------------------------------
+ * 整条世界线的关卡都靠这个文件衔接，队伍【不需要修改本文件】。
+ *
+ * 队伍常用 API：
+ *   WL.readSave(levelNo)        读档（宽容：缺字段补默认、多字段忽略、类型自动转换）
+ *   WL.consumeAny(items, type)  按类型取用上家道具，取不到返回 null → 触发本关兜底剧情
+ *   WL.addItem(save, item)      往背包加道具 { id, name, type }
+ *   WL.addClue(save, text)      加线索
+ *   WL.setPlayer(save, patch)   改面板 { hp, max_hp, sanity, level, status, curses }
+ *   WL.respawn()                恢复进入本关时的存档快照
+ *   WL.failLevel(reason)        本关失败：生成遗物、墓碑和满血二代探索者
+ *   WL.forcePass()              裁判强制结束本关并走遗物交接
+ *   WL.completeLevel(config, save, opts)
+ *                               校验出口 → 写档 → 过场 → 跳转；缺交接必填项返回 null
+ *                               opts = { exitHook: '结尾一句话', nextUrl: '下一关页面地址' }
+ *   WL.renderOpening(save)      前情提要条（自动呼应上家钩子）
+ *   WL.renderSaveCard(save, level, world)   五行「通关存档卡」
+ *   WL.goTo(url, save)          带存档与旅程进入页面（大厅首跳也使用）
+ *   WL.mountDebug(save)         安装存档复制、导入、重置按钮
+ *
+ * 存档传递通道：localStorage（同一台电脑接力）
+ *              + URL ?save=存档码&history=旅程码（跳转时自动附加，兼容 file:// 分页存储）
+ *
+ * 纯静态实现：file:// 双击即可运行，无任何依赖。
+ * ========================================================= */
+(function (global) {
+  'use strict';
+
+  var STORAGE_KEY = 'wuxianliu_save_v3';
+  var HISTORY_KEY = 'wuxianliu_history_v3';
+  var LEGACY_STORAGE_KEY = 'wuxianliu_save_v2';
+  var LEGACY_HISTORY_KEY = 'wuxianliu_history_v2';
+  var memoryHistory = null;
+  var memoryInitialSave = null;
+  var SCHEMA = 'v3';
+
+  /* 道具类型词表（8 类，消费按类型匹配，不按名称匹配） */
+  var ITEM_TYPES = ['key', 'tool', 'light', 'food', 'token', 'info', 'weapon', 'strange'];
+  var TYPE_LABELS = {
+    key: '钥匙', tool: '工具', light: '照明', food: '食物',
+    token: '信物', info: '情报', weapon: '武器', strange: '异物'
+  };
+
+  /* ---------------- 基础工具 ---------------- */
+
+  function esc(text) {
+    return String(text === undefined || text === null ? '' : text)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function toInt(value, fallback, min) {
+    var n = parseInt(value, 10);
+    if (isNaN(n)) n = fallback;
+    if (typeof min === 'number' && n < min) n = min;
+    return n;
+  }
+
+  function toStr(value, fallback) {
+    if (value === undefined || value === null) return fallback || '';
+    return String(value);
+  }
+
+  function defaultSave(levelNo) {
+    return {
+      schema: SCHEMA,
+      level: typeof levelNo === 'number' ? levelNo : 1,
+      player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: 'normal', curses: [] },
+      items: [],
+      clues: [],
+      exit_hook: '',
+      prev_world: '',
+      next_world: '',
+      tombstone: {}
+    };
+  }
+
+  /* 道具归一化：类型不在词表内 → 归为 strange（异物） */
+  function coerceItem(raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    var type = toStr(raw.type, 'strange').trim().toLowerCase();
+    if (ITEM_TYPES.indexOf(type) === -1) type = 'strange';
+    var item = {
+      id: toStr(raw.id, '').trim() || 'item_' + Math.random().toString(36).slice(2, 8),
+      name: (toStr(raw.name, '未知物品').trim() || '未知物品').slice(0, 32),
+      type: type,
+      relic: raw.relic === true
+    };
+    if (raw.durability !== undefined) item.durability = Math.max(0, toInt(raw.durability, 1, 0));
+    return item;
+  }
+
+  function coerceItems(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw.map(coerceItem).filter(Boolean).slice(0, 3);
+  }
+
+  function coerceClues(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw.map(function (c) { return toStr(c, '').trim(); }).filter(function (c) { return c; });
+  }
+
+  /* ---------------- 存档码（base64，用于 URL 传递与手动导入） ---------------- */
+
+  function toB64(str) {
+    if (typeof btoa === 'function') return btoa(unescape(encodeURIComponent(str)));
+    if (typeof Buffer !== 'undefined') return Buffer.from(str, 'utf-8').toString('base64');
+    throw new Error('当前环境不支持 base64');
+  }
+  function fromB64(b64) {
+    if (typeof atob === 'function') return decodeURIComponent(escape(atob(b64)));
+    if (typeof Buffer !== 'undefined') return Buffer.from(b64, 'base64').toString('utf-8');
+    throw new Error('当前环境不支持 base64');
+  }
+
+  function encodeCode(save) {
+    return toB64(JSON.stringify(save));
+  }
+
+  function decodeCode(code) {
+    try {
+      return JSON.parse(fromB64(String(code).trim()));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* ---------------- 旅程记录（供终局结算页回放） ---------------- */
+
+  /* 与存档分开存放：存档卡保持严格五栏，旅程回放数据走独立通道 */
+  function readHistory() {
+    try {
+      var arr = memoryHistory;
+      var m = global.location.search.match(/[?&]history=([^&]+)/);
+      if (!Array.isArray(arr) && m) arr = decodeCode(decodeURIComponent(m[1]));
+      if (!Array.isArray(arr)) {
+        var raw = global.localStorage.getItem(HISTORY_KEY) || global.localStorage.getItem(LEGACY_HISTORY_KEY);
+        arr = raw ? JSON.parse(raw) : [];
+      }
+      if (!Array.isArray(arr)) return [];
+      return arr.map(function (h) {
+        if (!h || typeof h !== 'object') return null;
+        return {
+          level: toInt(h.level, 0, 0),
+          world: toStr(h.world, '？？？'),
+          hook: toStr(h.hook, '')
+        };
+      }).filter(Boolean).slice(-64);
+    } catch (e) { return []; }
+  }
+
+  /* 每通完一关自动记录一条：第几关 · 什么世界 · 留下了什么结局 */
+  function recordPassage(config, save) {
+    var list = readHistory();
+    list.push({
+      level: toInt(config.level, 0, 0),
+      world: toStr(config.world, '？？？'),
+      hook: toStr(save.exit_hook, '')
+    });
+    if (list.length > 64) list = list.slice(-64); /* 安全上限 */
+    memoryHistory = list;
+    try {
+      global.localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+    } catch (e) { /* ignore */ }
+  }
+
+  /* 开始新一局：清空旧数据，生成全场统一开局面板（命3 · 理智2 · 空背包） */
+  function startRun(levelNo) {
+    resetRun();
+    var save = defaultSave(typeof levelNo === 'number' ? levelNo : 1);
+    persist(save);
+    return save;
+  }
+
+  /* 清空本机全部运行数据（存档 + 旅程记录） */
+  function resetRun() {
+    memoryHistory = [];
+    memoryInitialSave = null;
+    try {
+      global.localStorage.removeItem(STORAGE_KEY);
+      global.localStorage.removeItem(HISTORY_KEY);
+      global.localStorage.removeItem(LEGACY_STORAGE_KEY);
+      global.localStorage.removeItem(LEGACY_HISTORY_KEY);
+    } catch (e) { /* ignore */ }
+  }
+
+  /* ---------------- 读档（宽容处理核心） ---------------- */
+
+  /* 缺字段补默认值、多字段一律忽略、类型自动转换 */
+  function normalize(raw, levelNo) {
+    var base = defaultSave(levelNo);
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return base;
+    var player = raw.player && typeof raw.player === 'object' ? raw.player : {};
+    var maxHp = Math.min(10, Math.max(1, toInt(player.max_hp, 3, 1)));
+    var hp = Math.min(maxHp, toInt(player.hp, 3, 0));
+    var status = toStr(player.status, hp <= 0 ? 'dead' : 'normal');
+    if (['normal', 'wounded', 'cursed', 'dead', 'specter'].indexOf(status) === -1) status = 'normal';
+    var tomb = raw.tombstone && typeof raw.tombstone === 'object' && !Array.isArray(raw.tombstone) ? raw.tombstone : {};
+    return {
+      schema: SCHEMA,
+      level: typeof levelNo === 'number' ? levelNo : toInt(raw.level, 1, 0),
+      world: toStr(raw.world, ''),
+      player: {
+        hp: hp,
+        max_hp: maxHp,
+        level: Math.min(10, toInt(player.level, 1, 1)),
+        sanity: toInt(player.sanity, 2, 0),
+        status: status,
+        curses: Array.isArray(player.curses) ? player.curses.map(function (c) { return toStr(c, '').slice(0, 40); }).filter(Boolean).slice(0, 8) : []
+      },
+      items: coerceItems(raw.items),
+      clues: coerceClues(raw.clues).slice(-8),
+      exit_hook: toStr(raw.exit_hook, ''),
+      prev_world: toStr(raw.prev_world, ''),
+      next_world: toStr(raw.next_world, ''),
+      tombstone: {
+        fallen_level: toInt(tomb.fallen_level, 0, 0),
+        cause: toStr(tomb.cause, '').slice(0, 100),
+        epitaph: toStr(tomb.epitaph, '').slice(0, 200)
+      }
+    };
+  }
+
+  function persist(save) {
+    try {
+      global.localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
+    } catch (e) { /* 隐私模式等场景静默忽略，不影响游戏 */ }
+  }
+
+  /* 读取优先级：URL ?save=存档码 → localStorage → 默认开局 */
+  function readSave(levelNo) {
+    var raw = null;
+    try {
+      var m = global.location.search.match(/[?&]save=([^&]+)/);
+      if (m) {
+        raw = decodeCode(decodeURIComponent(m[1]));
+        if (raw) persist(normalize(raw, levelNo)); /* 落地本地，刷新不丢 */
+      }
+    } catch (e) { /* ignore */ }
+    if (!raw) {
+      try {
+        var stored = global.localStorage.getItem(STORAGE_KEY) || global.localStorage.getItem(LEGACY_STORAGE_KEY);
+        if (stored) raw = JSON.parse(stored);
+      } catch (e) { /* ignore */ }
+    }
+    var save = normalize(raw, levelNo);
+    if (!memoryInitialSave) memoryInitialSave = normalize(save, levelNo);
+    return save;
+  }
+
+  function getInitialSave() {
+    if (memoryInitialSave) return normalize(memoryInitialSave, null);
+    return readSave();
+  }
+
+  function respawn() {
+    var initial = getInitialSave();
+    persist(initial);
+    return initial;
+  }
+
+  /* ---------------- 游戏内编辑存档 ---------------- */
+
+  /* 按类型取用上家道具：命中则从背包移除并返回该道具；取不到返回 null，
+   * 此时队伍必须走本关兜底剧情（评审「衔接分」硬性要求！） */
+  function consumeAny(items, type) {
+    if (!Array.isArray(items)) return null;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] && items[i].type === type) {
+        return items.splice(i, 1)[0];
+      }
+    }
+    return null;
+  }
+
+  function addItem(save, item) {
+    var it = coerceItem(item);
+    if (it) save.items.push(it);
+    return save;
+  }
+
+  function addClue(save, text) {
+    var t = toStr(text, '');
+    if (t) save.clues.push(t);
+    return save;
+  }
+
+  function setPlayer(save, patch) {
+    if (!patch) return save;
+    if (patch.max_hp !== undefined) save.player.max_hp = Math.min(10, Math.max(1, toInt(patch.max_hp, save.player.max_hp || 3, 1)));
+    if (patch.hp !== undefined) save.player.hp = Math.min(save.player.max_hp || 3, toInt(patch.hp, save.player.hp, 0));
+    if (patch.level !== undefined) save.player.level = Math.min(10, toInt(patch.level, save.player.level || 1, 1));
+    if (patch.sanity !== undefined) save.player.sanity = toInt(patch.sanity, save.player.sanity, 0);
+    if (patch.status !== undefined) save.player.status = toStr(patch.status, save.player.status);
+    if (Array.isArray(patch.curses)) save.player.curses = patch.curses.slice(0, 8);
+    return save;
+  }
+
+  /* ---------------- 写档 → 过场演出 → 跳转 ---------------- */
+
+  /* 超量保留最近取得的内容，让本关的交接信息优先传给下家。 */
+  function softValidate(save) {
+    var warnings = [];
+    if (save.items.length > 3) {
+      save.items = save.items.slice(-3);
+      warnings.push('道具超过 3 件，已优先保留最近取得的 3 件');
+    }
+    if (save.clues.length > 2) {
+      save.clues = save.clues.slice(-2);
+      warnings.push('线索超过 2 条，已优先保留最近取得的 2 条');
+    }
+    return warnings;
+  }
+
+  /* 读档保持宽容；交接必填项缺失时明确提示，不写入无效出口。 */
+  function validateExit(save, config, opts) {
+    config = config || {};
+    opts = opts || {};
+    var errors = [];
+    if (!save.items.length) errors.push('请为出口准备至少 1 件道具，并标注道具类型。');
+    if (!save.clues.length) errors.push('请为出口准备至少 1 条本关线索。');
+    if (!toStr(save.exit_hook, '').trim()) errors.push('请填写指向下一个世界的结尾一句话。');
+    if (!toStr(config.world, '').trim()) errors.push('请填写本关世界名。');
+    if (!toStr(config.nextWorld, '').trim()) errors.push('请填写下一关世界名。');
+    if (!toStr(opts.nextUrl, '').trim()) errors.push('请填写下一关页面地址。');
+    return errors;
+  }
+
+  function showExitErrors(errors) {
+    if (typeof document === 'undefined') return;
+    var box = document.getElementById('wl-exit-errors');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'wl-exit-errors';
+      (document.getElementById('finish-area') || document.body).appendChild(box);
+    }
+    box.innerHTML = errors.length ? '<div class="wl-warn" role="alert"><strong>交接尚未完成</strong><br>' + errors.map(esc).join('<br>') + '</div>' : '';
+  }
+
+  /*
+   * config = { level: 本关序号, world: 本关世界名, nextWorld: 下家世界名 }
+   * save   = readSave 拿到、游戏过程中已修改的存档对象
+   * opts   = { exitHook: '结尾一句话（必须指向下一签世界）', nextUrl: '下家页面地址', passViaUrl: 是否附加存档码（默认 true） }
+   */
+  function failLevel(reason, fallenSave, configOverride) {
+    var config = configOverride || global.CONFIG || {};
+    var current = fallenSave ? normalize(fallenSave, toInt(config.level, 1, 1)) : readSave(toInt(config.level, 1, 1));
+    var cause = toStr(reason, '力竭倒地').slice(0, 100);
+    var items = coerceItems(current.items);
+    if (!items.length) {
+      items = [{ id: 'relic_survival_knife', name: '前人的求生短刀', type: 'tool', relic: true }];
+    } else {
+      items = items.map(function (it) {
+        it.relic = true;
+        it.name = ('前人的' + it.name.replace(/^(前人的)+/, '')).slice(0, 32);
+        return it;
+      }).slice(0, 3);
+    }
+    var previous = current.tombstone || {};
+    var marker = '[第' + current.level + '关] ' + cause;
+    var relicSave = normalize({
+      schema: SCHEMA,
+      level: current.level + 1,
+      world: current.world || config.world,
+      player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: 'normal', curses: [] },
+      items: items,
+      clues: current.clues.length ? current.clues : ['前人倒在此处，留下了未解的谜题'],
+      exit_hook: '【遗物交接】一代探索者在此长眠，新求生者拾起遗物踏入下一世界……',
+      prev_world: current.world || config.world,
+      next_world: config.nextWorld || current.next_world || '未知世界',
+      tombstone: {
+        fallen_level: current.level,
+        cause: cause,
+        epitaph: ((previous.epitaph ? previous.epitaph + ' | ' : '') + marker).slice(0, 200)
+      }
+    }, current.level + 1);
+    persist(relicSave);
+    recordPassage(config, relicSave);
+    if (global.parent && global.parent !== global) {
+      global.parent.postMessage({ type: 'IW_FAIL', reason: cause, fallenSave: current }, '*');
+      global.parent.postMessage({ type: 'IW_SAVE', save: relicSave, history: readHistory(), failure: true }, '*');
+    }
+    if (config.nextUrl) showHandoffOverlay(config, relicSave, [], config.nextUrl, true);
+    return relicSave;
+  }
+
+  function forcePass() {
+    return failLevel('时空裂隙坍缩（演示超时）');
+  }
+
+  function completeLevel(config, save, opts) {
+    opts = opts || {};
+    config = config || {};
+    var current = normalize(save, toInt(config.level, 1, 1));
+    if (current.player.hp <= 0 || current.player.status === 'dead') {
+      return failLevel('探索者生命耗尽', save, config);
+    }
+    var candidate = normalize(save, toInt(config.level, 1, 1) + 1);
+    candidate.exit_hook = toStr(opts.exitHook, '').trim();
+    candidate.prev_world = toStr(config.world, '').trim();
+    candidate.next_world = toStr(config.nextWorld, '').trim();
+    var warnings = softValidate(candidate);
+    var errors = validateExit(candidate, config, opts);
+    showExitErrors(errors);
+    if (errors.length) return null;
+    Object.keys(candidate).forEach(function (key) { save[key] = candidate[key]; });
+    persist(save);
+    recordPassage(config, save); /* 旅程记录：终局结算页回放用 */
+    if (global.parent && global.parent !== global) {
+      global.parent.postMessage({ type: 'IW_COMPLETE', save: save, history: readHistory() }, '*');
+    }
+    showHandoffOverlay(config, save, warnings, opts.nextUrl, opts.passViaUrl !== false);
+    return save;
+  }
+
+  /* 替换旧参数、保留其他参数与锚点，导入不会再次读到旧 URL 存档。 */
+  function transferUrl(nextUrl, save, history) {
+    var parts = String(nextUrl).split('#');
+    var hash = parts.length > 1 ? '#' + parts.slice(1).join('#') : '';
+    var beforeHash = parts[0];
+    var queryAt = beforeHash.indexOf('?');
+    var base = queryAt === -1 ? beforeHash : beforeHash.slice(0, queryAt);
+    var query = queryAt === -1 ? [] : beforeHash.slice(queryAt + 1).split('&').filter(function (p) {
+      return p && !/^(save|history)(=|$)/.test(p);
+    });
+    query.push('save=' + encodeURIComponent(encodeCode(save)));
+    query.push('history=' + encodeURIComponent(encodeCode(history)));
+    return base + '?' + query.join('&') + hash;
+  }
+
+  function jumpTo(nextUrl, save, passViaUrl) {
+    if (!nextUrl) return;
+    var url = nextUrl;
+    if (passViaUrl) {
+      url = transferUrl(nextUrl, save, readHistory());
+    }
+    global.location.href = url;
+  }
+
+  /* 自动过场演出：世界线移动画面 + 上家结尾钩子 + 通关存档卡 */
+  function showHandoffOverlay(config, save, warnings, nextUrl, passViaUrl) {
+    if (typeof document === 'undefined') return; /* 非浏览器环境（如自动化测试）跳过 UI */
+    var ov = document.createElement('div');
+    ov.className = 'wl-overlay';
+    var seconds = 8;
+    ov.innerHTML =
+      '<div class="wl-handoff">' +
+        '<div class="wl-handoff-kicker">世 界 线 移 动</div>' +
+        '<div class="wl-handoff-route">' + esc(config.world) + ' → ' + esc(config.nextWorld || '？？？') + '</div>' +
+        '<div class="wl-handoff-hook">“' + esc(save.exit_hook || '……') + '”</div>' +
+        renderSaveCard(save, config.level, config.world) +
+        (warnings.length ? '<div class="wl-warn">提示：' + warnings.map(esc).join('；') + '</div>' : '') +
+        '<button class="wl-btn" id="wl-next-btn" type="button">进入下一关（' + seconds + 's）</button>' +
+      '</div>';
+    document.body.appendChild(ov);
+    var done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      clearInterval(timer);
+      jumpTo(nextUrl, save, passViaUrl);
+    }
+    document.getElementById('wl-next-btn').onclick = go;
+    var timer = setInterval(function () {
+      seconds--;
+      var btn = document.getElementById('wl-next-btn');
+      if (btn) btn.textContent = '进入下一关（' + seconds + 's）';
+      if (seconds <= 0) { clearInterval(timer); go(); }
+    }, 1000);
+  }
+
+  /* ---------------- 渲染组件 ---------------- */
+
+  function describeBag(items) {
+    if (!items.length) return '空';
+    return items.map(function (i) {
+      return esc(i.name) + '（' + (TYPE_LABELS[i.type] || i.type) + '类）';
+    }).join('、');
+  }
+
+  /* 前情提要条：每关开场自动渲染，零成本完成衔接最低保障 */
+  function renderOpening(save) {
+    if (save.prev_world) {
+      return '<div class="wl-opening">前情提要：你从『' + esc(save.prev_world) + '』的结局里醒来——' +
+        (save.exit_hook ? '“' + esc(save.exit_hook) + '”' : '（上家没有留下结尾钩子）') +
+        '<br>随身行李：' + describeBag(save.items) + '</div>';
+    }
+    return '<div class="wl-opening">前情提要：（未读到上家存档，按默认开局：命 3 · 理智 2 · 空背包。' +
+      '你可能是本世界线第 1 关，或直接打开了本页。）</div>';
+  }
+
+  /* 五行「通关存档卡」 */
+  function renderSaveCard(save, level, world) {
+    var lv = (level === undefined || level === null) ? save.level : level;
+    var w = world || save.prev_world || '？？？';
+    var cluesHtml = save.clues.length ? save.clues.map(esc).join('<br>') : '无';
+    return '<div class="wl-card">' +
+      '<div class="wl-card-title">【第 ' + toInt(lv, 1, 1) + ' 关 · ' + esc(w) + ' 通关存档卡】</div>' +
+      '<div class="wl-row">命：' + save.player.hp + '/' + (save.player.max_hp || 3) + '　　等级：' + (save.player.level || 1) + '/10　　理智：' + save.player.sanity + '</div>' +
+      '<div class="wl-row">背包：' + describeBag(save.items) + '</div>' +
+      '<div class="wl-row">线索：' + cluesHtml + '</div>' +
+      '<div class="wl-row">结尾一句话：' + (save.exit_hook ? esc(save.exit_hook) : '（未填写）') + '</div>' +
+      '<div class="wl-row wl-next">（下一关：' + esc(save.next_world || '未知') + '）</div>' +
+      '</div>';
+  }
+
+  /* ---------------- 调试工具 ---------------- */
+
+  var debug = {
+    json: function (save) {
+      try { return JSON.stringify(save, null, 2); } catch (e) { return '{}'; }
+    },
+    code: function (save) { return encodeCode(save); },
+    importCode: function (code) {
+      var raw = decodeCode(code);
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+      var save = normalize(raw, null);
+      persist(save);
+      return save;
+    },
+    reset: function () {
+      try { global.localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+    }
+  };
+
+  function mountDebug(save) {
+    var jsonEl = document.getElementById('debug-json');
+    var codeEl = document.getElementById('debug-code');
+    function sync() {
+      jsonEl.textContent = debug.json(save);
+      codeEl.value = debug.code(save);
+    }
+    sync();
+    document.getElementById('debug-copy').onclick = function () {
+      sync();
+      codeEl.select();
+      try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    };
+    document.getElementById('debug-import').onclick = function () {
+      var restored = debug.importCode(codeEl.value);
+      if (!restored) { global.alert('存档码无法识别'); return; }
+      /* 单独的存档码不含旅程；清掉当前 URL 的旧旅程，避免串线。 */
+      resetRun();
+      persist(restored);
+      jumpTo(global.location.href, restored, true);
+    };
+    document.getElementById('debug-reset').onclick = function () {
+      jumpTo(global.location.href, startRun(save.level), true);
+    };
+  }
+
+  /* ---------------- 内置样式（过场/存档卡，避免被队伍样式影响） ---------------- */
+
+  var LIB_CSS = [
+    '.wl-card{background:#0f1724;border:1px solid #2a3b57;border-left:3px solid #35e08c;border-radius:10px;padding:14px 16px;color:#e8eef8;font:14px/23px "PingFang SC","Microsoft YaHei",system-ui,sans-serif;max-width:560px;box-sizing:border-box;}',
+    '.wl-card-title{font-weight:600;margin-bottom:8px;color:#9ff5c8;}',
+    '.wl-row{margin:2px 0;}',
+    '.wl-next{color:#8fa3bf;font-size:12px;margin-top:6px;}',
+    '.wl-opening{background:#141d2e;border:1px dashed #33455f;border-radius:8px;padding:10px 14px;color:#c6d4e8;font:14px/22px "PingFang SC","Microsoft YaHei",sans-serif;margin:0 0 16px;}',
+    '.wl-overlay{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(5,10,18,.94);display:flex;align-items:center;justify-content:center;z-index:9999;animation:wl-fade .35s ease;}',
+    '.wl-handoff{display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px;text-align:center;max-width:640px;}',
+    '.wl-handoff-kicker{letter-spacing:12px;color:#35e08c;font:600 14px/20px sans-serif;}',
+    '.wl-handoff-route{color:#e8eef8;font:600 20px/28px "PingFang SC","Microsoft YaHei",sans-serif;}',
+    '.wl-handoff-hook{color:#aebdd4;font:15px/24px "PingFang SC","Microsoft YaHei",sans-serif;font-style:italic;max-width:520px;}',
+    '.wl-warn{color:#f0b429;font:12px/18px "PingFang SC","Microsoft YaHei",sans-serif;max-width:560px;text-align:left;}',
+    '.wl-btn{background:#35e08c;color:#04140b;border:none;border-radius:8px;padding:10px 26px;font:600 15px/22px "PingFang SC","Microsoft YaHei",sans-serif;cursor:pointer;}',
+    '.wl-btn:hover{filter:brightness(1.08);}',
+    '@keyframes wl-fade{from{opacity:0}to{opacity:1}}'
+  ].join('');
+
+  function injectStyles() {
+    try {
+      if (!document.getElementById('wl-lib-style')) {
+        var s = document.createElement('style');
+        s.id = 'wl-lib-style';
+        s.textContent = LIB_CSS;
+        document.head.appendChild(s);
+      }
+    } catch (e) { /* ignore */ }
+  }
+  if (typeof document !== 'undefined') injectStyles();
+
+  /* 外链作品没有云端注入桥时，也由核心库完成双向握手与裁判指令。 */
+  if (typeof global.addEventListener === 'function') {
+    global.addEventListener('message', function (event) {
+      var message = event.data;
+      if (!message || typeof message !== 'object') return;
+      if (message.type === 'IW_INIT_SAVE' || message.type === 'iw-init') {
+        var incoming = normalize(message.save || readSave(), message.save && message.save.level);
+        memoryInitialSave = normalize(incoming, incoming.level);
+        persist(incoming);
+        if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+          global.dispatchEvent(new global.CustomEvent('iw-save-ready', { detail: incoming }));
+        }
+      }
+      if (message.type !== 'IW_ADMIN_COMMAND') return;
+      var command = String(message.command || message.action || '').toLowerCase();
+      if (command === 'force_pass') command = 'forcepass';
+      if (command === 'heal_player') command = 'heal';
+      if (command === 'heal' || command === 'respawn') {
+        var restored = command === 'respawn' ? respawn() : readSave();
+        if (command === 'heal') {
+          setPlayer(restored, { hp: restored.player.max_hp || 3, status: 'normal' });
+          persist(restored);
+        }
+        if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+          global.dispatchEvent(new global.CustomEvent('iw-admin', { detail: { command: command, save: restored } }));
+        }
+      } else if (command === 'skip' || command === 'forcepass') {
+        forcePass();
+      } else if (command === 'reload' && global.location && typeof global.location.reload === 'function') {
+        global.location.reload();
+      } else if (command === 'audio' && typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+        global.dispatchEvent(new global.CustomEvent('iw-admin', { detail: { command: 'audio' } }));
+      }
+    });
+    global.addEventListener('load', function () {
+      if (global.parent && global.parent !== global) global.parent.postMessage({ type: 'IW_READY' }, '*');
+    });
+  }
+
+  /* ---------------- 导出 ---------------- */
+
+  global.WL = {
+    version: SCHEMA,
+    ITEM_TYPES: ITEM_TYPES,
+    TYPE_LABELS: TYPE_LABELS,
+    readSave: readSave,
+    getInitialSave: getInitialSave,
+    respawn: respawn,
+    normalize: normalize,
+    completeLevel: completeLevel,
+    failLevel: failLevel,
+    forcePass: forcePass,
+    validateExit: validateExit,
+    goTo: function (url, save) { jumpTo(url, save, true); },
+    mountDebug: mountDebug,
+    consumeAny: consumeAny,
+    addItem: addItem,
+    addClue: addClue,
+    setPlayer: setPlayer,
+    renderOpening: renderOpening,
+    renderSaveCard: renderSaveCard,
+    readHistory: readHistory,
+    startRun: startRun,
+    resetRun: resetRun,
+    escapeHtml: esc,
+    encodeCode: encodeCode,
+    decodeCode: decodeCode,
+    debug: debug
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script><script>/* 幽冥戏班：独立于 DOM 与接力协议的关卡规则。 */
+(function (root, factory) {
+  'use strict';
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.OperaModel = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  var nodes = [
+    { id: 'ticket', kind: 'npc', name: '守门纸人', x: 160, y: 435 },
+    { id: 'script', kind: 'script', name: '旧戏本', x: 240, y: 230 },
+    { id: 'masks', kind: 'masks', name: '脸谱架', x: 788, y: 278 },
+    { id: 'seat', kind: 'seat', name: '空座', x: 474, y: 385 },
+    { id: 'gong', kind: 'gong', name: '铜锣', x: 720, y: 455 },
+    { id: 'stage', kind: 'stage', name: '戏台', x: 480, y: 234 },
+    { id: 'lantern', kind: 'lantern', name: '引魂灯', x: 110, y: 285 },
+    { id: 'exit', kind: 'exit', name: '幕后之门', x: 480, y: 125 }
+  ];
+  var solids = [
+    { x: 329, y: 70, w: 105, h: 126 },
+    { x: 526, y: 70, w: 105, h: 126 },
+    { x: 66, y: 132, w: 93, h: 90 },
+    { x: 194, y: 173, w: 92, h: 31 },
+    { x: 749, y: 193, w: 100, h: 47 },
+    { x: 101, y: 370, w: 100, h: 31 },
+    { x: 651, y: 396, w: 98, h: 22 },
+    { x: 330, y: 285, w: 54, h: 30 },
+    { x: 420, y: 285, w: 54, h: 30 },
+    { x: 510, y: 285, w: 54, h: 30 },
+    { x: 600, y: 285, w: 54, h: 30 },
+    { x: 330, y: 346, w: 54, h: 30 },
+    { x: 600, y: 346, w: 54, h: 30 }
+  ];
+  var maskOrder = ['white', 'red', 'black'];
+  var rhythmOrder = ['drum', 'gong', 'bell', 'gong'];
+  var maskNames = { white: '白面', red: '红面', black: '黑面' };
+  var beatNames = { drum: '鼓', gong: '锣', bell: '铃' };
+
+  function integer(value, fallback) {
+    var n = Number(value);
+    return value !== null && value !== '' && Number.isFinite(n)
+      ? Math.max(0, Math.floor(n)) : fallback;
+  }
+
+  function create(incomingSave, hasLight) {
+    var incoming = incomingSave && incomingSave.player || {};
+    var sanity = Math.max(1, integer(incoming.sanity, 2)) + (hasLight ? 1 : 0);
+    return {
+      player: { x: 480, y: 525, dir: 'down', moving: false },
+      hp: Math.max(1, integer(incoming.hp, 3)),
+      sanity: sanity,
+      maxSanity: Math.max(3, sanity),
+      elapsed: 0,
+      started: false,
+      lost: false,
+      performed: false,
+      ending: null,
+      flags: {},
+      learned: false,
+      masksCollected: [],
+      casting: [null, null, null],
+      maskSolved: false,
+      rhythm: [],
+      gongSolved: false,
+      act: 0
+    };
+  }
+
+  // 戏院没有隐藏的生存倒计时，演出完成后也不再累计旅途用时。
+  function tick(state, seconds) {
+    var dt = Number(seconds);
+    if (state.started && !state.lost && !state.performed && !state.ending && Number.isFinite(dt) && dt > 0) state.elapsed += dt;
+    return [];
+  }
+
+  function fail(message) { return { ok: false, message: message }; }
+  function finish(state, message, kind, duration) {
+    tick(state, duration === undefined ? 6 : duration);
+    return { ok: true, message: message, kind: kind || 'story' };
+  }
+  function costSanity(state, message, clear) {
+    state.sanity = Math.max(0, state.sanity - 1);
+    if (clear === 'casting') state.casting = [null, null, null];
+    if (clear === 'rhythm') state.rhythm = [];
+    // 先记录此次判定的时间，再冻结失神状态。
+    var result = finish(state, message + '理智 -1。', 'mistake');
+    if (state.sanity === 0) {
+      state.lost = true;
+      state.player.moving = false;
+      result.message += '你被戏声困住了；到引魂灯前重新点灯，可以找回神志。';
+    }
+    return result;
+  }
+
+  function action(state, id) {
+    if (state.ending) return fail('这一折戏已经落幕，下一段世界正在等你。');
+    if (state.lost && id !== 'relight') return fail(state.hp === 0
+      ? '你已无力继续这一折戏，请从入口重新开始。'
+      : '你暂时迷失在戏声里，先到引魂灯前找回神志。');
+    if (state.performed && id !== 'ending_release' && id !== 'ending_inherit') return fail('送魂戏已经唱完，去幕后之门选择告别吧。');
+
+    if (id === 'ticket') {
+      if (state.flags.ticket) return fail('冥戏票已经收好，纸人不会再收第二次票。');
+      state.flags.ticket = true;
+      return finish(state, '纸人递来一张冥戏票：空座不可坐，脸谱不可乱，锣鼓不可错。');
+    }
+
+    if (id === 'read_script') {
+      if (state.learned) return finish(state, '再读戏本：白面饰伪言者，红面饰守誓者，黑面饰断是非者；送魂四拍是鼓、锣、铃、锣。', 'story', 0);
+      state.learned = true;
+      state.flags.script = true;
+      state.act = Math.max(state.act, 1);
+      return finish(state, '你读懂了旧戏本：左起伪言者、守誓者、断是非者，对应白面、红面、黑面；落幕四拍为鼓、锣、铃、锣。');
+    }
+
+    if (id === 'take_masks') {
+      if (!state.flags.ticket) return fail('先向守门纸人领一张冥戏票，才能借取脸谱。');
+      if (state.masksCollected.length) return fail('三张脸谱已经借出，就在你的行囊里。');
+      state.masksCollected = ['red', 'white', 'black'];
+      state.flags.masks = true;
+      return finish(state, '你借下红、白、黑三张脸谱。它们等着回到戏本里各自的位置。', 'item');
+    }
+
+    var assignment = /^assign_([0-2])_(red|white|black)$/.exec(id);
+    if (assignment) {
+      if (!state.masksCollected.length) return fail('脸谱架还没打开，先借下三张脸谱。');
+      if (state.maskSolved) return fail('三张脸谱已经归位，不要再惊动台上的人。');
+      var slot = Number(assignment[1]);
+      var mask = assignment[2];
+      if (state.masksCollected.indexOf(mask) === -1) return fail('行囊里没有这张脸谱。');
+      var previous = state.casting[slot];
+      var occupied = state.casting.indexOf(mask);
+      if (occupied !== -1 && occupied !== slot) state.casting[occupied] = previous;
+      state.casting[slot] = mask;
+      return finish(state, '第 ' + (slot + 1) + ' 位换上了' + maskNames[mask] + '。', 'selection', 0);
+    }
+
+    if (id === 'check_masks') {
+      if (!state.learned) return fail('先读旧戏本，认清三位戏中人的身份。');
+      if (!state.masksCollected.length) return fail('你还没有向脸谱架借取脸谱。');
+      if (state.maskSolved) return fail('脸谱已经归位，这一关考验不必再来一次。');
+      if (state.casting.length !== 3 || state.casting.some(function (mask) { return !maskNames[mask]; }) || new Set(state.casting).size !== 3) return fail('请先为三个角色各放一张不同的脸谱。');
+      if (!state.casting.every(function (mask, index) { return mask === maskOrder[index]; })) return costSanity(state, '脸谱的眼角同时转向你。身份错位了，三张脸谱又退回暗处。', 'casting');
+      state.maskSolved = true;
+      state.act = Math.max(state.act, 2);
+      return finish(state, '白面藏谎，红面守誓，黑面断是非。脸谱终于归位，戏台深处传来一声轻叹。', 'puzzle');
+    }
+
+    var beat = /^beat_(drum|gong|bell)$/.exec(id);
+    if (beat) {
+      if (!state.maskSolved) return fail('先让三张脸谱归位，锣鼓才肯听你的指挥。');
+      if (state.gongSolved) return fail('送魂四拍已经奏对，不必再打断余音。');
+      if (state.rhythm.length >= 4) return fail('四拍已齐，先确认，或清空后重新敲击。');
+      state.rhythm.push(beat[1]);
+      return finish(state, '第 ' + state.rhythm.length + ' 拍：' + beatNames[beat[1]] + '。', 'beat', 0);
+    }
+
+    if (id === 'clear_rhythm') {
+      if (state.gongSolved) return fail('已经奏对的送魂四拍不会被抹去。');
+      state.rhythm = [];
+      return finish(state, '铜锣的余音散去，可以重新起拍。', 'selection', 0);
+    }
+
+    if (id === 'check_rhythm') {
+      if (!state.maskSolved) return fail('先让脸谱归位，才能奏送魂四拍。');
+      if (state.gongSolved) return fail('送魂四拍已经奏对，台上的影子正在等你。');
+      if (state.rhythm.length !== 4) return fail('送魂曲需要完整的四拍，先把四拍敲齐。');
+      if (!state.rhythm.every(function (beat, index) { return beat === rhythmOrder[index]; })) return costSanity(state, '锣鼓错了拍，台下传来不属于活人的应声。再看看戏本里的四拍。', 'rhythm');
+      state.gongSolved = true;
+      state.act = Math.max(state.act, 3);
+      return finish(state, '鼓起，锣应，铃过，锣收。四拍相接，台下的影子安静下来。', 'puzzle');
+    }
+
+    if (id === 'respect_seat') {
+      if (state.flags.seat) return fail('这张空座已经留给原来的客人了。');
+      state.flags.seat = true;
+      return finish(state, '你向空座欠身，给看不见的客人让了路。椅上的薄霜悄悄散去。');
+    }
+
+    if (id === 'sit_seat') {
+      if (state.flags.seatWarning) return fail('椅子已经给过警告，不要再坐下。');
+      state.flags.seatWarning = true;
+      state.hp = Math.max(0, state.hp - 1);
+      var seated = finish(state, '你刚要落座，一只冰冷的手便将你推开。生命 -1。这张座位有它的主人。', 'mistake');
+      if (state.hp === 0) {
+        state.lost = true;
+        state.player.moving = false;
+        seated.message += '你已无力起身，请从戏院入口重新开始。';
+      }
+      return seated;
+    }
+
+    if (id === 'relight') {
+      if (state.hp === 0) return fail('引魂灯能找回神志，却扶不起耗尽的身体。请重新开始本关。');
+      if (state.sanity >= state.maxSanity && !state.lost) return fail('心神已经安定，灯火会在这里等你。');
+      state.sanity = Math.min(state.maxSanity, Math.max(0, state.sanity) + 1);
+      state.lost = false;
+      state.flags.lantern = true;
+      return finish(state, '你在引魂灯前重新点起一缕火。理智 +1，戏声中的杂念渐渐远去。', 'restore');
+    }
+
+    if (id === 'perform') {
+      if (!state.flags.ticket) return fail('纸人还未放行，先领取冥戏票。');
+      if (!state.learned) return fail('台词还未认清，先读懂旧戏本。');
+      if (!state.maskSolved) return fail('三位戏中人的脸谱还没归位。');
+      if (!state.gongSolved) return fail('送魂四拍还没奏对，暂时不能登台。');
+      if (!state.flags.seat) return fail('台下还有客人无座。先向院中空座欠身让路。');
+      state.performed = true;
+      state.flags.performed = true;
+      state.act = 4;
+      state.player.moving = false;
+      return finish(state, '你替戏中人唱完最后一句。红帷缓缓落下，无名的观众终于起身，幕后之门开了。', 'performance', 0);
+    }
+
+    if (id === 'ending_release' || id === 'ending_inherit') {
+      if (!state.performed) return fail('这一折送魂戏尚未落幕，幕后之门还不能通行。');
+      state.ending = id === 'ending_release' ? 'release' : 'inherit';
+      if (state.ending === 'inherit') {
+        state.sanity = Math.max(0, state.sanity - 1);
+        return finish(state, '你留下自己的名字，接过戏班的脸谱。理智 -1；今夜之后，余音将随你远行。', 'ending', 0);
+      }
+      return finish(state, '你归还脸谱，不曾回头。灯火替戏中人照亮归途，也照出你的下一段世界。', 'ending', 0);
+    }
+
+    return fail('这件事不在今夜的戏本里。');
+  }
+
+  return { create: create, action: action, tick: tick, nodes: nodes, solids: solids };
+});
+</script><script>/* Original pixel scenery for 幽冥戏班 · 子夜折子. No external assets. */
+(function (global) {
+  'use strict';
+
+  const C = {
+    night: '#101924', floor: '#26353b', joint: '#1c2b32', stone: '#34444a',
+    stoneLight: '#43545a', teal: '#506f73', mist: '#8ba8a5', ink: '#111b24',
+    wood: '#4b3435', woodLight: '#71504a', woodDark: '#2d252e',
+    red: '#aa463e', brightRed: '#d86548', deepRed: '#612f37',
+    gold: '#b6965e', lightGold: '#e6c385', bone: '#ded5b5', dimBone: '#b8b69e',
+    jade: '#71938a', cyan: '#a2c4ad', outline: '#14222b'
+  };
+
+  function rect(ctx, x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+  }
+
+  function seeded(seed) {
+    let n = seed >>> 0;
+    return function () { n = (Math.imul(n, 1664525) + 1013904223) >>> 0; return n / 4294967296; };
+  }
+
+  function line(ctx, x1, y1, x2, y2, color, size) {
+    const w = size || 2;
+    const n = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+    if (!n) { rect(ctx, x1, y1, w, w, color); return; }
+    for (let i = 0; i <= n; i += 2) rect(ctx, x1 + (x2 - x1) * i / n, y1 + (y2 - y1) * i / n, w, w, color);
+  }
+
+  function text(ctx, value, x, y, color, size, align) {
+    ctx.font = '600 ' + (size || 11) + 'px "Microsoft YaHei","PingFang SC",sans-serif';
+    ctx.textAlign = align || 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = color || C.dimBone;
+    ctx.fillText(value, Math.round(x), Math.round(y));
+  }
+
+  function steppedShadow(ctx, x, y, w, h) {
+    rect(ctx, x - w / 2 + 3, y - h / 2, w - 6, h, '#0d1721aa');
+    rect(ctx, x - w / 2, y - h / 2 + 3, w, h - 6, '#0d1721aa');
+  }
+
+  function squareGlow(ctx, x, y, radius, color) {
+    for (let i = 4; i > 0; i--) {
+      ctx.globalAlpha = 0.016 * (5 - i);
+      rect(ctx, x - radius * i / 4, y - radius * i / 6, radius * i / 2, radius * i / 3, color);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function lantern(ctx, x, y, scale, frame, spirit) {
+    const s = scale || 1;
+    const dx = frame ? Math.round(Math.sin(frame) * 2) : 0;
+    x += dx;
+    const shell = spirit ? '#6a9d90' : '#bd5444';
+    const shine = spirit ? '#bbd7b0' : '#e79459';
+    line(ctx, x, y - 17 * s, x, y - 2 * s, C.gold, s);
+    rect(ctx, x - 6 * s, y - 3 * s, 12 * s, 2 * s, C.gold);
+    rect(ctx, x - 9 * s, y, 18 * s, 16 * s, C.deepRed);
+    rect(ctx, x - 11 * s, y + 3 * s, 22 * s, 10 * s, shell);
+    rect(ctx, x - 8 * s, y + 1 * s, 16 * s, 14 * s, shell);
+    rect(ctx, x - 5 * s, y + 2 * s, 3 * s, 12 * s, shine);
+    rect(ctx, x + 2 * s, y + 2 * s, 2 * s, 12 * s, shine);
+    rect(ctx, x - 7 * s, y + 16 * s, 14 * s, 2 * s, C.gold);
+    rect(ctx, x - s, y + 18 * s, 2 * s, 10 * s, C.gold);
+    rect(ctx, x - 3 * s, y + 26 * s, 6 * s, 4 * s, spirit ? C.cyan : C.red);
+  }
+
+  function roofTile(ctx, x, y, w, color) {
+    rect(ctx, x, y, w, 7, color || '#304047');
+    for (let i = 3; i < w - 3; i += 10) {
+      rect(ctx, x + i, y, 2, 7, '#4b5a5c');
+      rect(ctx, x + i - 2, y + 5, 7, 2, '#1d2b34');
+    }
+  }
+
+  function mask(ctx, x, y, kind, s) {
+    const scale = s || 1;
+    const main = kind === 'red' ? '#c45047' : kind === 'white' ? '#dcd6b9' : '#29323b';
+    const dark = kind === 'black' ? '#a6b3a0' : '#282c32';
+    const r = (a, b, w, h, c) => rect(ctx, x + a * scale, y + b * scale, w * scale, h * scale, c);
+    r(-7, -8, 14, 14, C.outline); r(-5, -10, 10, 18, C.outline);
+    r(-5, -7, 10, 13, main); r(-3, -9, 6, 17, main);
+    r(-5, -3, 4, 2, dark); r(1, -3, 4, 2, dark);
+    r(-4, -5, 3, 2, dark); r(2, -5, 3, 2, dark);
+    r(-1, -5, 2, 7, kind === 'red' ? '#e9c78c' : kind === 'white' ? '#b6403e' : '#dfd6b5');
+    r(-3, 4, 6, 2, dark); r(-1, 6, 2, 2, C.gold);
+    r(-3, -8, 2, 2, '#f2e0b9');
+  }
+
+  function pillar(ctx, x, y, h, color) {
+    rect(ctx, x - 8, y + 4, 18, h, C.woodDark);
+    rect(ctx, x - 7, y, 14, h, color || C.deepRed);
+    rect(ctx, x - 6, y + 4, 3, h - 8, '#a04a42');
+    rect(ctx, x - 11, y - 3, 22, 7, C.gold);
+    rect(ctx, x - 10, y + h - 8, 20, 8, '#535557');
+    rect(ctx, x - 12, y + h, 24, 7, '#2c353d');
+  }
+
+  function chair(ctx, x, y, occupied, ghostPhase, facing) {
+    steppedShadow(ctx, x + 5, y + 4, 55, 14);
+    rect(ctx, x - 21, y - 23, 42, 6, '#302b32');
+    rect(ctx, x - 19, y - 24, 38, 4, C.woodLight);
+    rect(ctx, x - 18, y - 21, 4, 18, C.wood);
+    rect(ctx, x + 14, y - 21, 4, 18, C.wood);
+    rect(ctx, x - 16, y - 12, 32, 4, '#664b43');
+    rect(ctx, x - 23, y - 7, 5, 18, '#61483f');
+    rect(ctx, x + 18, y - 7, 5, 18, '#61483f');
+    rect(ctx, x - 20, y + 3, 40, 5, C.woodLight);
+    rect(ctx, x - 18, y + 8, 4, 9, C.wood);
+    rect(ctx, x + 14, y + 8, 4, 9, C.wood);
+    rect(ctx, x - 16, y + 4, 32, 2, C.gold);
+    if (occupied) {
+      const bob = Math.round(Math.sin(ghostPhase || 0) * 2);
+      ctx.globalAlpha = 0.58;
+      rect(ctx, x - 11, y - 24 + bob, 22, 19, '#678883');
+      rect(ctx, x - 8, y - 30 + bob, 16, 11, '#829b8d');
+      rect(ctx, x - 5, y - 32 + bob, 10, 3, '#a3b7a0');
+      rect(ctx, x - 14, y - 16 + bob, 5, 14, '#4b7271');
+      rect(ctx, x + 9, y - 16 + bob, 5, 14, '#4b7271');
+      rect(ctx, x - 11, y - 2 + bob, 22, 6, '#526f71');
+      if (facing === 'front') {
+        rect(ctx, x - 5, y - 26 + bob, 3, 2, C.ink);
+        rect(ctx, x + 2, y - 26 + bob, 3, 2, C.ink);
+      }
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function person(ctx, x, y, type, dir, stride, phase) {
+    x = Math.round(x); y = Math.round(y);
+    const walking = stride || 0;
+    const ghost = type === 'paper';
+    steppedShadow(ctx, x + 3, y + 1, type === 'actor' ? 34 : 28, 10);
+    const r = (a, b, w, h, c) => rect(ctx, x + a, y + b, w, h, c);
+    if (type === 'actor') {
+      r(-14, -30, 28, 24, C.deepRed); r(-11, -33, 22, 28, '#ba5149');
+      r(-8, -37, 16, 14, '#e3d5b0'); r(-10, -40, 20, 7, '#253642');
+      r(-13, -43, 26, 5, '#bb9d67'); r(-8, -47, 16, 6, '#2c4c55');
+      r(-2, -50, 4, 5, C.lightGold);
+      r(-5, -34, 3, 2, C.ink); r(3, -34, 3, 2, C.ink);
+      r(-7, -30, 4, 2, C.red); r(4, -30, 4, 2, C.red);
+      r(-1, -29, 3, 4, C.red); r(-3, -22, 6, 13, C.lightGold);
+      r(-16, -25, 6, 15, C.red); r(10, -25, 6, 15, C.red);
+      const sway = Math.round(Math.sin(phase || 0) * 4);
+      r(-30, -21 + sway, 17, 7, '#ddd7bc'); r(-36, -19 + sway, 9, 15, '#ddd7bc');
+      r(13, -20 - sway, 21, 7, '#ddd7bc'); r(28, -17 - sway, 8, 13, '#ddd7bc');
+      r(-11, -9, 22, 6, C.gold); r(-9, -3, 6, 5, '#202c36'); r(4, -3, 6, 5, '#202c36');
+      return;
+    }
+    const coat = ghost ? '#b8bfaa' : '#426f72';
+    const lit = ghost ? '#d6d8b8' : '#6d9d92';
+    const shade = ghost ? '#798b81' : '#2a505d';
+    r(-10, -32, 20, 29, C.outline); r(-12, -26, 24, 21, C.outline);
+    r(-8, -25, 16, 20, coat); r(-10, -23, 5, 15, shade); r(7, -23, 5, 15, shade);
+    r(-9, -8, 18, 5, shade); r(-7, -5, 6, 7 + Math.max(0, walking), '#21343d');
+    r(3, -5, 6, 7 + Math.max(0, -walking), '#21343d');
+    r(-8, 1 + Math.max(0, walking), 8, 3, '#182733'); r(2, 1 + Math.max(0, -walking), 8, 3, '#182733');
+    r(-6, -38, 14, 14, ghost ? C.bone : '#c49b77'); r(-8, -36, 18, 8, ghost ? C.bone : '#c49b77');
+    if (ghost) {
+      r(-9, -42, 19, 7, '#2e454a'); r(-5, -47, 12, 7, '#384e50'); r(-2, -44, 4, 4, C.gold);
+      r(-6, -32, 4, 2, '#3e5558'); r(3, -32, 4, 2, '#3e5558'); r(-1, -28, 4, 2, '#8e4941');
+      r(-3, -22, 6, 16, '#ae5650'); r(-11, -16, 4, 9, '#d1ceae'); r(9, -16, 4, 9, '#d1ceae');
+    } else {
+      r(-8, -41, 18, 6, '#2d3f4b'); r(-11, -36, 24, 4, '#354a53'); r(-6, -43, 14, 3, '#60776d');
+      r(-1, -25, 7, 6, '#c47355'); r(4, -21, 5, 8, '#b4614d'); r(-6, -21, 3, 11, lit);
+      r(-12, -19, 5, 10, '#b18c6d'); r(9, -19, 5, 10, '#b18c6d');
+      if (dir !== 'up') {
+        if (dir !== 'right') r(-4, -31, 2, 2, '#2b3439');
+        if (dir !== 'left') r(5, -31, 2, 2, '#2b3439');
+      } else {
+        r(-6, -33, 14, 8, '#38494d'); r(-3, -25, 9, 5, '#c47355');
+      }
+      r(-9, -12, 18, 3, '#b39b6c'); r(0, -12, 3, 3, '#e0bd79');
+    }
+  }
+
+  function makeBackground(ctx) {
+    const random = seeded(460617);
+    rect(ctx, 0, 0, 960, 600, C.night);
+    // The enclosing wall, with little hints of a dark village beyond it.
+    for (let x = 0; x < 960; x += 27) {
+      const height = 10 + Math.floor(random() * 30);
+      rect(ctx, x, 47 - height, 24, height + 21, '#17232f');
+      if (random() > .7) rect(ctx, x + 7, 48 - height, 3, 5, '#6c6b4e');
+    }
+    rect(ctx, 0, 65, 960, 39, '#2d3b40');
+    for (let row = 0; row < 3; row++) for (let x = -24; x < 984; x += 48) {
+      const xx = x + (row % 2 ? 24 : 0);
+      rect(ctx, xx + 2, 69 + row * 11, 45, 9, row % 2 ? '#344247' : '#303d42');
+      rect(ctx, xx + 3, 69 + row * 11, 41, 1, '#435054');
+    }
+    roofTile(ctx, 0, 59, 960, '#26383f');
+    rect(ctx, 0, 100, 960, 500, C.floor);
+    // Courtyard paving. Patterns are intentionally hard-edged rather than filtered.
+    for (let row = 0; row < 24; row++) for (let col = 0; col < 35; col++) {
+      const x = col * 29 + (row % 2 ? -14 : 0), y = 102 + row * 21;
+      const shade = random();
+      rect(ctx, x + 1, y + 1, 27, 19, shade < .25 ? '#2b3c41' : shade > .81 ? '#304148' : '#29393f');
+      if (random() > .64) rect(ctx, x + 3, y + 3, 10 + random() * 12, 1, '#4c5b592b');
+    }
+    rect(ctx, 439, 174, 82, 381, '#3d4d50');
+    rect(ctx, 447, 176, 66, 379, '#465459');
+    for (let row = 0; row < 21; row++) {
+      const y = 179 + row * 18;
+      rect(ctx, 447, y, 66, 2, '#2d3f46');
+      rect(ctx, row % 2 ? 474 : 479, y + 2, 2, 16, '#34464a');
+      rect(ctx, 450, y + 3, 18, 1, '#65717055');
+    }
+    // Weathered side walls and low courtyard rails.
+    for (const x of [15, 925]) {
+      rect(ctx, x, 94, 20, 476, '#273339'); rect(ctx, x + 3, 94, 7, 476, '#3e4b4d');
+      for (let y = 110; y < 570; y += 35) {
+        rect(ctx, x - 2, y, 24, 7, '#4a5451'); rect(ctx, x + 2, y + 7, 16, 3, '#172932');
+      }
+    }
+    rect(ctx, 22, 560, 394, 13, '#2f3e43'); rect(ctx, 544, 560, 393, 13, '#2f3e43');
+    roofTile(ctx, 22, 553, 394); roofTile(ctx, 544, 553, 393);
+    // Main stage: a wide, layered roof and red curtains around a passable center.
+    steppedShadow(ctx, 487, 241, 406, 37);
+    rect(ctx, 303, 77, 354, 143, '#252631'); rect(ctx, 319, 76, 322, 131, '#3e2d35');
+    rect(ctx, 431, 94, 98, 99, '#182830');
+    rect(ctx, 443, 101, 74, 90, '#13252c');
+    rect(ctx, 451, 111, 58, 79, '#263a3a');
+    rect(ctx, 460, 119, 40, 72, '#354b44');
+    rect(ctx, 473, 123, 13, 69, '#65725633');
+    rect(ctx, 326, 88, 105, 104, '#742f37'); rect(ctx, 529, 88, 105, 104, '#742f37');
+    for (let i = 0; i < 7; i++) {
+      rect(ctx, 329 + i * 14, 91, 7, 101, i % 2 ? '#9b403d' : '#80323a');
+      rect(ctx, 531 + i * 14, 91, 7, 101, i % 2 ? '#80323a' : '#9b403d');
+      rect(ctx, 331 + i * 14, 185 + i % 2 * 2, 10, 7, C.gold);
+      rect(ctx, 531 + i * 14, 185 + i % 2 * 2, 10, 7, C.gold);
+    }
+    for (let i = 0; i < 4; i++) {
+      rect(ctx, 397 + i * 8, 111 + i * 18, 30 - i * 7, 22, '#672f39');
+      rect(ctx, 529 - i * 3, 111 + i * 18, 34 - i * 7, 22, '#672f39');
+    }
+    rect(ctx, 322, 82, 316, 19, '#6f3038');
+    for (let i = 0; i < 17; i++) {
+      rect(ctx, 325 + i * 18, 95, 15, 4 + (i % 2) * 3, C.red);
+      rect(ctx, 330 + i * 18, 100, 4, 3, C.gold);
+    }
+    rect(ctx, 303, 197, 354, 22, '#59403c'); rect(ctx, 306, 198, 348, 3, '#b08158');
+    for (let x = 309; x < 654; x += 25) {
+      rect(ctx, x, 202, 23, 11, '#6a4940'); rect(ctx, x + 2, 203, 19, 1, '#86614d');
+    }
+    rect(ctx, 302, 217, 356, 8, '#292c31'); rect(ctx, 434, 218, 92, 7, '#758078');
+    rect(ctx, 431, 225, 98, 7, '#3b5051'); rect(ctx, 425, 232, 110, 6, '#5c6b63');
+    rect(ctx, 420, 238, 120, 5, '#2a3c42');
+    pillar(ctx, 314, 78, 142); pillar(ctx, 646, 78, 142);
+    rect(ctx, 289, 72, 382, 13, '#60363a'); rect(ctx, 286, 68, 388, 6, C.gold);
+    // Pixel-step flying eaves.
+    rect(ctx, 305, 30, 350, 9, '#344850'); rect(ctx, 293, 38, 374, 8, '#3e5459');
+    rect(ctx, 280, 46, 400, 9, '#31454d'); rect(ctx, 266, 55, 428, 9, '#273c47');
+    rect(ctx, 255, 62, 450, 7, '#1c303d');
+    rect(ctx, 250, 58, 28, 8, '#476163'); rect(ctx, 245, 51, 13, 9, '#526b68');
+    rect(ctx, 241, 44, 8, 9, C.gold); rect(ctx, 682, 58, 28, 8, '#476163');
+    rect(ctx, 703, 51, 13, 9, '#526b68'); rect(ctx, 711, 44, 8, 9, C.gold);
+    for (let y = 35; y < 66; y += 8) {
+      const inset = (64 - y) * 1.5;
+      for (let x = 264 + inset; x < 698 - inset; x += 13) {
+        rect(ctx, x, y, 9, 2, '#657573'); rect(ctx, x + 7, y + 2, 2, 4, '#1a2a35');
+      }
+    }
+    rect(ctx, 402, 48, 156, 40, '#1d242c'); rect(ctx, 406, 51, 148, 34, C.gold);
+    rect(ctx, 409, 54, 142, 28, '#382a2e'); rect(ctx, 413, 58, 134, 20, '#4f3032');
+    text(ctx, '幽 冥 戏 班', 480, 68, C.lightGold, 17);
+    rect(ctx, 316, 104, 18, 92, '#442a30'); rect(ctx, 627, 104, 18, 92, '#442a30');
+    ['一','曲','未','了'].forEach((v, i) => text(ctx, v, 326, 119 + i * 20, '#c4a672', 11));
+    ['故','人','莫','归'].forEach((v, i) => text(ctx, v, 635, 119 + i * 20, '#c4a672', 11));
+    // Left changing room and an old opera manuscript.
+    rect(ctx, 186, 149, 107, 24, '#29383e'); roofTile(ctx, 181, 143, 116);
+    pillar(ctx, 192, 166, 52, '#304f52'); pillar(ctx, 288, 166, 52, '#304f52');
+    rect(ctx, 198, 168, 86, 28, '#5b4741'); rect(ctx, 194, 192, 94, 9, C.woodDark);
+    rect(ctx, 194, 174, 94, 5, '#9b7d58'); rect(ctx, 204, 198, 5, 24, C.wood); rect(ctx, 273, 198, 5, 24, C.wood);
+    rect(ctx, 218, 175, 40, 23, '#b9b69b'); rect(ctx, 220, 176, 16, 20, '#dad1b0');
+    rect(ctx, 240, 176, 16, 20, '#d2c6a5'); rect(ctx, 237, 176, 3, 20, '#8a876f');
+    for (let i = 0; i < 4; i++) {
+      rect(ctx, 223, 180 + i * 4, 10, 1, '#817e69'); rect(ctx, 244, 180 + i * 4, 9, 1, '#817e69');
+    }
+    rect(ctx, 261, 175, 7, 19, '#2e3c40'); rect(ctx, 258, 175, 13, 4, '#9e8e61');
+    text(ctx, '旧戏本 · 未完折子', 240, 158, '#c3bd98', 10);
+    // Right wing: the hanging masks, ribbons and costume cabinet.
+    rect(ctx, 743, 165, 114, 13, '#463437'); roofTile(ctx, 738, 158, 125);
+    rect(ctx, 749, 182, 7, 60, C.woodLight); rect(ctx, 845, 182, 7, 60, C.woodLight);
+    rect(ctx, 752, 180, 96, 6, C.gold); rect(ctx, 756, 192, 90, 43, '#222d33');
+    for (let i = 0; i < 3; i++) {
+      rect(ctx, 769 + i * 29, 186, 2, 10, '#9d916e');
+      mask(ctx, 770 + i * 29, 209, ['red', 'white', 'black'][i], 1.35);
+      rect(ctx, 768 + i * 29, 222, 4, 13, i === 1 ? '#b8b9a0' : C.deepRed);
+    }
+    rect(ctx, 743, 239, 115, 8, '#5b4240'); rect(ctx, 746, 245, 8, 16, '#3d3539'); rect(ctx, 846, 245, 8, 16, '#3d3539');
+    text(ctx, '借 一 张 面，唱 一 段 命', 800, 174, '#d0b789', 9);
+    // Ancient tree: angular branches and cold foliage.
+    steppedShadow(ctx, 113, 229, 120, 24);
+    rect(ctx, 101, 143, 19, 79, '#41403c'); rect(ctx, 108, 122, 17, 95, '#605447');
+    rect(ctx, 111, 146, 4, 66, '#8b7150'); rect(ctx, 100, 212, 37, 8, '#4d4e43');
+    line(ctx, 115, 155, 72, 120, '#5d5546', 8); line(ctx, 118, 151, 152, 104, '#5d5546', 9);
+    line(ctx, 108, 135, 102, 88, '#4b4d42', 8); line(ctx, 103, 106, 77, 88, '#4b4d42', 5);
+    const foliage = [[58,96,43,34],[78,71,43,42],[105,88,43,37],[132,84,34,43],[64,123,41,35],[119,118,45,37],[91,111,40,42]];
+    foliage.forEach((p, i) => {
+      rect(ctx, p[0] + 5, p[1], p[2] - 10, p[3], i % 2 ? '#324d4b' : '#2b4344');
+      rect(ctx, p[0], p[1] + 6, p[2], p[3] - 13, i % 2 ? '#355450' : '#304b48');
+      rect(ctx, p[0] + 7, p[1] + 5, p[2] - 20, 4, '#557065');
+    });
+    for (let i = 0; i < 25; i++) {
+      const x = 57 + random() * 110, y = 80 + random() * 75;
+      rect(ctx, x, y, 4, 3, '#69827655');
+    }
+    // Shrine beneath the tree, burning a cold guide flame.
+    rect(ctx, 89, 239, 42, 8, '#394c51'); rect(ctx, 96, 244, 28, 26, '#2b4048');
+    rect(ctx, 101, 251, 18, 20, '#5a746d'); rect(ctx, 105, 248, 10, 27, '#a4bd96');
+    rect(ctx, 88, 268, 44, 8, '#5d6c64'); rect(ctx, 82, 275, 56, 7, '#253e46');
+    // Ticket booth and paper charms.
+    steppedShadow(ctx, 156, 415, 133, 18);
+    rect(ctx, 96, 351, 109, 16, '#48363a'); roofTile(ctx, 90, 344, 121);
+    pillar(ctx, 103, 368, 43); pillar(ctx, 199, 368, 43);
+    rect(ctx, 107, 370, 88, 27, '#67453d'); rect(ctx, 109, 373, 84, 3, '#b18c5e');
+    rect(ctx, 112, 391, 78, 9, '#3f3035');
+    rect(ctx, 121, 374, 29, 18, '#bcb797'); rect(ctx, 124, 377, 22, 12, '#d4c7a1');
+    rect(ctx, 128, 380, 14, 2, '#8a7358'); rect(ctx, 161, 375, 14, 13, '#8b493c');
+    text(ctx, '请 对 号 入 座', 151, 359, C.lightGold, 10);
+    // Gong stand at the right, with a visible mallet and red cloth.
+    rect(ctx, 650, 378, 6, 40, '#735649'); rect(ctx, 745, 378, 6, 40, '#735649');
+    rect(ctx, 649, 376, 102, 7, C.gold); rect(ctx, 657, 386, 86, 3, '#bd925d');
+    rect(ctx, 693, 384, 3, 10, '#c1a275'); rect(ctx, 679, 392, 34, 33, '#735c45');
+    rect(ctx, 674, 398, 44, 21, '#a28455'); rect(ctx, 681, 393, 30, 31, '#bb9f65');
+    rect(ctx, 686, 398, 20, 21, '#d4b578'); rect(ctx, 690, 403, 12, 12, '#a78551');
+    rect(ctx, 692, 405, 8, 8, '#e3c98b'); rect(ctx, 677, 418, 38, 5, '#6f5846');
+    rect(ctx, 650, 416, 13, 6, '#3f4140'); rect(ctx, 738, 416, 13, 6, '#3f4140');
+    line(ctx, 731, 393, 744, 421, '#b09164', 3); rect(ctx, 728, 389, 9, 8, '#9a4840');
+    rect(ctx, 661, 389, 7, 32, '#843a3e');
+    // Audience rows leave the broad central aisle open.
+    [[357,309],[447,309],[537,309],[627,309],[357,370],[627,370]].forEach(p => chair(ctx, p[0], p[1], false));
+    chair(ctx, 474, 366, false);
+    rect(ctx, 461, 361, 26, 13, '#d2c4a1'); rect(ctx, 464, 364, 20, 1, '#9d8063');
+    rect(ctx, 466, 367, 16, 1, '#9d8063'); text(ctx, '客', 474, 368, '#764d41', 9);
+    // Red side rugs and small backstage piles.
+    for (const x of [62, 854]) {
+      rect(ctx, x, 318, 37, 103, '#4f3439'); rect(ctx, x + 3, 321, 31, 97, '#6a3b3e');
+      for (let y = 326; y < 415; y += 14) rect(ctx, x + 7, y, 23, 2, '#a76a4866');
+      rect(ctx, x + 4, 319, 29, 2, C.gold); rect(ctx, x + 4, 419, 29, 2, C.gold);
+    }
+    [[270,469],[793,487],[212,304],[845,332]].forEach((p, index) => {
+      steppedShadow(ctx, p[0] + 3, p[1] + 7, 32, 13);
+      rect(ctx, p[0] - 13, p[1] - 16, 26, 25, '#51413b'); rect(ctx, p[0] - 10, p[1] - 13, 20, 19, '#725545');
+      rect(ctx, p[0] - 15, p[1] - 18, 30, 4, '#997650'); rect(ctx, p[0] - 3, p[1] - 15, 4, 23, '#b79b6b');
+      rect(ctx, p[0] - 12, p[1] - 2, 24, 3, '#3c3435');
+      if (index % 2 === 0) rect(ctx, p[0] - 9, p[1] - 25, 17, 8, '#baae89');
+    });
+    // Fallen leaves, folded paper money and tiny cracks.
+    for (let i = 0; i < 150; i++) {
+      const x = 42 + random() * 876, y = 110 + random() * 435;
+      if (x > 303 && x < 659 && y < 245) continue;
+      const paper = i % 6 === 0;
+      rect(ctx, x, y, paper ? 6 : 3, paper ? 4 : 2, paper ? '#b6ad8877' : '#8c816155');
+      if (paper) rect(ctx, x + 2, y + 1, 2, 2, '#5b5b4988');
+      if (i % 13 === 0) { rect(ctx, x + 3, y + 7, 15, 1, '#172932'); rect(ctx, x + 15, y + 8, 5, 1, '#172932'); }
+    }
+    // Entry gateway, a subdued route back to the unknown.
+    rect(ctx, 423, 542, 8, 40, '#69524a'); rect(ctx, 529, 542, 8, 40, '#69524a');
+    rect(ctx, 417, 537, 126, 8, '#33474d'); rect(ctx, 431, 545, 98, 16, '#28383e');
+    text(ctx, '子 时 · 戏 院 入 口', 480, 554, '#b09f7b', 9);
+  }
+
+  class OperaRenderer {
+    constructor(canvas, nodes, solids) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+      this.ctx.imageSmoothingEnabled = false;
+      this.nodes = nodes || [];
+      this.solids = solids || [];
+      this.background = document.createElement('canvas');
+      this.background.width = 960; this.background.height = 600;
+      const ctx = this.background.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      makeBackground(ctx);
+      this.reducedMotion = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    label(ctx, node, active, state) {
+      const gone = node.id === 'ticket' && state.flags && state.flags.ticket;
+      const name = node.id === 'exit' && !state.ending ? '幕后之门 · 封' : node.name;
+      const w = Math.max(48, name.length * 11 + 20);
+      const y = node.y + (node.id === 'exit' ? 8 : 16);
+      rect(ctx, node.x - w / 2 - 1, y - 8, w + 2, 20, active ? '#b69b64' : '#52646299');
+      rect(ctx, node.x - w / 2, y - 7, w, 18, active ? '#d3c9a6' : '#192b33df');
+      rect(ctx, node.x - w / 2 + 3, y - 5, 2, 14, active ? '#8b4c41' : '#9b835e');
+      text(ctx, name, node.x + 2, y + 2, active ? '#283d42' : gone ? '#92a39b' : '#d7c9a6', 10);
+    }
+
+    render(state, nowMs, target, nearestId) {
+      const ctx = this.ctx;
+      const time = this.reducedMotion ? 0 : (Number(nowMs) || 0) / 1000;
+      const flags = state.flags || {};
+      const player = state.player || { x: 480, y: 525, dir: 'down', moving: false };
+      ctx.clearRect(0, 0, 960, 600);
+      ctx.drawImage(this.background, 0, 0);
+
+      // A few low, stepped patches of fog never obscure the walkable central aisle.
+      for (let i = 0; i < 6; i++) {
+        const x = (time * (3 + i % 3) + i * 187) % 1220 - 160;
+        const y = 115 + i * 69 + Math.round(Math.sin(time * .2 + i) * 5);
+        rect(ctx, x + 15, y, 104, 5, '#8aafa611');
+        rect(ctx, x, y + 5, 165, 5, '#8aafa60d');
+        rect(ctx, x + 35, y + 10, 114, 3, '#8aafa60a');
+      }
+
+      // Square light pools give lanterns a warm falloff without smoothing the art.
+      const lamps = [[284,113,1.25],[676,113,1.25],[53,295,.9],[905,295,.9],[221,464,.9],[811,463,.9]];
+      lamps.forEach((p, i) => {
+        squareGlow(ctx, p[0], p[1] + 13, 55, '#d87341');
+        lantern(ctx, p[0], p[1], p[2], time * .8 + i);
+      });
+      line(ctx, 45, 246, 187, 243, '#68756a', 1);
+      line(ctx, 775, 243, 911, 247, '#68756a', 1);
+      lantern(ctx, 110, 240, 1.05, time * .65, true);
+      if (flags.lantern) {
+        squareGlow(ctx, 110, 274, 57, '#bad7a4');
+        rect(ctx, 106, 252, 10, 15, '#afcfa5'); rect(ctx, 109, 245 + Math.round(Math.sin(time * 2) * 2), 4, 17, '#d9e7b6');
+      }
+
+      // The waiting audience grows clearer as the three acts proceed.
+      const act = Number(state.act) || 0;
+      const guests = [[357,309],[447,309],[537,309],[627,309],[357,370],[627,370]];
+      guests.forEach((p, i) => chair(ctx, p[0], p[1], i < 3 + act, time * .7 + i));
+      chair(ctx, 474, 366, !!flags.seat, time * .8, 'front');
+      if (!flags.seat) {
+        rect(ctx, 464, 360, 21, 12, '#c2baa0'); text(ctx, '客', 474, 366, '#7f5948', 10);
+      }
+
+      // A singer remains on the boards; white sleeves sway in the quiet air.
+      person(ctx, 480 + Math.round(Math.sin(time * .4) * 3), 188, 'actor', 'down', 0, time * 1.2);
+      if (state.maskSolved) {
+        [0, 1, 2].forEach((i) => {
+          rect(ctx, 424 + i * 54, 92, 3, 6, '#d4c698');
+          mask(ctx, 425 + i * 54, 104, ['red', 'white', 'black'][i], .8);
+        });
+      }
+      if (state.gongSolved) {
+        rect(ctx, 686, 403, 20, 11, '#efcf88');
+        const pulse = Math.floor(time * 2) % 3;
+        for (let i = 0; i < 3; i++) rect(ctx, 723 + i * 5, 398 - i * 3, 2, 8 + (i + pulse) % 3 * 2, '#dbc28277');
+      }
+      // Scroll readability and a tiny guiding mote reward inspection.
+      if (flags.script || state.learned) {
+        rect(ctx, 219, 176, 38, 20, '#d8d2af');
+        rect(ctx, 236, 176, 2, 20, '#837d62');
+        for (let i = 0; i < 4; i++) rect(ctx, 223, 180 + i * 4, 9, 1, '#7b7760');
+        squareGlow(ctx, 240, 195, 30, '#d0cf98');
+      }
+
+      const people = [{ x: 160, y: 435, type: 'paper', dir: 'down', stride: 0 }];
+      people.push({ x: player.x, y: player.y, type: 'player', dir: player.dir, stride: player.moving ? (Math.sin(time * 15) > 0 ? 3 : -3) : 0 });
+      people.sort((a, b) => a.y - b.y).forEach(p => person(ctx, p.x, p.y, p.type, p.dir, p.stride));
+
+      // The player's travelling lamp makes them immediately identifiable in the night.
+      const px = player.x + 19, py = player.y - 18;
+      if (flags.lantern) {
+        squareGlow(ctx, player.x, player.y - 11, 47, '#a8d3ac');
+        rect(ctx, px - 2, py - 3, 7, 10, '#8ea990'); rect(ctx, px, py - 2, 3, 7, '#e2dfb4');
+      }
+      rect(ctx, player.x - 5, player.y - 57, 10, 2, '#d6c38c');
+      rect(ctx, player.x - 3, player.y - 55, 6, 2, '#d6c38c');
+      rect(ctx, player.x - 1, player.y - 53, 2, 2, '#d6c38c');
+
+      if (target && Number.isFinite(target.x) && Number.isFinite(target.y)) {
+        const s = 8 + (Math.sin(time * 4) > 0 ? 2 : 0), x = Math.round(target.x), y = Math.round(target.y);
+        rect(ctx, x - s, y - s, 6, 2, C.lightGold); rect(ctx, x - s, y - s, 2, 6, C.lightGold);
+        rect(ctx, x + s - 4, y - s, 6, 2, C.lightGold); rect(ctx, x + s, y - s, 2, 6, C.lightGold);
+        rect(ctx, x - s, y + s, 6, 2, C.lightGold); rect(ctx, x - s, y + s - 4, 2, 6, C.lightGold);
+        rect(ctx, x + s - 4, y + s, 6, 2, C.lightGold); rect(ctx, x + s, y + s - 4, 2, 6, C.lightGold);
+      }
+
+      if (state.ending || flags.performed) {
+        squareGlow(ctx, 480, 133, 150, '#a0c297');
+        rect(ctx, 458, 105, 45, 86, '#759a8188'); rect(ctx, 468, 112, 25, 79, '#bdd0a255');
+        for (let i = 0; i < 10; i++) {
+          const yy = 188 - (time * 12 + i * 17) % 96;
+          rect(ctx, 457 + i % 4 * 14, yy, 2, 4, '#d9ddb4');
+        }
+      }
+
+      this.nodes.forEach(node => this.label(ctx, node, node.id === nearestId, state));
+      if (nearestId) {
+        const node = this.nodes.find(n => n.id === nearestId);
+        if (node) {
+          const y = node.y - (node.kind === 'npc' ? 60 : 32);
+          rect(ctx, node.x - 8, y, 16, 13, '#d9cfac'); rect(ctx, node.x - 2, y + 12, 4, 3, '#d9cfac');
+          text(ctx, '···', node.x, y + 5, '#4c6262', 11);
+        }
+      }
+
+      // Paper fragments and fireflies move sparingly; the important geometry stays clear.
+      for (let i = 0; i < 16; i++) {
+        const x = (i * 137 + time * (4 + i % 3)) % 1000 - 20;
+        const y = 113 + i * 83 % 417 + Math.sin(time * .45 + i) * 9;
+        if (i % 3) rect(ctx, x, y, 2, 2, '#b6c5a655');
+        else { rect(ctx, x, y, 5, 3, '#d7c7a066'); rect(ctx, x + 2, y + 1, 1, 1, '#8e7f6a'); }
+      }
+      // Mild, stepped edge shading maintains the hand-pixelled look.
+      rect(ctx, 0, 0, 960, 6, '#0b1726aa'); rect(ctx, 0, 0, 8, 600, '#0b172666');
+      rect(ctx, 952, 0, 8, 600, '#0b172666'); rect(ctx, 0, 591, 960, 9, '#0b172688');
+    }
+  }
+
+  global.OperaRenderer = OperaRenderer;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script><script>/* 当前示范链：废土集市（第1关）→ 幽冥戏班（第2关）。世界签06并非关序。 */
+var CONFIG = {
+  level: 2,
+  world: '幽冥戏班',
+  prevWorld: '废土集市',
+  nextWorld: '待接线世界',
+  nextUrl: '../dev-tools/virtual-downstream.html',
+  passViaUrl: true
+};
+
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = WL.escapeHtml;
+  var model = OperaModel;
+  var canvas = $('game-canvas');
+  var renderer = new OperaRenderer(canvas, model.nodes, model.solids);
+  var entry = WL.readSave(CONFIG.level), fingerprint = WL.encodeCode(entry);
+  var sessionKey = 'ghost_opera_session_v1';
+  var state, save, echo, logs = [], finished = false, paused = false;
+  var keys = {}, path = [], target = null, pendingNode = null, near = null;
+  var lastTime = 0, saveTimer = 0, toastTimer = 0, currentEntity = null;
+  var soundOn = false, audioContext = null, lastFootstep = 0, demoTimer = null;
+  var maskNames = { white: '白面', red: '红面', black: '黑面' };
+  var maskColors = { white: '#d7cda4', red: '#ae4c43', black: '#759196' };
+  var beatNames = { drum: '鼓', gong: '锣', bell: '铃' };
+
+  function freshState() {
+    save = WL.normalize(JSON.parse(JSON.stringify(entry)), CONFIG.level);
+    var light = WL.consumeAny(save.items, 'light');
+    state = model.create(save, !!light);
+    echo = light ? '你举起从「' + (entry.prev_world || '上个世界') + '」带来的「' + light.name + '」。它在院门前化作一盏青灯，替你守住一分清明。理智 +1。' : '手边没有照明物。守门纸人替你点亮一盏纸灯：「拿稳了。这里的人，认灯不认脸。」没有旧物，也能走完这出戏。';
+    if (entry.prev_world === '废土集市') echo = '电台里的戏腔已经近在耳边，门后的红灯笼一盏盏亮起。' + echo + ' 纸人朝你作揖：「锈风来的客，今夜的替班位给你留着。」';
+    if (!entry.player.hp || !entry.player.sanity) echo += ' 灯火托住你摇摇欲坠的神思，将不足 1 的面板恢复到 1。';
+    logs = [{ time: '23:00', text: '锣响三更，抵达梨园旧院。先去西南找守门纸人。' }];
+  }
+
+  function initialize() {
+    freshState();
+    try {
+      var stored = JSON.parse(localStorage.getItem(sessionKey) || 'null');
+      if (stored && stored.v === 1 && stored.fingerprint === fingerprint && stored.state && stored.state.player && stored.state.flags && Array.isArray(stored.state.casting) && Array.isArray(stored.state.masksCollected) && Array.isArray(stored.state.rhythm) && Array.isArray(stored.logs) && !stored.finished) {
+        state = stored.state; state.player.moving = false;
+        save = WL.normalize(stored.relay, CONFIG.level); logs = stored.logs; echo = stored.echo || echo;
+      }
+    } catch (e) { /* 无本地存储时可完整游玩，并使用 URL 接力。 */ }
+    $('opening-strip').innerHTML = WL.renderOpening(entry);
+    $('echo-log').textContent = echo;
+    $('entry-echo').textContent = (entry.exit_hook ? '「' + entry.exit_hook + '」\n\n' : '') + echo;
+    $('intro-note').hidden = state.started;
+    WL.mountDebug(save); $('debug-reset').onclick = confirmRestart;
+    renderUI();
+    if (state.lost) showLost();
+    else if (state.ending) showEnding();
+    else if (state.performed) showCurtain();
+  }
+
+  function clockText() {
+    var minutes = 23 * 60 + Math.floor(state.elapsed / 8);
+    return String(Math.floor(minutes / 60) % 24).padStart(2, '0') + ':' + String(minutes % 60).padStart(2, '0');
+  }
+
+  function persist() {
+    if (finished) return;
+    WL.setPlayer(save, { hp: state.hp, sanity: state.sanity });
+    try {
+      localStorage.setItem(sessionKey, JSON.stringify({ v: 1, fingerprint: fingerprint, state: state, relay: save, echo: echo, logs: logs, finished: false }));
+      $('save-status').innerHTML = '<i></i> 前尘自动记下';
+    } catch (e) { $('save-status').textContent = '当前浏览器未开放本地存储'; }
+  }
+
+  function addLog(message) { logs.unshift({ time: clockText(), text: message }); logs = logs.slice(0, 20); renderUI(); }
+  function toast(message) {
+    $('toast').textContent = message; $('toast').hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { $('toast').hidden = true; }, 3400);
+  }
+
+  function maskIcon(color) { return '<i class="mini-mask" style="--mask-color:' + maskColors[color] + '" aria-hidden="true"></i>'; }
+
+  function renderUI() {
+    $('hp').textContent = '♥ '.repeat(Math.min(state.hp, 8)) + '♡ '.repeat(Math.max(0, 3 - state.hp));
+    $('hp').setAttribute('aria-label', '生命 ' + state.hp);
+    $('sanity').textContent = '理智 ' + state.sanity;
+    $('clock').textContent = clockText();
+    $('weather-text').textContent = state.performed ? '夜戏将散' : state.gongSolved ? '雾 · 锣声已定' : '阴 · 有客来';
+    $('act-label').textContent = ['候场', '寻谱', '正面', '鸣锣', '落幕'][state.act] || '候场';
+    $('chapter-dots').innerHTML = Array.from({ length: 4 }, function (_, i) { return '<i class="' + (state.act > i ? 'done' : '') + '"></i>'; }).join('');
+    var tasks = [
+      { done: state.learned, name: '读懂旧戏本', hint: '西北角 · 旧戏本' },
+      { done: state.maskSolved, name: '让三张脸谱归真', hint: '东侧脸谱架 · 依据戏本分配' },
+      { done: state.gongSolved, name: '敲响四拍送魂锣', hint: '东南铜锣 · 按戏本记下的顺序' }
+    ];
+    $('objectives').innerHTML = tasks.map(function (t) { return '<div class="objective ' + (t.done ? 'complete' : '') + '" title="' + t.hint + '"><span class="check">' + (t.done ? '✓' : '') + '</span><span>' + t.name + '</span><span class="objective-count">' + (t.done ? '1' : '0') + '/1</span></div>'; }).join('');
+    var bag = [];
+    if (state.flags.ticket) bag.push({ name: '冥戏票', html: '▤' });
+    if (state.learned) bag.push({ name: '《归客》残卷', html: '冊' });
+    state.masksCollected.forEach(function (m) { bag.push({ name: maskNames[m] + (state.maskSolved ? ' · 已归位' : ' · 待归位'), html: maskIcon(m) }); });
+    $('bag-count').textContent = bag.length + ' 件';
+    $('bag-grid').innerHTML = Array.from({ length: 5 }, function (_, i) { var item = bag[i]; return '<div class="bag-slot ' + (item ? 'filled' : '') + '" title="' + esc(item ? item.name : '空位') + '" aria-label="' + esc(item ? item.name : '空位') + '">' + (item ? item.html : '·') + (item ? '<span>1</span>' : '') + '</div>'; }).join('');
+    $('bag-caption').textContent = state.performed ? '帷幕将落。去幕后之门，道一声告别。' : save.items.length ? '上家遗物 ' + save.items.length + ' 件，见「前尘回响」。' : state.flags.seat ? '空座已留给客人。你记住了规矩。' : '借来的脸，记得还。';
+    $('activity-log').innerHTML = logs.slice(0, 3).map(function (l) { return '<div class="log-entry"><time>' + esc(l.time) + '</time><span>' + esc(l.text) + '</span></div>'; }).join('');
+    WL.setPlayer(save, { hp: state.hp, sanity: state.sanity });
+    $('card-preview').innerHTML = WL.renderSaveCard(save, CONFIG.level, CONFIG.world);
+    $('debug-json').textContent = WL.debug.json(save);
+  }
+
+  function stopDemo() { if (demoTimer) clearInterval(demoTimer); demoTimer = null; }
+  function closeDialog() { stopDemo(); $('game-dialog').close(); currentEntity = null; keys = {}; canvas.focus({ preventScroll: true }); }
+  function openDialog(kicker, title, body, choices) {
+    stopDemo(); keys = {}; path = []; target = null; pendingNode = null; state.player.moving = false;
+    $('dialog-kicker').textContent = kicker;
+    $('dialog-body').innerHTML = '<h2 id="dialog-title">' + esc(title) + '</h2>' + body;
+    $('dialog-actions').innerHTML = '';
+    (choices || []).forEach(function (choice) {
+      var button = document.createElement('button');
+      button.className = 'action-button' + (choice.featured ? ' featured' : '') + (choice.danger ? ' danger' : '');
+      button.innerHTML = '<span>' + esc(choice.label) + '</span>' + (choice.hint ? '<small>' + esc(choice.hint) + '</small>' : '');
+      button.disabled = !!choice.disabled;
+      if (choice.id) button.dataset.action = choice.id;
+      button.onclick = choice.onClick || function () {
+        var id = currentEntity, result = doAction(choice.id);
+        if (!result.ok || state.lost) return;
+        if (choice.id === 'perform') { showCurtain(); return; }
+        if (id) openEntity(id);
+      };
+      $('dialog-actions').appendChild(button);
+    });
+    if (!$('game-dialog').open) $('game-dialog').showModal();
+  }
+
+  function doAction(id) {
+    if (finished) return { ok: false };
+    var result = model.action(state, id);
+    if (result.ok) {
+      if (result.kind === 'mistake') state.flags.mistakes = (state.flags.mistakes || 0) + 1;
+      if (!/^assign_|^beat_|^clear_rhythm/.test(id)) addLog(result.message);
+      if (/^beat_/.test(id)) tone(id.slice(5)); else if (result.kind === 'mistake') tone('wrong'); else if (!/^assign_|^clear_/.test(id)) tone('clue');
+      if (id === 'read_script' && state.learned) WL.addClue(save, '《归客》戏本：白面藏言、红面守誓、黑面断是非；送魂四拍为鼓、锣、铃、锣。');
+      if (id === 'respect_seat') WL.addClue(save, '梨园旧院的空座有人预留；活人让座，亡客方能入场。');
+    }
+    if (!/^assign_|^beat_|^clear_rhythm/.test(id)) toast(result.message || '此刻还不能这样做。');
+    renderUI(); persist();
+    if (state.lost) showLost();
+    return result;
+  }
+
+  function scriptBody() {
+    return '<div class="script-page"><p>三位旧角，一人藏言，一人守誓，一人断是非。</p><p><strong>白面藏言，红面守誓，黑面断是非。</strong></p><p>从左至右：<strong>藏言者 · 守誓者 · 断是非者</strong>。脸借错了，戏魂就认不出自己。</p><p>客到台下，留一空座。四拍送魂，方可登台。</p><div class="beat-note">鼓 → 锣 → 铃 → 锣</div><p>灯不灭，人不回头。待《归客》唱罢，幕后的门，自会打开。</p></div>';
+  }
+
+  function openBook() {
+    currentEntity = 'script';
+    openDialog('旧戏本 / 残卷其一', '纸上的字，正在等你读完。', '<p class="character-quote">「人会忘记自己是谁，戏不会。」</p>' + scriptBody(), [{ label: '记下这几行，合上戏本', featured: true, onClick: closeDialog }]);
+    currentEntity = 'script';
+  }
+
+  function openMasks() {
+    currentEntity = 'masks';
+    if (!state.flags.ticket) {
+      openDialog('后台 / 脸谱架', '无票者，不碰戏中脸。', '<p>三张脸谱同时转向你。架后的声音很轻：「先去西南，领一张冥戏票。戏班不收无名的客。」</p>', [{ label: '去找守门纸人', onClick: closeDialog }]); return;
+    }
+    if (!state.masksCollected.length) {
+      openDialog('后台 / 三张借来的脸', '脸谱认人，也认错人。', '<p class="character-quote">「拿走可以，别把自己当成他们。」</p><p>红、白、黑三张脸谱各有一位旧主。西北角的戏本记着他们的身份。</p><div class="mask-legend"><span>' + maskIcon('white') + '白面</span><span>' + maskIcon('red') + '红面</span><span>' + maskIcon('black') + '黑面</span></div>', [{ id: 'take_masks', label: '接过三张脸谱', hint: '收进旧物', featured: true }, { label: '先不碰它们', onClick: closeDialog }]); currentEntity = 'masks'; return;
+    }
+    if (state.maskSolved) {
+      openDialog('脸谱归真 / 第二折', '三位戏魂，终于想起了名字。', '<p>白面低笑，红面作揖，黑面拂袖。架上的三张脸不再朝你转动。</p><p class="character-quote">「还差一段送魂的锣鼓。去东南角吧，别把拍子敲错。」</p>', [{ label: '记住了，去敲送魂锣', featured: true, onClick: closeDialog }]); return;
+    }
+    var roles = ['藏言者', '守誓者', '断是非者'];
+    var body = '<p>为三位戏魂归还原本的脸。点击每位角色下的脸谱；同一张脸会交换位置。</p>' + (!state.learned ? '<p class="dialog-small">还未读过戏本。可先去西北角寻找身份线索。</p>' : '<p class="dialog-small">戏本记着：白面藏言，红面守誓，黑面断是非。</p>');
+    body += '<div class="casting-board">' + roles.map(function (role, i) {
+      return '<div class="casting-slot"><b>' + role + '</b><div class="big-mask" aria-label="' + role + '：' + (state.casting[i] ? maskNames[state.casting[i]] : '未选择') + '">' + (state.casting[i] ? maskIcon(state.casting[i]) : '？') + '</div><div class="mask-options">' + ['white', 'red', 'black'].map(function (color) { return '<button class="mask-choice ' + (state.casting[i] === color ? 'selected' : '') + '" data-mask-slot="' + i + '" data-mask-color="' + color + '" aria-label="给' + role + '选择' + maskNames[color] + '">' + maskIcon(color) + '</button>'; }).join('') + '</div></div>';
+    }).join('') + '</div>';
+    openDialog('归还脸谱 / 不是每张脸都属于你', '借来的脸，归给何人？', body, [
+      { id: 'check_masks', label: '请三位戏魂认回自己', hint: '答错理智 −1', disabled: !state.learned || state.casting.some(function (m) { return !m; }), featured: true },
+      { label: state.learned ? '再看一眼戏本' : '先去找戏本', onClick: state.learned ? openBook : closeDialog },
+      { label: '暂时离开脸谱架', onClick: closeDialog }
+    ]);
+    currentEntity = 'masks';
+    $('dialog-body').querySelectorAll('[data-mask-slot]').forEach(function (button) {
+      button.onclick = function () { var result = doAction('assign_' + button.dataset.maskSlot + '_' + button.dataset.maskColor); if (result.ok) openMasks(); };
+    });
+  }
+
+  function openGong() {
+    currentEntity = 'gong';
+    if (!state.maskSolved) { openDialog('东南角 / 铜锣', '先正其面，才闻其声。', '<p>铜锣蒙着一层雾。三张脸还没有找到自己的主人，此时敲下去，只会惊动台下的客。</p><p>先翻阅戏本，再到东侧脸谱架让三张脸谱归位。</p>', [{ label: '暂且收起鼓槌', onClick: closeDialog }]); return; }
+    if (state.gongSolved) { openDialog('送魂四拍 / 第三折', '最后一声锣，落在了人间。', '<p>鼓、锣、铃、锣。声响一停，台下的雾轻了许多。</p><p class="character-quote">「若给客人留好了空位，就去北面的戏台，把《归客》唱完。」</p>', [{ label: '去唱最后一折', featured: true, onClick: closeDialog }]); return; }
+    var body = '<p>照戏本留下的顺序，敲出四拍送魂声。无需抢拍，依次点击即可。</p><div class="rhythm-row">' + Array.from({ length: 4 }, function (_, i) { return '<div class="rhythm-step ' + (state.rhythm[i] ? 'filled' : '') + '" data-beat-index="' + i + '">' + (state.rhythm[i] ? beatNames[state.rhythm[i]] : '·') + '</div>'; }).join('') + '</div><div class="rhythm-buttons">' + ['drum', 'gong', 'bell'].map(function (beat) { return '<button data-beat="' + beat + '" aria-label="敲' + beatNames[beat] + '" ' + (state.rhythm.length >= 4 ? 'disabled' : '') + '>' + beatNames[beat] + '<small>' + beat.toUpperCase() + '</small></button>'; }).join('') + '</div><p class="dialog-small">戏本提示：鼓 → 锣 → 铃 → 锣。四拍敲完后再确认。</p>';
+    openDialog('送魂锣 / 声起有序，声落有归', '用四声，送他们上路。', body, [
+      { id: 'check_rhythm', label: '让这一段锣鼓落定', hint: '答错理智 −1', disabled: state.rhythm.length !== 4, featured: true },
+      { label: '看一次送魂四拍', hint: '示范，不计失误', onClick: showBeatDemo },
+      { id: 'clear_rhythm', label: '清空这四拍，重新敲', disabled: !state.rhythm.length },
+      { label: '收起鼓槌，稍后再来', onClick: closeDialog }
+    ]);
+    currentEntity = 'gong';
+    $('dialog-body').querySelectorAll('[data-beat]').forEach(function (button) { button.onclick = function () { var result = doAction('beat_' + button.dataset.beat); if (result.ok) openGong(); }; });
+  }
+
+  function showBeatDemo() {
+    stopDemo();
+    var pattern = ['drum', 'gong', 'bell', 'gong'], index = 0;
+    var slots = $('dialog-body').querySelectorAll('[data-beat-index]');
+    $('dialog-actions').querySelectorAll('button').forEach(function (b) { b.disabled = true; });
+    function nextBeat() {
+      slots.forEach(function (slot) { slot.classList.remove('flash'); });
+      if (index >= 4) { stopDemo(); openGong(); return; }
+      slots[index].textContent = beatNames[pattern[index]]; slots[index].classList.add('flash'); tone(pattern[index]); index++;
+    }
+    nextBeat(); demoTimer = setInterval(nextBeat, 650);
+  }
+
+  function openEntity(id) {
+    var node = model.nodes.find(function (n) { return n.id === id; });
+    if (!node || !state.started || state.lost || finished) return;
+    currentEntity = id;
+    if (id === 'ticket') {
+      openDialog('守门纸人 / 不问来路，只问归处', state.flags.ticket ? '票在手里，别忘了规矩。' : '客官，借一出戏给你走。', '<p class="character-quote">「戏班今夜缺一个替班人。你替他们唱完《归客》，他们替你开一扇门。」</p><p>壹，空位有人，生人莫坐。贰，借来的脸，必须认回旧主。叁，四拍送魂，落幕不回头。</p><p class="dialog-small">西北角有旧戏本，东边有脸谱与铜锣。若神思恍惚，就去引魂灯旁缓一缓。</p>', [
+        { id: 'ticket', label: state.flags.ticket ? '冥戏票已领，今夜有你一席' : '接过冥戏票', hint: '记下戏班规矩', disabled: state.flags.ticket, featured: !state.flags.ticket },
+        { label: '提灯，继续入院', onClick: closeDialog }
+      ]);
+    } else if (id === 'script') {
+      if (!state.learned) doAction('read_script');
+      openBook();
+    } else if (id === 'masks') { openMasks(); }
+    else if (id === 'gong') { openGong(); }
+    else if (id === 'seat') {
+      openDialog('台下 / 一张空着的椅子', state.flags.seat ? '空位有客，轮不到你。' : '人都坐满了，偏留这一席。', '<p class="character-quote">「那位客人还在路上。你站着看一会儿，可好？」</p><p>椅子干干净净，椅脚旁放着一双旧布鞋。守门纸人的话又在耳边响起：空位有人，生人莫坐。</p>', [
+        { id: 'respect_seat', label: state.flags.seat ? '已给亡客留座' : '退到一旁，把位置留给客人', hint: '守住第一条规矩', disabled: state.flags.seat, featured: !state.flags.seat },
+        { id: 'sit_seat', label: '试着在空椅子上坐下', hint: '违背规矩 · 生命 −1', disabled: state.flags.seatWarning || state.flags.seat, danger: true },
+        { label: '离开空座', onClick: closeDialog }
+      ]);
+    } else if (id === 'lantern') {
+      openDialog('引魂灯 / 无论你从哪场梦里来', '看着灯，还记得自己是谁吗？', '<p>青色的火苗没有温度，却能照见你的影子。远处的戏声轻了下来，你终于听见自己的呼吸。</p><p>在灯下找回 1 点理智。若在谜题中迷了心神，也能循着这盏灯回来，保留已经完成的进度。</p>', [
+        { id: 'relight', label: '定神，拨亮这盏灯', hint: '理智 +1', disabled: state.sanity >= state.maxSanity, featured: state.sanity < state.maxSanity },
+        { label: '记住灯的位置，继续入戏', onClick: closeDialog }
+      ]);
+    } else if (id === 'stage') {
+      if (state.performed) { showCurtain(); return; }
+      var ready = state.flags.ticket && state.learned && state.maskSolved && state.gongSolved && state.flags.seat;
+      openDialog('梨园旧台 / 最后一折', ready ? '台下已满，等你一句开场。' : '这出戏，还有未了的规矩。', '<p class="character-quote">「一生只唱一出戏，一出戏里是一生。客官，替我们把最后一句唱完。」</p><p>' + (ready ? '脸谱归真，四拍送魂，空座也等来了它的客人。现在，你可以站到灯下，唱出《归客》的最后一句。' : '登台之前，需要冥戏票、读过戏本、归还三张脸谱、敲对四拍送魂声，并为台下亡客留下空座。') + '</p>' + (!state.flags.seat ? '<p class="dialog-small">还没有给客人让座：看看院子中央那张空椅子。</p>' : ''), [
+        { id: 'perform', label: ready ? '登台，唱完《归客》' : '尚有规矩未守，暂不能登台', hint: ready ? '开启落幕' : '查看入戏手札', disabled: !ready, featured: ready },
+        { label: '回院中，再走一走', onClick: closeDialog }
+      ]);
+    } else if (id === 'exit') {
+      if (state.performed) { showEnding(); return; }
+      openDialog('幕后之门 / 门不认来人', '戏未唱完，门不会开。', '<p>你推了推那扇门。门后有风，却没有路。</p><p class="character-quote">「等《归客》唱完，我们才有各自的归处。」</p>', [{ label: '转身回到戏院', onClick: closeDialog }]);
+    }
+    if (['masks', 'gong', 'script'].indexOf(id) === -1) currentEntity = id;
+  }
+
+  function showCurtain() {
+    tone('win');
+    openDialog('第四折 / 戏终，人未散', '最后一句，唱给了谁听？', '<p class="character-quote">「归来吧，归来吧。生者循灯，逝者随风。」</p><p>你的声音落下，满院的观众同时起身。没有掌声，只有衣袂轻轻擦过椅背的声音。</p><p>北面的帷幕后，一扇门缓缓打开。有人在门边等你作最后一个选择。</p>', [
+      { label: '走向幕后的门', hint: '自动前往', featured: true, onClick: function () { closeDialog(); navigateTo(model.nodes.find(function (n) { return n.id === 'exit'; }), 'exit'); } },
+      { label: '再看一眼落幕的戏院', onClick: closeDialog }
+    ]);
+  }
+
+  function showEnding() {
+    if (!state.ending) {
+      openDialog('幕后之门 / 还一张脸，留一段戏', '帷幕后，只剩你和班主。', '<p class="character-quote">「客官，好戏唱完了。你是还脸离场，还是替我们把这戏继续唱下去？」</p><p>你可以把脸谱交还旧主，送戏魂归去；也可以收下班主的黑面，带着戏班未尽的故事走进下一世界。</p>', [
+        { label: '还脸辞戏，提灯送客', hint: '归客结局', featured: true, onClick: function () { if (doAction('ending_release').ok) showEnding(); } },
+        { label: '收下黑面，接过班主的戏本', hint: '传灯结局 · 理智 −1', onClick: function () { if (doAction('ending_inherit').ok) showEnding(); } }
+      ]); return;
+    }
+    var release = state.ending === 'release';
+    openDialog('一折已终 / ' + (release ? 'THE RETURNING GUEST' : 'THE KEEPER OF THE PLAY'), release ? '戏散了，他们终于回家。' : '从今夜起，你也是戏中人。', '<p>' + (release ? '三张脸谱在台前轻轻一碰，化作纸灰。班主将出戏票递来，青灯照亮你的路。你没有回头，身后的锣声也没有再响。' : '黑面贴近掌心，戏本翻开新的一页，上面写着你的名字。灯火并未熄灭，只是从班主手中，传到了你的手中。') + '</p><div class="result-stats"><div><b>' + (release ? '归客' : '传灯') + '</b><span>此夜结局</span></div><div><b>' + (state.flags.mistakes || 0) + '</b><span>入戏失误</span></div><div><b>' + Math.floor(state.elapsed / 60) + ':' + String(Math.floor(state.elapsed % 60)).padStart(2, '0') + '</b><span>此折用时</span></div></div><p>你的道具、线索和面板会通过主办方接力协议，真实传入下一世界。</p>', [
+      { label: '封存这一折，进入下一世界', hint: '接力交接 →', featured: true, onClick: finish },
+      { label: '暂留片刻', onClick: closeDialog }
+    ]); persist();
+  }
+
+  function finish() {
+    if (finished || !state.performed || !state.ending) return;
+    if (!state.flags.rewards) {
+      if (state.ending === 'release') {
+        WL.addItem(save, { id: 'farewell_ticket', name: '梨园出戏票', type: 'key' });
+        WL.addItem(save, { id: 'soul_guiding_lantern', name: '不灭引魂灯', type: 'light' });
+        WL.addItem(save, { id: 'returned_opera_mask', name: '戏魂谢礼铜面', type: 'token' });
+      } else {
+        WL.addItem(save, { id: 'master_black_mask', name: '班主的黑面', type: 'strange' });
+        WL.addItem(save, { id: 'ghost_opera_script', name: '写着你名字的戏本', type: 'info' });
+        WL.addItem(save, { id: 'opera_master_tally', name: '幽冥戏班腰牌', type: 'token' });
+      }
+      WL.addClue(save, '《归客》的送魂四拍是鼓、锣、铃、锣；不灭引魂灯能照出活人的影子。');
+      WL.addClue(save, state.ending === 'release' ? '亡客离场时提醒：陌生世界的空座，也可能有人预留；落幕之后切莫回头。' : '班主的戏本会在下一世界续写；若黑面发热，附近有人正冒用另一个人的名字。');
+      state.flags.rewards = true;
+    }
+    WL.setPlayer(save, { hp: state.hp, sanity: state.sanity });
+    var hook = '最后一声锣落下，帷幕后开出通往「' + CONFIG.nextWorld + '」的门。你握紧' + (state.ending === 'release' ? '引魂灯' : '班主的黑面') + '跨了过去；门的另一边，有人叫出了你的名字。';
+    var result = WL.completeLevel(CONFIG, save, { exitHook: hook, nextUrl: CONFIG.nextUrl, passViaUrl: CONFIG.passViaUrl });
+    if (result) { finished = true; stopDemo(); $('game-dialog').close(); path = []; keys = {}; try { localStorage.removeItem(sessionKey); } catch (e) { /* URL 已携带接力码。 */ } }
+    else toast('出口接线尚未完整，请打开前尘回响查看提示。');
+  }
+
+  function showLost() {
+    openDialog('失神 / 灯还没有灭', state.hp > 0 ? '你几乎，忘记了自己的名字。' : '这一折，先在这里歇一歇。', '<p>' + (state.hp > 0 ? '戏声钻进耳里，三张脸都像是你。还好，西边的引魂灯依旧亮着。你可以循灯醒来，保留已经完成的线索与谜题。' : '那张空椅子原本就不是给你准备的。守门纸人将你送回院门，下一次，记得让座。') + '</p>', [
+      { label: '循灯醒来，找回一点清明', hint: '保留进度 · 理智恢复 1', disabled: state.hp === 0, featured: state.hp > 0, onClick: function () { if (doAction('relight').ok) { state.player.x = 110; state.player.y = 285; closeDialog(); renderUI(); persist(); } } },
+      { label: '从入院时，重唱这一折', onClick: restart }
+    ]);
+  }
+
+  function confirmRestart() { openDialog('重入此戏', '这一折，要从头再来吗？', '<p>本关的探索和谜题会重新开始。上家传来的面板、旧物与故事会按最初入口重新带入。</p>', [{ label: '重新入戏', featured: true, onClick: restart }, { label: '继续今夜的故事', onClick: closeDialog }]); }
+  function restart() {
+    finished = false; paused = false; path = []; target = null; pendingNode = null; keys = {};
+    if ($('relay-dialog').open) $('relay-dialog').close(); closeDialog(); freshState();
+    $('pause-badge').hidden = true; $('pause-button').textContent = 'Ⅱ';
+    $('intro-note').hidden = false; $('entry-echo').textContent = (entry.exit_hook ? '「' + entry.exit_hook + '」\n\n' : '') + echo;
+    $('echo-log').textContent = echo; WL.mountDebug(save); $('debug-reset').onclick = confirmRestart; renderUI(); persist();
+  }
+
+  function showGuide() {
+    openDialog('戏班规矩 / 看戏容易，出戏难', '客官，有三句话要记牢。', '<p class="character-quote">「空位有人，脸谱有主，锣声有归。」</p><div class="help-controls"><p><kbd>W A S D</kbd> / 方向键移步 · <kbd>E</kbd> 靠近后查看</p><p><kbd>SHIFT</kbd> 疾行 · <kbd>ESC</kbd> 暂歇</p><p>点击人物、戏本或道具，可自动前往。</p></div><p>先找西南守门纸人领票，再读西北戏本；根据身份给三张脸谱归位，敲对东南角的四拍送魂锣，记得给中央空座让位。之后去北面的戏台唱完《归客》。</p><p>脸谱或锣鼓答错会扣 1 理智。理智耗尽时可循引魂灯恢复，保留进度；误坐空座会扣 1 生命。游戏没有倒计时追赶。</p><p class="dialog-small">纯氛围怪谈，无突发惊吓。声音默认关闭，右上角可开启；鼓点同时有文字示范，不依赖听觉。</p>', [{ label: '记住了，继续入戏', featured: true, onClick: closeDialog }]);
+  }
+
+  function showMission() {
+    if (state.learned) { openBook(); return; }
+    openDialog('入戏手札 / 先循灯，后循声', '要出戏，先把戏读懂。', '<p>西南的守门纸人会给你冥戏票，西北旧桌上的《归客》戏本藏着脸谱和锣鼓的线索。</p><p>不要坐院子中央的空椅子。若觉得神思恍惚，到西边引魂灯前歇一歇。</p>', [{ label: '前往西北旧戏本', hint: '自动寻路', featured: true, onClick: function () { closeDialog(); if (state.started) navigateTo(model.nodes.find(function (n) { return n.id === 'script'; }), 'script'); else toast('先点「持灯入戏」，再探这座戏院。'); } }, { label: '继续探索', onClick: closeDialog }]);
+  }
+  function showRelay() { stopDemo(); keys = {}; path = []; target = null; pendingNode = null; renderUI(); $('debug-code').value = WL.debug.code(save); if (!$('relay-dialog').open) $('relay-dialog').showModal(); }
+
+  function blocked(x, y) {
+    if (x < 24 || x > 936 || y < 90 || y > 558) return true;
+    return model.solids.some(function (s) { return x > s.x - 9 + 0.01 && x < s.x + s.w + 9 - 0.01 && y > s.y - 9 + 0.01 && y < s.y + s.h + 9 - 0.01; });
+  }
+
+  // 小地图使用网格寻路；拒绝穿过摊位，也不让斜线切过障碍物的角。
+  function findPath(destination) {
+    var step = 12, cols = 80, rows = 50;
+    var start = { x: Math.round(state.player.x / step), y: Math.round(state.player.y / step) };
+    var end = { x: Math.round(destination.x / step), y: Math.round(destination.y / step) };
+    function index(p) { return p.y * cols + p.x; }
+    function free(x, y) { return x >= 0 && x < cols && y >= 0 && y < rows && !blocked(x * step, y * step); }
+    function nearestFree(p) {
+      if (free(p.x, p.y)) return p;
+      for (var r = 1; r < 16; r++) {
+        for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) {
+          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+          if (free(p.x + dx, p.y + dy)) return { x: p.x + dx, y: p.y + dy };
+        }
+      }
+      return null;
+    }
+    start = nearestFree(start); end = nearestFree(end);
+    if (!start || !end) return [];
+    var queue = [start], parents = new Int32Array(cols * rows).fill(-1), seen = new Uint8Array(cols * rows);
+    seen[index(start)] = 1;
+    var found = false;
+    var directions = [[0, 1], [1, 0], [0, -1], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+    for (var head = 0; head < queue.length; head++) {
+      var p = queue[head];
+      if (p.x === end.x && p.y === end.y) { found = true; break; }
+      directions.forEach(function (d) {
+        var x = p.x + d[0], y = p.y + d[1], i = y * cols + x;
+        if (!free(x, y) || seen[i]) return;
+        if (d[0] && d[1] && (!free(p.x + d[0], p.y) || !free(p.x, p.y + d[1]))) return;
+        seen[i] = 1; parents[i] = index(p); queue.push({ x: x, y: y });
+      });
+    }
+    if (!found) return [];
+    var points = [], cursor = index(end), origin = index(start);
+    while (cursor !== origin && cursor >= 0) { points.push({ x: cursor % cols * step, y: Math.floor(cursor / cols) * step }); cursor = parents[cursor]; }
+    points.reverse();
+    return points;
+  }
+
+  function navigateTo(destination, nodeId) {
+    path = findPath(destination); target = { x: destination.x, y: destination.y }; pendingNode = nodeId || null;
+    if (!path.length) {
+      target = null;
+      if (nodeId && Math.hypot(state.player.x - destination.x, state.player.y - destination.y) < 55) openEntity(nodeId);
+      else if (nodeId) toast('那边暂时走不过去，试试另一条路。');
+      pendingNode = null;
+    }
+  }
+
+  function updateMovement(dt) {
+    var dx = (keys.d || keys.arrowright ? 1 : 0) - (keys.a || keys.arrowleft ? 1 : 0);
+    var dy = (keys.s || keys.arrowdown ? 1 : 0) - (keys.w || keys.arrowup ? 1 : 0);
+    var speed = (keys.shift ? 177 : 113) * (false ? 0.82 : 1);
+    if (dx || dy) { path = []; target = null; pendingNode = null; }
+    else if (path.length) {
+      var next = path[0], distance = Math.hypot(next.x - state.player.x, next.y - state.player.y);
+      if (distance <= speed * dt + 1) {
+        state.player.x = next.x; state.player.y = next.y; path.shift();
+        if (!path.length) {
+          target = null;
+          var id = pendingNode; pendingNode = null;
+          if (id) { openEntity(id); return; }
+        }
+        return;
+      }
+      dx = next.x - state.player.x; dy = next.y - state.player.y;
+    }
+    var length = Math.hypot(dx, dy);
+    state.player.moving = length > 0;
+    if (!length) return;
+    dx /= length; dy /= length;
+    state.player.dir = Math.abs(dx) > Math.abs(dy) ? dx > 0 ? 'right' : 'left' : dy > 0 ? 'down' : 'up';
+    var nx = state.player.x + dx * speed * dt, ny = state.player.y + dy * speed * dt;
+    if (!blocked(nx, state.player.y)) state.player.x = nx;
+    if (!blocked(state.player.x, ny)) state.player.y = ny;
+    if (soundOn && performance.now() - lastFootstep > 350) { tone('step'); lastFootstep = performance.now(); }
+  }
+
+
+
+  function updateNear() {
+    var best = null, distance = 55;
+    model.nodes.forEach(function (node) { var d = Math.hypot(state.player.x - node.x, state.player.y - node.y); if (d < distance) { best = node; distance = d; } });
+    near = best;
+    $('interaction-prompt').hidden = !best || !state.started || state.lost || paused || finished || $('game-dialog').open || $('relay-dialog').open;
+    if (best) $('interaction-prompt').innerHTML = '<kbd>E</kbd><span>' + ({ ticket: '交谈 · ', script: '翻阅 · ', masks: '查看 · ', seat: '观察 · ', gong: '敲响 · ', stage: '登上 · ', lantern: '靠近 · ', exit: '推开 · ' }[best.id] || '查看 · ') + esc(best.name) + '</span>';
+  }
+  function isActive() { return state.started && !state.lost && !paused && !finished && !$('game-dialog').open && !$('relay-dialog').open && !document.hidden; }
+  function frame(now) {
+    var dt = lastTime ? Math.min((now - lastTime) / 1000, 0.06) : 0; lastTime = now;
+    if (isActive()) { updateMovement(dt); if (isActive()) { (model.tick(state, dt) || []).forEach(function (message) { addLog(message); toast(message); }); if (state.lost) showLost(); saveTimer += dt; if (saveTimer >= 2) { saveTimer = 0; renderUI(); persist(); } } }
+    else state.player.moving = false;
+    updateNear(); renderer.render(state, window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : now, target, near ? near.id : null);
+    requestAnimationFrame(frame);
+  }
+  function togglePause() { if (!state.started || state.lost || finished || $('game-dialog').open || $('relay-dialog').open) return; paused = !paused; keys = {}; $('pause-badge').hidden = !paused; $('pause-button').textContent = paused ? '▷' : 'Ⅱ'; $('pause-button').setAttribute('aria-label', paused ? '继续游戏' : '暂停游戏'); persist(); }
+  function tone(kind) {
+    if (!soundOn) return;
+    try {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      var notes = kind === 'drum' ? [95] : kind === 'gong' ? [196, 293] : kind === 'bell' ? [784, 1174] : kind === 'win' ? [293, 392, 440, 587] : kind === 'wrong' ? [147, 139] : kind === 'step' ? [88] : [392, 587];
+      notes.forEach(function (frequency, i) {
+        var osc = audioContext.createOscillator(), gain = audioContext.createGain(), at = audioContext.currentTime + i * (kind === 'gong' || kind === 'bell' ? 0 : .11);
+        osc.type = kind === 'step' || kind === 'drum' ? 'triangle' : 'sine'; osc.frequency.setValueAtTime(frequency, at);
+        if (kind === 'drum') osc.frequency.exponentialRampToValueAtTime(40, at + .2);
+        var duration = kind === 'gong' || kind === 'bell' ? .65 : .18;
+        gain.gain.setValueAtTime(kind === 'step' ? .018 : .08, at); gain.gain.exponentialRampToValueAtTime(.001, at + duration);
+        osc.connect(gain); gain.connect(audioContext.destination); osc.start(at); osc.stop(at + duration + .01);
+      });
+    } catch (e) { soundOn = false; }
+  }
+
+  $('start-button').onclick = function () { state.started = true; $('intro-note').hidden = true; persist(); canvas.focus({ preventScroll: true }); toast('先去西南找守门纸人。点击地图里的目标即可前往。'); };
+  $('guide-button').onclick = showGuide; $('mission-button').onclick = showMission;
+  $('world-button').onclick = showRelay; $('relay-button').onclick = showRelay;
+  $('market-tab').onclick = function () { if ($('relay-dialog').open) $('relay-dialog').close(); if ($('game-dialog').open) closeDialog(); canvas.focus({ preventScroll: true }); };
+  $('dialog-close').onclick = closeDialog; $('relay-close').onclick = function () { $('relay-dialog').close(); canvas.focus({ preventScroll: true }); };
+  $('restart-button').onclick = confirmRestart; $('pause-button').onclick = togglePause; $('resume-button').onclick = togglePause;
+  $('interaction-prompt').onclick = function () { if (near && isActive()) openEntity(near.id); };
+  $('touch-interact').onclick = function () { if (near && isActive()) openEntity(near.id); else toast('靠近人物或旧物，再按查看。'); };
+  $('map-button').onclick = function () { $('map-note').hidden = !$('map-note').hidden; $('map-button').setAttribute('aria-pressed', String(!$('map-note').hidden)); };
+  $('sound-button').onclick = function () { soundOn = !soundOn; $('sound-button').querySelector('.sound-off').hidden = soundOn; $('sound-button').setAttribute('aria-label', soundOn ? '关闭声音' : '开启声音'); $('sound-button').title = soundOn ? '关闭声音' : '开启声音'; if (soundOn) tone('bell'); };
+  canvas.addEventListener('pointerdown', function (event) {
+    if (!isActive()) return; event.preventDefault(); canvas.focus({ preventScroll: true });
+    var box = canvas.getBoundingClientRect(), point = { x: (event.clientX - box.left) / box.width * canvas.width, y: (event.clientY - box.top) / box.height * canvas.height };
+    var nearest = model.nodes.map(function (node) { return { node: node, d: Math.min(Math.hypot(point.x - node.x, point.y - node.y), Math.hypot(point.x - node.x, point.y - (node.y - 25))) }; }).sort(function (a, b) { return a.d - b.d; })[0];
+    if (nearest && nearest.d < 39) navigateTo(nearest.node, nearest.node.id); else navigateTo(point, null);
+  });
+  document.addEventListener('keydown', function (event) {
+    var key = event.key.toLowerCase(); if (/input|textarea/i.test(event.target.tagName) || $('game-dialog').open || $('relay-dialog').open) return;
+    if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift', 'e', 'escape'].indexOf(key) !== -1) event.preventDefault();
+    if (key === 'escape' && !event.repeat) { togglePause(); return; }
+    if (key === 'e' && !event.repeat && isActive()) { if (near) openEntity(near.id); else toast('靠近目标，再按 E。'); return; }
+    if (isActive()) keys[key] = true;
+  });
+  document.addEventListener('keyup', function (event) { keys[event.key.toLowerCase()] = false; });
+  document.querySelectorAll('[data-dir]').forEach(function (button) {
+    var key = { up: 'w', left: 'a', down: 's', right: 'd' }[button.dataset.dir];
+    button.addEventListener('pointerdown', function (event) { event.preventDefault(); if (isActive()) { button.setPointerCapture(event.pointerId); keys[key] = true; } });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (type) { button.addEventListener(type, function () { keys[key] = false; }); });
+  });
+  window.addEventListener('blur', function () { keys = {}; });
+  document.addEventListener('visibilitychange', function () { keys = {}; lastTime = 0; if (document.hidden) persist(); });
+  window.addEventListener('pagehide', persist);
+  $('game-dialog').addEventListener('close', function () { stopDemo(); keys = {}; currentEntity = null; });
+  $('relay-dialog').addEventListener('close', function () { keys = {}; });
+  initialize(); requestAnimationFrame(frame);
+})();
+</script>
+</body></html>

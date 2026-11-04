@@ -1,4 +1,0 @@
-打包日期：2026-11-03（Asia/Shanghai）
-源码基线：57635ba273be03ad020ebb1e5b94ab0e4f49a41b
-原站地址：https://infinite-worlds-tournament-1026.cheekyotter1025.chatgpt.site/
-本交接包额外提供独立部署配置辅助；未执行新账户部署。

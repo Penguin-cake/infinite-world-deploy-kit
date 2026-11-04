@@ -1,5 +1,5 @@
 /* =========================================================
- * 无限世界 · SAVE_STATE v2 存档协议核心库
+ * 无限世界 · SAVE_STATE v3 存档协议核心库
  * ---------------------------------------------------------
  * 整条世界线的关卡都靠这个文件衔接，队伍【不需要修改本文件】。
  *
@@ -8,7 +8,10 @@
  *   WL.consumeAny(items, type)  按类型取用上家道具，取不到返回 null → 触发本关兜底剧情
  *   WL.addItem(save, item)      往背包加道具 { id, name, type }
  *   WL.addClue(save, text)      加线索
- *   WL.setPlayer(save, patch)   改面板 { hp, sanity }
+ *   WL.setPlayer(save, patch)   改面板 { hp, max_hp, sanity, level, status, curses }
+ *   WL.respawn()                恢复进入本关时的存档快照
+ *   WL.failLevel(reason)        本关失败：生成遗物、墓碑和满血二代探索者
+ *   WL.forcePass()              裁判强制结束本关并走遗物交接
  *   WL.completeLevel(config, save, opts)
  *                               校验出口 → 写档 → 过场 → 跳转；缺交接必填项返回 null
  *                               opts = { exitHook: '结尾一句话', nextUrl: '下一关页面地址' }
@@ -25,10 +28,13 @@
 (function (global) {
   'use strict';
 
-  var STORAGE_KEY = 'wuxianliu_save_v2';
-  var HISTORY_KEY = 'wuxianliu_history_v2';
+  var STORAGE_KEY = 'wuxianliu_save_v3';
+  var HISTORY_KEY = 'wuxianliu_history_v3';
+  var LEGACY_STORAGE_KEY = 'wuxianliu_save_v2';
+  var LEGACY_HISTORY_KEY = 'wuxianliu_history_v2';
   var memoryHistory = null;
-  var SCHEMA = 'v2';
+  var memoryInitialSave = null;
+  var SCHEMA = 'v3';
 
   /* 道具类型词表（8 类，消费按类型匹配，不按名称匹配） */
   var ITEM_TYPES = ['key', 'tool', 'light', 'food', 'token', 'info', 'weapon', 'strange'];
@@ -61,12 +67,13 @@
     return {
       schema: SCHEMA,
       level: typeof levelNo === 'number' ? levelNo : 1,
-      player: { hp: 3, sanity: 2 },   /* 开局面板全场统一：命3 · 理智2 */
-      items: [],                       /* 空背包 */
+      player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: 'normal', curses: [] },
+      items: [],
       clues: [],
       exit_hook: '',
       prev_world: '',
-      next_world: ''
+      next_world: '',
+      tombstone: {}
     };
   }
 
@@ -75,16 +82,19 @@
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
     var type = toStr(raw.type, 'strange').trim().toLowerCase();
     if (ITEM_TYPES.indexOf(type) === -1) type = 'strange';
-    return {
+    var item = {
       id: toStr(raw.id, '').trim() || 'item_' + Math.random().toString(36).slice(2, 8),
-      name: toStr(raw.name, '未知物品').trim() || '未知物品',
-      type: type
+      name: (toStr(raw.name, '未知物品').trim() || '未知物品').slice(0, 32),
+      type: type,
+      relic: raw.relic === true
     };
+    if (raw.durability !== undefined) item.durability = Math.max(0, toInt(raw.durability, 1, 0));
+    return item;
   }
 
   function coerceItems(raw) {
     if (!Array.isArray(raw)) return [];
-    return raw.map(coerceItem).filter(Boolean);
+    return raw.map(coerceItem).filter(Boolean).slice(0, 3);
   }
 
   function coerceClues(raw) {
@@ -126,7 +136,7 @@
       var m = global.location.search.match(/[?&]history=([^&]+)/);
       if (!Array.isArray(arr) && m) arr = decodeCode(decodeURIComponent(m[1]));
       if (!Array.isArray(arr)) {
-        var raw = global.localStorage.getItem(HISTORY_KEY);
+        var raw = global.localStorage.getItem(HISTORY_KEY) || global.localStorage.getItem(LEGACY_HISTORY_KEY);
         arr = raw ? JSON.parse(raw) : [];
       }
       if (!Array.isArray(arr)) return [];
@@ -167,9 +177,12 @@
   /* 清空本机全部运行数据（存档 + 旅程记录） */
   function resetRun() {
     memoryHistory = [];
+    memoryInitialSave = null;
     try {
       global.localStorage.removeItem(STORAGE_KEY);
       global.localStorage.removeItem(HISTORY_KEY);
+      global.localStorage.removeItem(LEGACY_STORAGE_KEY);
+      global.localStorage.removeItem(LEGACY_HISTORY_KEY);
     } catch (e) { /* ignore */ }
   }
 
@@ -179,18 +192,34 @@
   function normalize(raw, levelNo) {
     var base = defaultSave(levelNo);
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return base;
+    var player = raw.player && typeof raw.player === 'object' ? raw.player : {};
+    var maxHp = Math.min(10, Math.max(1, toInt(player.max_hp, 3, 1)));
+    var hp = Math.min(maxHp, toInt(player.hp, 3, 0));
+    var status = toStr(player.status, hp <= 0 ? 'dead' : 'normal');
+    if (['normal', 'wounded', 'cursed', 'dead', 'specter'].indexOf(status) === -1) status = 'normal';
+    var tomb = raw.tombstone && typeof raw.tombstone === 'object' && !Array.isArray(raw.tombstone) ? raw.tombstone : {};
     return {
       schema: SCHEMA,
       level: typeof levelNo === 'number' ? levelNo : toInt(raw.level, 1, 0),
+      world: toStr(raw.world, ''),
       player: {
-        hp: toInt(raw.player && raw.player.hp, 3, 0),
-        sanity: toInt(raw.player && raw.player.sanity, 2, 0)
+        hp: hp,
+        max_hp: maxHp,
+        level: Math.min(10, toInt(player.level, 1, 1)),
+        sanity: toInt(player.sanity, 2, 0),
+        status: status,
+        curses: Array.isArray(player.curses) ? player.curses.map(function (c) { return toStr(c, '').slice(0, 40); }).filter(Boolean).slice(0, 8) : []
       },
       items: coerceItems(raw.items),
-      clues: coerceClues(raw.clues),
+      clues: coerceClues(raw.clues).slice(-8),
       exit_hook: toStr(raw.exit_hook, ''),
       prev_world: toStr(raw.prev_world, ''),
-      next_world: toStr(raw.next_world, '')
+      next_world: toStr(raw.next_world, ''),
+      tombstone: {
+        fallen_level: toInt(tomb.fallen_level, 0, 0),
+        cause: toStr(tomb.cause, '').slice(0, 100),
+        epitaph: toStr(tomb.epitaph, '').slice(0, 200)
+      }
     };
   }
 
@@ -212,11 +241,24 @@
     } catch (e) { /* ignore */ }
     if (!raw) {
       try {
-        var stored = global.localStorage.getItem(STORAGE_KEY);
+        var stored = global.localStorage.getItem(STORAGE_KEY) || global.localStorage.getItem(LEGACY_STORAGE_KEY);
         if (stored) raw = JSON.parse(stored);
       } catch (e) { /* ignore */ }
     }
-    return normalize(raw, levelNo);
+    var save = normalize(raw, levelNo);
+    if (!memoryInitialSave) memoryInitialSave = normalize(save, levelNo);
+    return save;
+  }
+
+  function getInitialSave() {
+    if (memoryInitialSave) return normalize(memoryInitialSave, null);
+    return readSave();
+  }
+
+  function respawn() {
+    var initial = getInitialSave();
+    persist(initial);
+    return initial;
   }
 
   /* ---------------- 游戏内编辑存档 ---------------- */
@@ -247,8 +289,12 @@
 
   function setPlayer(save, patch) {
     if (!patch) return save;
-    if (patch.hp !== undefined) save.player.hp = toInt(patch.hp, save.player.hp, 0);
+    if (patch.max_hp !== undefined) save.player.max_hp = Math.min(10, Math.max(1, toInt(patch.max_hp, save.player.max_hp || 3, 1)));
+    if (patch.hp !== undefined) save.player.hp = Math.min(save.player.max_hp || 3, toInt(patch.hp, save.player.hp, 0));
+    if (patch.level !== undefined) save.player.level = Math.min(10, toInt(patch.level, save.player.level || 1, 1));
     if (patch.sanity !== undefined) save.player.sanity = toInt(patch.sanity, save.player.sanity, 0);
+    if (patch.status !== undefined) save.player.status = toStr(patch.status, save.player.status);
+    if (Array.isArray(patch.curses)) save.player.curses = patch.curses.slice(0, 8);
     return save;
   }
 
@@ -298,9 +344,59 @@
    * save   = readSave 拿到、游戏过程中已修改的存档对象
    * opts   = { exitHook: '结尾一句话（必须指向下一签世界）', nextUrl: '下家页面地址', passViaUrl: 是否附加存档码（默认 true） }
    */
+  function failLevel(reason, fallenSave, configOverride) {
+    var config = configOverride || global.CONFIG || {};
+    var current = fallenSave ? normalize(fallenSave, toInt(config.level, 1, 1)) : readSave(toInt(config.level, 1, 1));
+    var cause = toStr(reason, '力竭倒地').slice(0, 100);
+    var items = coerceItems(current.items);
+    if (!items.length) {
+      items = [{ id: 'relic_survival_knife', name: '前人的求生短刀', type: 'tool', relic: true }];
+    } else {
+      items = items.map(function (it) {
+        it.relic = true;
+        it.name = ('前人的' + it.name.replace(/^(前人的)+/, '')).slice(0, 32);
+        return it;
+      }).slice(0, 3);
+    }
+    var previous = current.tombstone || {};
+    var marker = '[第' + current.level + '关] ' + cause;
+    var relicSave = normalize({
+      schema: SCHEMA,
+      level: current.level + 1,
+      world: current.world || config.world,
+      player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: 'normal', curses: [] },
+      items: items,
+      clues: current.clues.length ? current.clues : ['前人倒在此处，留下了未解的谜题'],
+      exit_hook: '【遗物交接】一代探索者在此长眠，新求生者拾起遗物踏入下一世界……',
+      prev_world: current.world || config.world,
+      next_world: config.nextWorld || current.next_world || '未知世界',
+      tombstone: {
+        fallen_level: current.level,
+        cause: cause,
+        epitaph: ((previous.epitaph ? previous.epitaph + ' | ' : '') + marker).slice(0, 200)
+      }
+    }, current.level + 1);
+    persist(relicSave);
+    recordPassage(config, relicSave);
+    if (global.parent && global.parent !== global) {
+      global.parent.postMessage({ type: 'IW_FAIL', reason: cause, fallenSave: current }, '*');
+      global.parent.postMessage({ type: 'IW_SAVE', save: relicSave, history: readHistory(), failure: true }, '*');
+    }
+    if (config.nextUrl) showHandoffOverlay(config, relicSave, [], config.nextUrl, true);
+    return relicSave;
+  }
+
+  function forcePass() {
+    return failLevel('时空裂隙坍缩（演示超时）');
+  }
+
   function completeLevel(config, save, opts) {
     opts = opts || {};
     config = config || {};
+    var current = normalize(save, toInt(config.level, 1, 1));
+    if (current.player.hp <= 0 || current.player.status === 'dead') {
+      return failLevel('探索者生命耗尽', save, config);
+    }
     var candidate = normalize(save, toInt(config.level, 1, 1) + 1);
     candidate.exit_hook = toStr(opts.exitHook, '').trim();
     candidate.prev_world = toStr(config.world, '').trim();
@@ -312,6 +408,9 @@
     Object.keys(candidate).forEach(function (key) { save[key] = candidate[key]; });
     persist(save);
     recordPassage(config, save); /* 旅程记录：终局结算页回放用 */
+    if (global.parent && global.parent !== global) {
+      global.parent.postMessage({ type: 'IW_COMPLETE', save: save, history: readHistory() }, '*');
+    }
     showHandoffOverlay(config, save, warnings, opts.nextUrl, opts.passViaUrl !== false);
     return save;
   }
@@ -399,7 +498,7 @@
     var cluesHtml = save.clues.length ? save.clues.map(esc).join('<br>') : '无';
     return '<div class="wl-card">' +
       '<div class="wl-card-title">【第 ' + toInt(lv, 1, 1) + ' 关 · ' + esc(w) + ' 通关存档卡】</div>' +
-      '<div class="wl-row">命：' + save.player.hp + '　　理智：' + save.player.sanity + '</div>' +
+      '<div class="wl-row">命：' + save.player.hp + '/' + (save.player.max_hp || 3) + '　　等级：' + (save.player.level || 1) + '/10　　理智：' + save.player.sanity + '</div>' +
       '<div class="wl-row">背包：' + describeBag(save.items) + '</div>' +
       '<div class="wl-row">线索：' + cluesHtml + '</div>' +
       '<div class="wl-row">结尾一句话：' + (save.exit_hook ? esc(save.exit_hook) : '（未填写）') + '</div>' +
@@ -483,6 +582,45 @@
   }
   if (typeof document !== 'undefined') injectStyles();
 
+  /* 外链作品没有云端注入桥时，也由核心库完成双向握手与裁判指令。 */
+  if (typeof global.addEventListener === 'function') {
+    global.addEventListener('message', function (event) {
+      var message = event.data;
+      if (!message || typeof message !== 'object') return;
+      if (message.type === 'IW_INIT_SAVE' || message.type === 'iw-init') {
+        var incoming = normalize(message.save || readSave(), message.save && message.save.level);
+        memoryInitialSave = normalize(incoming, incoming.level);
+        persist(incoming);
+        if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+          global.dispatchEvent(new global.CustomEvent('iw-save-ready', { detail: incoming }));
+        }
+      }
+      if (message.type !== 'IW_ADMIN_COMMAND') return;
+      var command = String(message.command || message.action || '').toLowerCase();
+      if (command === 'force_pass') command = 'forcepass';
+      if (command === 'heal_player') command = 'heal';
+      if (command === 'heal' || command === 'respawn') {
+        var restored = command === 'respawn' ? respawn() : readSave();
+        if (command === 'heal') {
+          setPlayer(restored, { hp: restored.player.max_hp || 3, status: 'normal' });
+          persist(restored);
+        }
+        if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+          global.dispatchEvent(new global.CustomEvent('iw-admin', { detail: { command: command, save: restored } }));
+        }
+      } else if (command === 'skip' || command === 'forcepass') {
+        forcePass();
+      } else if (command === 'reload' && global.location && typeof global.location.reload === 'function') {
+        global.location.reload();
+      } else if (command === 'audio' && typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+        global.dispatchEvent(new global.CustomEvent('iw-admin', { detail: { command: 'audio' } }));
+      }
+    });
+    global.addEventListener('load', function () {
+      if (global.parent && global.parent !== global) global.parent.postMessage({ type: 'IW_READY' }, '*');
+    });
+  }
+
   /* ---------------- 导出 ---------------- */
 
   global.WL = {
@@ -490,8 +628,12 @@
     ITEM_TYPES: ITEM_TYPES,
     TYPE_LABELS: TYPE_LABELS,
     readSave: readSave,
+    getInitialSave: getInitialSave,
+    respawn: respawn,
     normalize: normalize,
     completeLevel: completeLevel,
+    failLevel: failLevel,
+    forcePass: forcePass,
     validateExit: validateExit,
     goTo: function (url, save) { jumpTo(url, save, true); },
     mountDebug: mountDebug,
