@@ -1,0 +1,2173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><script>;(function(){'use strict';const C={"routeId":"infinite-world","slot":0,"gameId":"example-wasteland","world":"废土集市","prevWorld":"主神大厅","nextWorld":"幽冥戏班","exitHook":"","nextUrl":"../../1/ghost-opera/index.html"},seed=(()=>{try{return JSON.parse(new URLSearchParams(location.search).get("__iw_state")||"{}")}catch{return {}}})();const memory=Object.assign(Object.create(null),seed);const tell=(type,data)=>{if(parent!==window)parent.postMessage(Object.assign({type,routeId:C.routeId,slot:C.slot,gameId:C.gameId},data||{}),'*')};const storage={getItem:k=>Object.prototype.hasOwnProperty.call(memory,String(k))?memory[String(k)]:null,setItem(k,v){k=String(k);v=String(v);if(k.length>150||v.length>65536)return;memory[k]=v;tell('iw-storage',{key:k,value:v})},removeItem(k){k=String(k);delete memory[k];tell('iw-storage',{key:k,value:null})},clear(){Object.keys(memory).forEach(k=>storage.removeItem(k))},key:i=>Object.keys(memory)[i]||null};Object.defineProperty(storage,'length',{get:()=>Object.keys(memory).length});try{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>storage})}catch(e){}let config,wl;const fix=v=>Object.assign({},v||{},{level:C.slot+1,world:C.world,prevWorld:C.prevWorld,nextWorld:C.nextWorld,nextUrl:C.nextUrl,passViaUrl:true});try{Object.defineProperty(window,'CONFIG',{configurable:true,get:()=>config,set:v=>{config=fix(v)}})}catch(e){}const install=v=>{if(!v||v.__portalBridge)return v;const read=v.readSave,complete=v.completeLevel;v.readSave=function(){return read.call(v,C.slot+1)};v.completeLevel=function(c,s,o){o=Object.assign({},o||{},{nextUrl:C.nextUrl,passViaUrl:true});if(C.exitHook)o.exitHook=C.exitHook;const result=complete.call(v,fix(c),s,o);if(result){tell('iw-save',{save:result,history:v.readHistory()});tell('IW_SAVE',{save:result,history:v.readHistory()})}return result};v.__portalBridge=true;return v};try{Object.defineProperty(window,'WL',{configurable:true,get:()=>wl,set:v=>{wl=install(v)}})}catch(e){if(window.WL)install(window.WL)}addEventListener('load',()=>{tell('iw-enter',{world:C.world,search:location.search});tell('IW_READY',{world:C.world,search:location.search})});})();</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eee9dc">
+  <meta name="description" content="这里什么都卖，除了明天。一款二维像素废土集市探索与以物易物游戏。">
+  <title>废土集市 · 余烬之约</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%233b493c'/%3E%3Cpath d='M6 20h20v6H6zM10 16h12v4H10zM14 7h4v9h-4z' fill='%23edbc6c'/%3E%3C/svg%3E">
+  <style>@charset "UTF-8";
+:root{--paper:#eeeade;--white:#f9f6ed;--ink:#353b30;--muted:#8c8c78;--line:#d8d5c5;--green:#4f6245;--orange:#b96a3d;--blue:#688e99;--mono:Consolas,"Courier New",monospace}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.65 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}button,a{-webkit-tap-highlight-color:transparent}button{font:inherit;color:inherit;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.44}button:focus-visible,a:focus-visible,canvas:focus-visible,summary:focus-visible{outline:2px solid var(--orange);outline-offset:4px}a{color:inherit;text-decoration:none}.site-header{height:86px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(3.3vw,24px);gap:28px}.brand{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800;letter-spacing:2px;line-height:1.4;white-space:nowrap}.brand small{display:block;font:9px/1.7 var(--mono);letter-spacing:2px;font-weight:400}.brand-icon{width:39px;height:42px;display:grid;place-items:center;background:#45533c;color:#e6ba77;font-size:33px;line-height:1;box-shadow:3px 3px 0 #d1cbbb;clip-path:polygon(0 0,90% 0,90% 9%,100% 9%,100% 100%,10% 100%,10% 90%,0 90%)}nav{display:flex;height:100%;gap:34px;margin-right:auto;margin-left:45px}.nav-button{border:0;background:transparent;color:#838775;font-size:13px;padding:4px 1px 0;position:relative}.nav-button span{font:10px var(--mono);margin-left:7px}.nav-button.active{color:#3c4d35;font-weight:bold}.nav-button.active:after{content:"";position:absolute;bottom:0;height:3px;background:#596c49;left:0;right:0}.header-right{display:flex;align-items:center;gap:25px}.world-tag{font-size:11px;color:#7b806b;letter-spacing:1px;white-space:nowrap}.world-tag i,.live-dot{display:inline-block;width:6px;height:6px;background:#657b4c;margin-right:8px}.icon-button{width:32px;height:32px;border:1px solid var(--line);background:transparent;position:relative;font-size:18px}.sound-off{position:absolute;left:7px;top:1px;color:#a58064}.page{max-width:1600px;margin:0 auto;padding:35px max(3.3vw,24px) 0}.page-intro{display:flex;align-items:center;justify-content:space-between;margin-bottom:29px}.eyebrow,.section-eyebrow{font:10px/1.5 var(--mono);letter-spacing:1.5px;color:#878975}.eyebrow{font-size:10px;letter-spacing:2.2px}.eyebrow span{color:#b2ae98;margin:0 9px}h1{margin:9px 0 6px;font-size:29px;letter-spacing:1.2px;font-weight:650;line-height:1.6}h1 em{font-style:normal;color:#a76643}.page-intro p{margin:0;color:#8b8c78;font-size:12px;letter-spacing:.6px}.chapter-mark{border-left:1px solid var(--line);padding-left:28px;text-align:right}.chapter-mark>span{font:11px var(--mono);letter-spacing:2px}.chapter-mark b{font-size:33px;letter-spacing:0;font-weight:400;margin-left:6px}.chapter-mark small{display:block;font-size:10px;color:#8b8c78;letter-spacing:2px;margin-top:6px}.game-layout{display:grid;grid-template-columns:minmax(0,1fr) 286px;gap:27px;align-items:start}.play-column{min-width:0}.scene-heading{height:48px;background:#faf7ee;border:1px solid var(--line);border-bottom:0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:11px}.scene-heading strong{font-size:13px;letter-spacing:1px}.live-dot{width:5px;height:5px;vertical-align:2px}.scene-coordinates{margin-left:18px;color:#a6a28c;font:9px var(--mono);letter-spacing:1px}.weather{display:flex;gap:8px;align-items:center;color:#898b74}.weather>span:first-child{font-size:16px;color:#ab8853}.weather .time{margin-left:12px;padding-left:14px;border-left:1px solid var(--line);font:11px var(--mono);color:#575f4c}.scene{position:relative;overflow:hidden;border:1px solid #a7a080;background:#c5ad7e;isolation:isolate}canvas{display:block;width:100%;height:auto;aspect-ratio:8/5;image-rendering:pixelated;touch-action:none;cursor:crosshair;outline:none}.scene:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 80px #514c2510;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#48392505 3px,#48392505 4px);z-index:2}.scene-corner{position:absolute;bottom:17px;left:18px;right:18px;display:flex;justify-content:space-between;pointer-events:none;font:9px var(--mono);letter-spacing:1px;color:#665f43}.map-tag{border:1px solid #857b5460;padding:2px 7px;font-size:9px;background:#decca266}.map-button{position:absolute;right:18px;top:17px;background:#f6eacdc9;border:1px solid #827b545e;width:32px;height:32px;font-size:23px;line-height:1;color:#6b6c4c}.map-note{position:absolute;right:60px;top:17px;background:#f7f0ddf5;padding:12px 18px;border:1px solid #a69d7c;font-size:11px;z-index:3;box-shadow:4px 4px 0 #766a3b24}.map-note span{display:block;color:#777b61}.map-note b{display:block;margin-bottom:6px}.control-strip{height:49px;background:var(--white);border:1px solid var(--line);border-top:0;display:flex;align-items:center;justify-content:space-between;padding:0 15px;color:#8a8b79;font-size:10px}.control-strip>div{display:flex;align-items:center;gap:18px}.control-strip>div>span{display:flex;gap:4px;align-items:center}kbd{display:inline-block;border:1px solid #d4d3c5;border-bottom:2px solid #cac8b8;min-width:19px;height:20px;text-align:center;line-height:17px;padding:0 4px;background:#eeede3;color:#6e7561;font:10px/17px var(--mono);border-radius:2px}.control-strip button{background:none;border:none;font:bold 17px var(--mono);color:#858773}.click-hint{color:#a4a18b;font-size:10px}.below-map{display:flex;justify-content:space-between;padding-top:11px;font-size:10px;color:#96937c}.tiny-star{font-style:normal;color:#af8a54;margin-right:6px}#save-status i{display:inline-block;width:4px;height:4px;background:#7c8b63;vertical-align:2px;margin-right:5px}.journal{background:#f7f4e9;border:1px solid var(--line);padding:18px 20px 0}.traveler{display:flex;gap:13px;position:relative;padding-bottom:19px}.avatar{width:45px;height:49px;background:#ddd8be;border:1px solid #b7b59a;display:grid;place-items:center;flex:none}.avatar-pixel{width:8px;height:8px;background:#5b6145;box-shadow:-8px 0 #5b6145,8px 0 #5b6145,-8px -8px #454c37,0 -8px #454c37,8px -8px #454c37,-8px 8px #b57f52,0 8px #d3a271,8px 8px #b57f52,0 16px #907345,-8px 16px #566846,8px 16px #566846,-8px 24px #596345,8px 24px #596345;transform:translateY(-10px)}.traveler .section-eyebrow{font-size:8px;letter-spacing:1.1px}h2{font-size:15px;line-height:1.5;font-weight:650;margin:3px 0 5px;letter-spacing:.5px}.traveler h2{font-size:14px;white-space:nowrap}.traveler h2>span{font-size:8px;font-weight:400;color:#8d907a;margin-left:4px}.vitals{display:flex;gap:12px;font-size:10px;color:#99977c;align-items:center;line-height:1.6}.vitals #hp{color:#b67d58;letter-spacing:2px;font-size:11px}.small-icon{position:absolute;right:-4px;top:-4px;border:0;background:transparent;color:#93977d;font-size:19px}.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:15px 0}.resource-grid>div{text-align:center;border-right:1px dashed #d8d5c7;line-height:1.3;display:grid;grid-template-columns:auto auto;justify-content:center;gap:3px 7px}.resource-grid>div:last-child{border:0}.resource-grid b{font:20px/1.3 var(--mono);font-weight:400}.resource-grid small{grid-column:1/-1;color:#97957f;font-size:9px;margin-top:2px}.resource-icon{font-size:20px;align-self:center;line-height:1}.water-icon{color:#6c9199;font-size:16px}.scrap-icon{color:#a98a5b;transform:rotate(-20deg)}.trust-icon{color:#76835a}.mission{padding:20px 0 17px;border-bottom:1px solid var(--line)}.section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px}.section-eyebrow{font-size:10px;letter-spacing:1.2px}.paper-tag{font-size:8px;border:1px solid #ccceb9;color:#7d8968;padding:1px 5px;line-height:1.5}.mission h2{font-size:17px;margin-bottom:9px}.mission p{font-size:11px;color:#96917a;line-height:1.9;margin:0}.progress-track{height:3px;background:#e3dfcf;margin:17px 0 14px}.progress-track i{display:block;width:0;height:100%;background:#8a946a;transition:width .4s}.objectives{display:grid;gap:10px}.objective{display:flex;align-items:center;gap:9px;font-size:11px;color:#777e65}.objective .check{border:1px solid #c2c6af;width:12px;height:12px;color:#f8f5e9;line-height:10px;font-size:9px;flex:none;text-align:center}.objective.complete .check{background:#7f8f60;border-color:#7f8f60}.objective .objective-count{font:9px var(--mono);color:#a1a58c;margin-left:auto}.text-button{border:0;background:none;display:flex;align-items:center;justify-content:space-between;width:100%;color:#a48c64;padding:0;font-size:10px;margin-top:17px}.text-button:hover{color:#625f37}.inventory{padding:17px 0 14px;border-bottom:1px solid var(--line)}.inventory-capacity{font:9px var(--mono);color:#a4a18b}.bag-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}.bag-slot{height:34px;border:1px solid #d9d6c6;background:#eeeadd;display:grid;place-items:center;color:#b8b49b;font:20px var(--mono);position:relative}.bag-slot.filled{border-color:#a7b18b;background:#e9ebdc;color:#778365}.bag-slot>span{position:absolute;bottom:3px;right:4px;font:7px var(--mono)}.inventory p{font-size:9px;color:#a19e85;margin:8px 0 0}.field-notes{padding:18px 0 15px}.field-notes .section-heading{margin-bottom:12px}.note-line{height:1px;background:#d9d5c4;flex:1}.activity-log{display:grid;gap:11px;min-height:87px}.log-entry{display:flex;gap:9px;line-height:1.7;font-size:10px;color:#8d8e77}.log-entry time{font:9px/1.8 var(--mono);flex:none;color:#b5aa8d}.log-entry:first-child{color:#697759}.journal-foot{border-top:1px solid var(--line);font:7px/1 var(--mono);letter-spacing:.7px;color:#aaa78e;display:flex;align-items:center;justify-content:space-between;margin:0 -20px;padding:15px 20px}.journal-foot span{font-size:14px;color:#939878}.site-footer{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:16px 0;margin-top:24px;color:#a3a08a;font-size:9px;letter-spacing:.7px}.site-footer>span>span{margin:0 11px}.site-footer button{background:none;border:0;font-size:10px;color:#8b9076;padding:0}.site-footer button span{margin-left:7px}.intro-note{position:absolute;left:50%;top:50%;transform:translate(-50%,-43%);width:min(430px,85%);background:#f7f0dfed;border:1px solid #a79d78;padding:28px 31px 22px;box-shadow:6px 6px 0 #524c302e;z-index:4;backdrop-filter:blur(3px)}.intro-kicker{font-size:9px;color:#969175;letter-spacing:1px}.intro-note h2{font-size:23px;margin:10px 0}.intro-note p{font-size:12px;color:#86846b;line-height:2;margin:0 0 20px}.primary-button{background:#4e6242;color:#fbf6e5;border:1px solid #455b38;padding:10px 19px;font-size:12px;letter-spacing:1px;box-shadow:2px 2px 0 #2d382b2e;display:flex;align-items:center;justify-content:space-between;gap:30px}.primary-button:hover{background:#3d5434}.intro-hint{display:block;margin-top:13px;font-size:9px;color:#a09a7f}.interaction-prompt{position:absolute;left:50%;bottom:47px;transform:translateX(-50%);background:#f8f2e3ed;border:1px solid #aaa382;padding:8px 14px;color:#626c4f;font-size:11px;box-shadow:3px 3px 0 #5d533430;white-space:nowrap;z-index:3}.interaction-prompt kbd{margin-right:8px}.toast{position:absolute;left:50%;top:17px;transform:translateX(-50%);max-width:80%;background:#45583eea;color:#fff8e6;font-size:11px;padding:10px 18px;border:1px solid #889175;z-index:5;text-align:center;box-shadow:3px 3px 0 #3d41282e}.pause-badge{position:absolute;inset:0;background:#333c2b8c;z-index:6;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;color:#f9eed5;letter-spacing:3px;font-size:23px;backdrop-filter:blur(3px)}.pause-badge button{background:#f5edda;border:1px solid #bfc4a5;padding:8px 18px;font-size:12px;letter-spacing:1px;color:#556344}.touch-controls,.touch-interact{display:none}dialog{width:min(480px,90vw);background:#f5f0e2;color:var(--ink);border:1px solid #b9b397;padding:23px 27px 26px;box-shadow:7px 7px 0 #1f301c26;max-height:90vh;overflow:auto}dialog::backdrop{background:#26312470;backdrop-filter:blur(3px)}dialog h2{font-size:23px;letter-spacing:1px;margin:14px 0 12px}dialog p{font-size:12px;line-height:2;color:#7e826b}dialog .character-quote{font-size:14px;color:#5f694f;padding-left:14px;border-left:2px solid #a5ad87;margin:20px 0}.dialog-top{display:flex;justify-content:space-between;align-items:center;font:9px var(--mono);letter-spacing:1px;color:#90947b}.close-button{border:0;background:none;font:25px/1 var(--mono);color:#90967e;padding:0 0 0 10px}.dialog-actions{display:grid;gap:9px;margin-top:21px}.action-button{padding:12px 14px;border:1px solid #c8c9b4;background:#eeebdb;display:flex;justify-content:space-between;align-items:center;gap:14px;text-align:left;font-size:12px;color:#677654}.action-button:hover:not(:disabled){background:#e2e6d0;border-color:#9fae88}.action-button small{font-size:10px;color:#9a9272;white-space:nowrap}.action-button.featured{background:#4e6242;border-color:#455b38;color:#faf5e8}.action-button.featured small{color:#ced5b9}.dialog-chip{display:inline-block;padding:2px 7px;border:1px solid #cac8b0;color:#8a8d70;font-size:9px;margin-right:7px}.help-controls{display:grid;gap:8px;padding:14px;background:#eae8d8;font-size:12px;color:#7e856a}.help-controls kbd{margin-right:8px}.dialog-small{font-size:10px!important;color:#a29a7c!important}.result-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #d3d0bd;border-bottom:1px solid #d3d0bd;margin:21px 0;padding:15px 0;text-align:center}.result-stats b{font:25px var(--mono);display:block;color:#6d7b53}.result-stats span{font-size:10px;color:#8e9177}#relay-dialog{width:min(650px,93vw)}#relay-dialog h2{font-size:21px}#relay-dialog .wl-opening{background:#eeebdc;border:1px dashed #c3c5ac;color:#747c62;font-size:12px;line-height:1.9}#relay-dialog .wl-card{background:#eaeadd;border:1px solid #c4c9ae;border-left:3px solid #85976a;color:#6a775a;font-size:12px;line-height:1.9;max-width:none;border-radius:0}#relay-dialog .wl-card-title{color:#62794f}#relay-dialog .wl-next{color:#959977}#echo-log{font-size:12px;color:#889074;margin:16px 0}details{border-top:1px solid #d5d3bf;margin-top:20px;padding-top:12px;font-size:11px;color:#8e937c}summary{cursor:pointer}pre{white-space:pre-wrap;word-break:break-word;font:10px/1.6 var(--mono);max-height:180px;overflow:auto}textarea{width:100%;background:#fbf7eb;border:1px solid #cacdb8;color:#7b866b;font:10px/1.5 var(--mono);padding:8px;resize:vertical}.debug-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.debug-row button{font-size:11px;padding:6px 10px;background:#e5e8d8;border:1px solid #c4cbb0}.relay-note{font-size:10px!important;color:#a29b82!important}.wl-overlay .wl-handoff{background:#eee9da;border:1px solid #aab292;box-shadow:6px 6px 0 #232d2055}.wl-overlay{background:#263124e8!important}.wl-overlay .wl-handoff-kicker{color:#7c8c5e}.wl-overlay .wl-handoff-route{color:#4d6040}.wl-overlay .wl-handoff-hook{color:#80846b}.wl-overlay .wl-card{background:#e5e6d5;border:1px solid #b3bea0;border-radius:0;color:#68765a}.wl-overlay .wl-card-title{color:#5c744a}.wl-overlay .wl-next{color:#849475}.wl-overlay .wl-btn{background:#526b42;color:#f9f3df;border-radius:0}[hidden]{display:none!important}@media(min-width:1500px){.journal{padding-top:23px}.mission{padding-top:24px;padding-bottom:23px}.inventory{padding-top:22px;padding-bottom:20px}.field-notes{padding-top:23px;padding-bottom:22px}.activity-log{gap:15px;min-height:112px}}@media(max-width:1180px){.game-layout{grid-template-columns:minmax(0,1fr) 255px;gap:20px}.journal{padding-left:16px;padding-right:16px}.journal-foot{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}.site-header nav{margin-left:20px;gap:25px}.scene-coordinates{display:none}.control-strip>div{gap:12px}.desktop-hint{display:none!important}.traveler{gap:9px}.traveler h2{font-size:13px}.bag-grid{gap:4px}.bag-slot{height:30px}.mission{padding-top:15px;padding-bottom:13px}.resource-grid{padding:12px 0}.field-notes{padding-top:14px}.activity-log{gap:9px}}@media(max-width:950px){.site-header{height:74px}.header-right .world-tag{display:none}.site-header nav{gap:22px;margin-left:10px}.page{padding-top:25px}.page-intro{margin-bottom:23px}h1{font-size:24px}.game-layout{grid-template-columns:minmax(0,1fr) 230px;gap:16px}.journal{padding:14px 14px 0}.journal-foot{margin-left:-14px;margin-right:-14px;padding-left:14px;padding-right:14px;letter-spacing:0;font-size:6px}.traveler h2>span{display:none}.section-heading{margin-bottom:8px}.traveler{padding-bottom:13px}.avatar{width:37px;height:44px}.resource-grid b{font-size:17px}.mission h2{font-size:15px}.mission p{font-size:10px}.objectives{gap:7px}.objective{font-size:10px}.progress-track{margin:12px 0}.inventory{padding:13px 0}.bag-grid{grid-template-columns:repeat(6,1fr);gap:3px}.bag-slot{height:26px;font-size:16px}.activity-log .log-entry:nth-child(3){display:none}.activity-log{min-height:65px}.scene-heading{padding:0 12px}.control-strip .click-hint{display:none}.control-strip{font-size:9px;padding:0 10px}.control-strip>div{gap:10px}.page-intro p{font-size:11px}.intro-note{padding:19px 23px}.intro-note h2{font-size:20px}.intro-note p{font-size:11px;margin-bottom:15px}.intro-kicker{font-size:8px}.chapter-mark{padding-left:15px}.intro-hint{font-size:8px}}@media(max-width:760px){.site-header{height:68px;padding:0 18px;gap:12px}.brand{font-size:17px;gap:9px;letter-spacing:1px}.brand-icon{width:31px;height:35px;font-size:27px}.brand small{font-size:7px;letter-spacing:1.5px}.site-header nav{margin-left:auto;gap:18px}.nav-button{font-size:11px}.nav-button.active>span{display:none}.header-right{gap:0}.page{padding:23px 16px 0}.page-intro{align-items:flex-start;margin-bottom:20px}h1{font-size:21px;letter-spacing:.4px;margin:8px 0}.eyebrow{font-size:8px;letter-spacing:1.3px}.page-intro p{max-width:290px;font-size:10px}.chapter-mark{padding-left:12px;white-space:nowrap}.chapter-mark>span{font-size:8px;letter-spacing:1px}.chapter-mark b{font-size:25px}.chapter-mark small{font-size:8px;letter-spacing:.5px}.game-layout{display:flex;flex-direction:column;gap:19px}.play-column{width:100%}.scene-heading{height:40px}.scene-heading strong{font-size:12px}.weather{font-size:9px}.weather .time{font-size:10px}.scene-coordinates{display:inline-block;font-size:8px;margin-left:11px}.scene{min-height:0}.journal{width:100%;display:grid;grid-template-columns:1fr 1fr;column-gap:24px;padding:18px 18px 0}.traveler{align-items:center}.traveler h2>span{display:inline}.resource-grid{border-top:0;padding:0 0 14px;align-self:stretch;align-items:center}.mission{grid-column:1;padding:15px 0;border-top:1px solid var(--line);border-bottom:0;grid-row:2/4}.mission p br{display:none}.inventory{grid-column:2;grid-row:2;border-bottom:0}.field-notes{grid-column:2;grid-row:3;padding-top:8px}.activity-log .log-entry:nth-child(3){display:none}.activity-log{min-height:45px;gap:7px}.journal-foot{grid-column:1/-1;margin:0 -18px;font-size:7px;letter-spacing:1px;padding:13px 18px}.bag-slot{height:31px}.site-footer{margin-top:19px;font-size:8px;letter-spacing:0}.site-footer>span>span{margin:0 5px}.control-strip .click-hint{display:flex}.scene-corner{bottom:12px;left:12px;right:12px;font-size:7px}.map-tag{font-size:7px}.map-button{right:12px;top:12px;width:27px;height:27px;font-size:20px}.toast{top:11px;font-size:10px;padding:7px 12px}.interaction-prompt{bottom:39px;font-size:10px;padding:6px 10px}.intro-note{width:min(380px,86%);padding:20px 25px}.intro-note h2{font-size:21px}.intro-note p{font-size:11px}.below-map{font-size:9px}}@media(max-width:420px){.site-header nav{gap:13px}.nav-button{font-size:10px}.header-right{display:none}.brand{font-size:16px}.page-intro h1{font-size:19px}.chapter-mark{display:none}.scene-coordinates{display:none}.scene{margin:0 -3px}.journal{column-gap:17px;padding:15px 14px 0}.journal-foot{margin:0 -14px;padding:13px 14px;font-size:6px}.intro-note{padding:14px 18px}.intro-note h2{font-size:18px;margin:7px 0}.intro-note p{font-size:10px;line-height:1.8;margin-bottom:11px}.intro-hint{margin-top:9px}.intro-kicker{font-size:7px}.primary-button{padding:8px 16px;font-size:11px}.control-strip .click-hint{font-size:8px}.control-strip>div{gap:8px}kbd{min-width:17px;padding:0 3px}.mission h2{font-size:14px}.bag-slot{height:25px}.resource-grid>div{gap:3px 4px}.traveler h2>span{display:none}.vitals{gap:8px}.site-footer>span{max-width:260px}.site-footer button{font-size:9px}}@media(pointer:coarse){.touch-controls{position:absolute;left:13px;bottom:36px;display:block;opacity:.77;z-index:3;text-align:center}.touch-controls button{width:29px;height:29px;background:#ece1c3b8;border:1px solid #7e7d5566;color:#5f6c4f;touch-action:none;font:16px var(--mono);padding:0}.touch-controls>div{display:flex;gap:3px;margin-top:3px}.touch-interact{display:block;position:absolute;right:15px;bottom:44px;background:#f6ebcbbe;color:#5d6b4e;border:1px solid #85855d77;padding:10px 12px;font-size:10px;z-index:3}.interaction-prompt{bottom:19px}.scene-corner{display:none}}@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+.intro-note{max-height:calc(100% - 28px);overflow:auto;transform:translate(-50%,-50%)}.intro-note #entry-echo{white-space:pre-line}
+
+@media(max-width:760px){.intro-note{display:flex;flex-direction:column;padding:14px 18px}.intro-kicker{display:none}.intro-note h2{font-size:18px;margin:0 0 9px;flex:none}.intro-note p{min-height:0;overflow:auto;max-height:72px;line-height:1.8;font-size:10px;margin:0 0 11px}.intro-note .primary-button{flex:none;padding:8px 16px}.intro-note .intro-hint{display:none}}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="废土集市首页"><span class="brand-icon" aria-hidden="true">▟</span><span>废土集市<small>WASTELAND BAZAAR</small></span></a>
+    <nav aria-label="游戏导航"><button class="nav-button active" id="market-tab">集市<span>01</span></button><button class="nav-button" id="guide-button">旅人手册</button><button class="nav-button" id="world-button">世界线 <span>↗</span></button></nav>
+    <div class="header-right"><span class="world-tag"><i></i> 无限世界 · 世界签 05</span><button class="icon-button" id="sound-button" aria-label="开启声音" title="开启声音">♫<span class="sound-off">／</span></button></div>
+  </header>
+
+  <main class="page">
+    <section class="page-intro"><div><div class="eyebrow">THE EMBER PACT <span>／</span> 余烬之约</div><h1>这里什么都卖，<em>除了明天。</em></h1><p>沙暴来临之前，做几笔好买卖。或许，能换来一条回家的路。</p></div><div class="chapter-mark"><span>DAY <b>01</b></span><small>锈风集市 · 旱季</small></div></section>
+
+    <div class="game-layout">
+      <section class="play-column" aria-label="像素游戏区域">
+        <div class="scene-heading"><div><span class="live-dot"></span><strong>锈风集市</strong><span class="scene-coordinates">SECTOR 07 / 24.6° N</span></div><div class="weather"><span aria-hidden="true">☀</span><span id="weather-text">晴 · 东南风</span><span class="time" id="clock">09:00</span></div></div>
+        <div class="scene" id="scene">
+          <canvas id="game-canvas" width="960" height="600" tabindex="0" aria-label="废土集市地图。方向键或 WASD 移动，E 交互，也可以点击地图中的人物或物资自动前往。">请使用支持 Canvas 的浏览器游玩。</canvas>
+          <div class="scene-corner"><span>← 拾荒者入口</span><span class="map-tag">自由探索</span></div>
+          <div class="map-note" id="map-note" hidden><b>集市导览</b><span>北 · 穿界电台</span><span>西 · 水婆与老莫</span><span>东 · 阿锈与小满</span><span>发光的废料堆可拾荒</span></div>
+          <button class="map-button" id="map-button" aria-label="查看集市导览" aria-pressed="false">⌖</button>
+          <button class="interaction-prompt" id="interaction-prompt" hidden><kbd>E</kbd><span>交互</span></button>
+          <div class="intro-note" id="intro-note"><div class="intro-kicker">一段旅程的终点，是另一段的开始</div><h2>旅人，欢迎来到锈风。</h2><p id="entry-echo">你穿过漫天黄沙，在一座由废铁和旧梦搭起的集市前停下。北边那台电台，或许知道离开的路。</p><button class="primary-button" id="start-button">进入集市 <span>→</span></button><span class="intro-hint">约 5–8 分钟 · 支持键盘与鼠标</span></div>
+          <div id="toast" class="toast" role="status" hidden></div>
+          <div class="touch-controls" aria-label="触屏移动"><button data-dir="up" aria-label="向上">↑</button><div><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button></div></div>
+          <button class="touch-interact" id="touch-interact">交互 E</button>
+          <div class="pause-badge" id="pause-badge" hidden>休息一下 · 已暂停<button id="resume-button">继续旅程 →</button></div>
+        </div>
+        <div class="control-strip"><div><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动</span><span><kbd>E</kbd> 交互</span><span class="desktop-hint"><kbd>SHIFT</kbd> 快跑</span><span class="click-hint">也可点击地图前往</span></div><button id="pause-button" aria-label="暂停游戏">Ⅱ</button></div>
+        <div class="below-map"><span><i class="tiny-star">✦</i> 废铁有价，人情无价。</span><span id="save-status"><i></i> 旅程自动保存</span></div>
+      </section>
+
+      <aside class="journal" aria-label="旅人日志">
+        <section class="traveler"><div class="avatar" aria-hidden="true"><div class="avatar-pixel"></div></div><div><span class="section-eyebrow">THE TRAVELER</span><h2>无名旅人 <span>流浪中</span></h2><div class="vitals"><span id="hp" aria-label="生命">♥ ♥ ♥</span><span id="sanity">理智 2</span></div></div><button class="small-icon" id="restart-button" aria-label="重新开始本关" title="重新开始本关">↺</button></section>
+        <section class="resource-grid" aria-label="物资"><div><span class="resource-icon water-icon">◆</span><b id="water-count">3</b><small>净水</small></div><div><span class="resource-icon scrap-icon">▰</span><b id="scrap-count">4</b><small>废料</small></div><div><span class="resource-icon trust-icon">✧</span><b id="trust-count">0</b><small>声望</small></div></section>
+        <section class="mission"><div class="section-heading"><span class="section-eyebrow">当前委托</span><span class="paper-tag">主线</span></div><h2>给明天一个信号</h2><p>修好集市北面的穿界电台，<br>接通下一段世界线。</p><div class="progress-track"><i id="mission-progress"></i></div><div class="objectives" id="objectives"></div><button class="text-button" id="mission-button">查看委托详情 <span>↗</span></button></section>
+        <section class="inventory"><div class="section-heading"><span class="section-eyebrow">随身行囊</span><span class="inventory-capacity" id="bag-count">0 / 6</span></div><div id="bag-grid" class="bag-grid"></div><p id="bag-caption">轻装上路，也是一种勇气。</p></section>
+        <section class="field-notes"><div class="section-heading"><span class="section-eyebrow">风中的消息</span><span class="note-line"></span></div><div id="activity-log" class="activity-log" aria-live="polite"></div></section>
+        <div class="journal-foot">KEEP A LITTLE HOPE IN YOUR POCKET.<span>✳</span></div>
+      </aside>
+    </div>
+    <footer class="site-footer"><span>无限世界 <span>／</span> 一场关于交换与选择的像素旅程</span><button id="relay-button">接力存档 <span>↗</span></button></footer>
+  </main>
+
+  <dialog id="game-dialog" aria-labelledby="dialog-title"><div class="dialog-top"><span id="dialog-kicker">锈风集市</span><button class="close-button" id="dialog-close" aria-label="关闭对话">×</button></div><div id="dialog-body"></div><div id="dialog-actions" class="dialog-actions"></div></dialog>
+  <dialog id="relay-dialog" aria-labelledby="relay-title"><div class="dialog-top"><span>INFINITE WORLDS / SAVE_STATE v2</span><button class="close-button" id="relay-close" aria-label="关闭世界线">×</button></div><h2 id="relay-title">每一次告别，都有回响。</h2><div id="opening-strip"></div><section id="echo-log"></section><section id="card-preview"></section><details id="debug-panel"><summary>接力联调工具</summary><pre id="debug-json"></pre><textarea id="debug-code" rows="3" aria-label="接力存档码"></textarea><div class="debug-row"><button id="debug-copy">复制当前存档码</button><button id="debug-import">导入存档码</button><button id="debug-reset">重置本关</button></div></details><p class="relay-note">当前出口通往幽冥戏班；信号提灯会在那里化为引魂灯。正式比赛仍按接线表填写 game.js 顶部的 CONFIG。</p></dialog>
+  <script>/* =========================================================
+ * 无限世界 · SAVE_STATE v3 存档协议核心库
+ * ---------------------------------------------------------
+ * 整条世界线的关卡都靠这个文件衔接，队伍【不需要修改本文件】。
+ *
+ * 队伍常用 API：
+ *   WL.readSave(levelNo)        读档（宽容：缺字段补默认、多字段忽略、类型自动转换）
+ *   WL.consumeAny(items, type)  按类型取用上家道具，取不到返回 null → 触发本关兜底剧情
+ *   WL.addItem(save, item)      往背包加道具 { id, name, type }
+ *   WL.addClue(save, text)      加线索
+ *   WL.setPlayer(save, patch)   改面板 { hp, max_hp, sanity, level, status, curses }
+ *   WL.respawn()                恢复进入本关时的存档快照
+ *   WL.failLevel(reason)        本关失败：生成遗物、墓碑和满血二代探索者
+ *   WL.forcePass()              裁判强制结束本关并走遗物交接
+ *   WL.completeLevel(config, save, opts)
+ *                               校验出口 → 写档 → 过场 → 跳转；缺交接必填项返回 null
+ *                               opts = { exitHook: '结尾一句话', nextUrl: '下一关页面地址' }
+ *   WL.renderOpening(save)      前情提要条（自动呼应上家钩子）
+ *   WL.renderSaveCard(save, level, world)   五行「通关存档卡」
+ *   WL.goTo(url, save)          带存档与旅程进入页面（大厅首跳也使用）
+ *   WL.mountDebug(save)         安装存档复制、导入、重置按钮
+ *
+ * 存档传递通道：localStorage（同一台电脑接力）
+ *              + URL ?save=存档码&history=旅程码（跳转时自动附加，兼容 file:// 分页存储）
+ *
+ * 纯静态实现：file:// 双击即可运行，无任何依赖。
+ * ========================================================= */
+(function (global) {
+  'use strict';
+
+  var STORAGE_KEY = 'wuxianliu_save_v3';
+  var HISTORY_KEY = 'wuxianliu_history_v3';
+  var LEGACY_STORAGE_KEY = 'wuxianliu_save_v2';
+  var LEGACY_HISTORY_KEY = 'wuxianliu_history_v2';
+  var memoryHistory = null;
+  var memoryInitialSave = null;
+  var SCHEMA = 'v3';
+
+  /* 道具类型词表（8 类，消费按类型匹配，不按名称匹配） */
+  var ITEM_TYPES = ['key', 'tool', 'light', 'food', 'token', 'info', 'weapon', 'strange'];
+  var TYPE_LABELS = {
+    key: '钥匙', tool: '工具', light: '照明', food: '食物',
+    token: '信物', info: '情报', weapon: '武器', strange: '异物'
+  };
+
+  /* ---------------- 基础工具 ---------------- */
+
+  function esc(text) {
+    return String(text === undefined || text === null ? '' : text)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function toInt(value, fallback, min) {
+    var n = parseInt(value, 10);
+    if (isNaN(n)) n = fallback;
+    if (typeof min === 'number' && n < min) n = min;
+    return n;
+  }
+
+  function toStr(value, fallback) {
+    if (value === undefined || value === null) return fallback || '';
+    return String(value);
+  }
+
+  function defaultSave(levelNo) {
+    return {
+      schema: SCHEMA,
+      level: typeof levelNo === 'number' ? levelNo : 1,
+      player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: 'normal', curses: [] },
+      items: [],
+      clues: [],
+      exit_hook: '',
+      prev_world: '',
+      next_world: '',
+      tombstone: {}
+    };
+  }
+
+  /* 道具归一化：类型不在词表内 → 归为 strange（异物） */
+  function coerceItem(raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    var type = toStr(raw.type, 'strange').trim().toLowerCase();
+    if (ITEM_TYPES.indexOf(type) === -1) type = 'strange';
+    var item = {
+      id: toStr(raw.id, '').trim() || 'item_' + Math.random().toString(36).slice(2, 8),
+      name: (toStr(raw.name, '未知物品').trim() || '未知物品').slice(0, 32),
+      type: type,
+      relic: raw.relic === true
+    };
+    if (raw.durability !== undefined) item.durability = Math.max(0, toInt(raw.durability, 1, 0));
+    return item;
+  }
+
+  function coerceItems(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw.map(coerceItem).filter(Boolean).slice(0, 3);
+  }
+
+  function coerceClues(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw.map(function (c) { return toStr(c, '').trim(); }).filter(function (c) { return c; });
+  }
+
+  /* ---------------- 存档码（base64，用于 URL 传递与手动导入） ---------------- */
+
+  function toB64(str) {
+    if (typeof btoa === 'function') return btoa(unescape(encodeURIComponent(str)));
+    if (typeof Buffer !== 'undefined') return Buffer.from(str, 'utf-8').toString('base64');
+    throw new Error('当前环境不支持 base64');
+  }
+  function fromB64(b64) {
+    if (typeof atob === 'function') return decodeURIComponent(escape(atob(b64)));
+    if (typeof Buffer !== 'undefined') return Buffer.from(b64, 'base64').toString('utf-8');
+    throw new Error('当前环境不支持 base64');
+  }
+
+  function encodeCode(save) {
+    return toB64(JSON.stringify(save));
+  }
+
+  function decodeCode(code) {
+    try {
+      return JSON.parse(fromB64(String(code).trim()));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /* ---------------- 旅程记录（供终局结算页回放） ---------------- */
+
+  /* 与存档分开存放：存档卡保持严格五栏，旅程回放数据走独立通道 */
+  function readHistory() {
+    try {
+      var arr = memoryHistory;
+      var m = global.location.search.match(/[?&]history=([^&]+)/);
+      if (!Array.isArray(arr) && m) arr = decodeCode(decodeURIComponent(m[1]));
+      if (!Array.isArray(arr)) {
+        var raw = global.localStorage.getItem(HISTORY_KEY) || global.localStorage.getItem(LEGACY_HISTORY_KEY);
+        arr = raw ? JSON.parse(raw) : [];
+      }
+      if (!Array.isArray(arr)) return [];
+      return arr.map(function (h) {
+        if (!h || typeof h !== 'object') return null;
+        return {
+          level: toInt(h.level, 0, 0),
+          world: toStr(h.world, '？？？'),
+          hook: toStr(h.hook, '')
+        };
+      }).filter(Boolean).slice(-64);
+    } catch (e) { return []; }
+  }
+
+  /* 每通完一关自动记录一条：第几关 · 什么世界 · 留下了什么结局 */
+  function recordPassage(config, save) {
+    var list = readHistory();
+    list.push({
+      level: toInt(config.level, 0, 0),
+      world: toStr(config.world, '？？？'),
+      hook: toStr(save.exit_hook, '')
+    });
+    if (list.length > 64) list = list.slice(-64); /* 安全上限 */
+    memoryHistory = list;
+    try {
+      global.localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+    } catch (e) { /* ignore */ }
+  }
+
+  /* 开始新一局：清空旧数据，生成全场统一开局面板（命3 · 理智2 · 空背包） */
+  function startRun(levelNo) {
+    resetRun();
+    var save = defaultSave(typeof levelNo === 'number' ? levelNo : 1);
+    persist(save);
+    return save;
+  }
+
+  /* 清空本机全部运行数据（存档 + 旅程记录） */
+  function resetRun() {
+    memoryHistory = [];
+    memoryInitialSave = null;
+    try {
+      global.localStorage.removeItem(STORAGE_KEY);
+      global.localStorage.removeItem(HISTORY_KEY);
+      global.localStorage.removeItem(LEGACY_STORAGE_KEY);
+      global.localStorage.removeItem(LEGACY_HISTORY_KEY);
+    } catch (e) { /* ignore */ }
+  }
+
+  /* ---------------- 读档（宽容处理核心） ---------------- */
+
+  /* 缺字段补默认值、多字段一律忽略、类型自动转换 */
+  function normalize(raw, levelNo) {
+    var base = defaultSave(levelNo);
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return base;
+    var player = raw.player && typeof raw.player === 'object' ? raw.player : {};
+    var maxHp = Math.min(10, Math.max(1, toInt(player.max_hp, 3, 1)));
+    var hp = Math.min(maxHp, toInt(player.hp, 3, 0));
+    var status = toStr(player.status, hp <= 0 ? 'dead' : 'normal');
+    if (['normal', 'wounded', 'cursed', 'dead', 'specter'].indexOf(status) === -1) status = 'normal';
+    var tomb = raw.tombstone && typeof raw.tombstone === 'object' && !Array.isArray(raw.tombstone) ? raw.tombstone : {};
+    return {
+      schema: SCHEMA,
+      level: typeof levelNo === 'number' ? levelNo : toInt(raw.level, 1, 0),
+      world: toStr(raw.world, ''),
+      player: {
+        hp: hp,
+        max_hp: maxHp,
+        level: Math.min(10, toInt(player.level, 1, 1)),
+        sanity: toInt(player.sanity, 2, 0),
+        status: status,
+        curses: Array.isArray(player.curses) ? player.curses.map(function (c) { return toStr(c, '').slice(0, 40); }).filter(Boolean).slice(0, 8) : []
+      },
+      items: coerceItems(raw.items),
+      clues: coerceClues(raw.clues).slice(-8),
+      exit_hook: toStr(raw.exit_hook, ''),
+      prev_world: toStr(raw.prev_world, ''),
+      next_world: toStr(raw.next_world, ''),
+      tombstone: {
+        fallen_level: toInt(tomb.fallen_level, 0, 0),
+        cause: toStr(tomb.cause, '').slice(0, 100),
+        epitaph: toStr(tomb.epitaph, '').slice(0, 200)
+      }
+    };
+  }
+
+  function persist(save) {
+    try {
+      global.localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
+    } catch (e) { /* 隐私模式等场景静默忽略，不影响游戏 */ }
+  }
+
+  /* 读取优先级：URL ?save=存档码 → localStorage → 默认开局 */
+  function readSave(levelNo) {
+    var raw = null;
+    try {
+      var m = global.location.search.match(/[?&]save=([^&]+)/);
+      if (m) {
+        raw = decodeCode(decodeURIComponent(m[1]));
+        if (raw) persist(normalize(raw, levelNo)); /* 落地本地，刷新不丢 */
+      }
+    } catch (e) { /* ignore */ }
+    if (!raw) {
+      try {
+        var stored = global.localStorage.getItem(STORAGE_KEY) || global.localStorage.getItem(LEGACY_STORAGE_KEY);
+        if (stored) raw = JSON.parse(stored);
+      } catch (e) { /* ignore */ }
+    }
+    var save = normalize(raw, levelNo);
+    if (!memoryInitialSave) memoryInitialSave = normalize(save, levelNo);
+    return save;
+  }
+
+  function getInitialSave() {
+    if (memoryInitialSave) return normalize(memoryInitialSave, null);
+    return readSave();
+  }
+
+  function respawn() {
+    var initial = getInitialSave();
+    persist(initial);
+    return initial;
+  }
+
+  /* ---------------- 游戏内编辑存档 ---------------- */
+
+  /* 按类型取用上家道具：命中则从背包移除并返回该道具；取不到返回 null，
+   * 此时队伍必须走本关兜底剧情（评审「衔接分」硬性要求！） */
+  function consumeAny(items, type) {
+    if (!Array.isArray(items)) return null;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] && items[i].type === type) {
+        return items.splice(i, 1)[0];
+      }
+    }
+    return null;
+  }
+
+  function addItem(save, item) {
+    var it = coerceItem(item);
+    if (it) save.items.push(it);
+    return save;
+  }
+
+  function addClue(save, text) {
+    var t = toStr(text, '');
+    if (t) save.clues.push(t);
+    return save;
+  }
+
+  function setPlayer(save, patch) {
+    if (!patch) return save;
+    if (patch.max_hp !== undefined) save.player.max_hp = Math.min(10, Math.max(1, toInt(patch.max_hp, save.player.max_hp || 3, 1)));
+    if (patch.hp !== undefined) save.player.hp = Math.min(save.player.max_hp || 3, toInt(patch.hp, save.player.hp, 0));
+    if (patch.level !== undefined) save.player.level = Math.min(10, toInt(patch.level, save.player.level || 1, 1));
+    if (patch.sanity !== undefined) save.player.sanity = toInt(patch.sanity, save.player.sanity, 0);
+    if (patch.status !== undefined) save.player.status = toStr(patch.status, save.player.status);
+    if (Array.isArray(patch.curses)) save.player.curses = patch.curses.slice(0, 8);
+    return save;
+  }
+
+  /* ---------------- 写档 → 过场演出 → 跳转 ---------------- */
+
+  /* 超量保留最近取得的内容，让本关的交接信息优先传给下家。 */
+  function softValidate(save) {
+    var warnings = [];
+    if (save.items.length > 3) {
+      save.items = save.items.slice(-3);
+      warnings.push('道具超过 3 件，已优先保留最近取得的 3 件');
+    }
+    if (save.clues.length > 2) {
+      save.clues = save.clues.slice(-2);
+      warnings.push('线索超过 2 条，已优先保留最近取得的 2 条');
+    }
+    return warnings;
+  }
+
+  /* 读档保持宽容；交接必填项缺失时明确提示，不写入无效出口。 */
+  function validateExit(save, config, opts) {
+    config = config || {};
+    opts = opts || {};
+    var errors = [];
+    if (!save.items.length) errors.push('请为出口准备至少 1 件道具，并标注道具类型。');
+    if (!save.clues.length) errors.push('请为出口准备至少 1 条本关线索。');
+    if (!toStr(save.exit_hook, '').trim()) errors.push('请填写指向下一个世界的结尾一句话。');
+    if (!toStr(config.world, '').trim()) errors.push('请填写本关世界名。');
+    if (!toStr(config.nextWorld, '').trim()) errors.push('请填写下一关世界名。');
+    if (!toStr(opts.nextUrl, '').trim()) errors.push('请填写下一关页面地址。');
+    return errors;
+  }
+
+  function showExitErrors(errors) {
+    if (typeof document === 'undefined') return;
+    var box = document.getElementById('wl-exit-errors');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'wl-exit-errors';
+      (document.getElementById('finish-area') || document.body).appendChild(box);
+    }
+    box.innerHTML = errors.length ? '<div class="wl-warn" role="alert"><strong>交接尚未完成</strong><br>' + errors.map(esc).join('<br>') + '</div>' : '';
+  }
+
+  /*
+   * config = { level: 本关序号, world: 本关世界名, nextWorld: 下家世界名 }
+   * save   = readSave 拿到、游戏过程中已修改的存档对象
+   * opts   = { exitHook: '结尾一句话（必须指向下一签世界）', nextUrl: '下家页面地址', passViaUrl: 是否附加存档码（默认 true） }
+   */
+  function failLevel(reason, fallenSave, configOverride) {
+    var config = configOverride || global.CONFIG || {};
+    var current = fallenSave ? normalize(fallenSave, toInt(config.level, 1, 1)) : readSave(toInt(config.level, 1, 1));
+    var cause = toStr(reason, '力竭倒地').slice(0, 100);
+    var items = coerceItems(current.items);
+    if (!items.length) {
+      items = [{ id: 'relic_survival_knife', name: '前人的求生短刀', type: 'tool', relic: true }];
+    } else {
+      items = items.map(function (it) {
+        it.relic = true;
+        it.name = ('前人的' + it.name.replace(/^(前人的)+/, '')).slice(0, 32);
+        return it;
+      }).slice(0, 3);
+    }
+    var previous = current.tombstone || {};
+    var marker = '[第' + current.level + '关] ' + cause;
+    var relicSave = normalize({
+      schema: SCHEMA,
+      level: current.level + 1,
+      world: current.world || config.world,
+      player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: 'normal', curses: [] },
+      items: items,
+      clues: current.clues.length ? current.clues : ['前人倒在此处，留下了未解的谜题'],
+      exit_hook: '【遗物交接】一代探索者在此长眠，新求生者拾起遗物踏入下一世界……',
+      prev_world: current.world || config.world,
+      next_world: config.nextWorld || current.next_world || '未知世界',
+      tombstone: {
+        fallen_level: current.level,
+        cause: cause,
+        epitaph: ((previous.epitaph ? previous.epitaph + ' | ' : '') + marker).slice(0, 200)
+      }
+    }, current.level + 1);
+    persist(relicSave);
+    recordPassage(config, relicSave);
+    if (global.parent && global.parent !== global) {
+      global.parent.postMessage({ type: 'IW_FAIL', reason: cause, fallenSave: current }, '*');
+      global.parent.postMessage({ type: 'IW_SAVE', save: relicSave, history: readHistory(), failure: true }, '*');
+    }
+    if (config.nextUrl) showHandoffOverlay(config, relicSave, [], config.nextUrl, true);
+    return relicSave;
+  }
+
+  function forcePass() {
+    return failLevel('时空裂隙坍缩（演示超时）');
+  }
+
+  function completeLevel(config, save, opts) {
+    opts = opts || {};
+    config = config || {};
+    var current = normalize(save, toInt(config.level, 1, 1));
+    if (current.player.hp <= 0 || current.player.status === 'dead') {
+      return failLevel('探索者生命耗尽', save, config);
+    }
+    var candidate = normalize(save, toInt(config.level, 1, 1) + 1);
+    candidate.exit_hook = toStr(opts.exitHook, '').trim();
+    candidate.prev_world = toStr(config.world, '').trim();
+    candidate.next_world = toStr(config.nextWorld, '').trim();
+    var warnings = softValidate(candidate);
+    var errors = validateExit(candidate, config, opts);
+    showExitErrors(errors);
+    if (errors.length) return null;
+    Object.keys(candidate).forEach(function (key) { save[key] = candidate[key]; });
+    persist(save);
+    recordPassage(config, save); /* 旅程记录：终局结算页回放用 */
+    if (global.parent && global.parent !== global) {
+      global.parent.postMessage({ type: 'IW_COMPLETE', save: save, history: readHistory() }, '*');
+    }
+    showHandoffOverlay(config, save, warnings, opts.nextUrl, opts.passViaUrl !== false);
+    return save;
+  }
+
+  /* 替换旧参数、保留其他参数与锚点，导入不会再次读到旧 URL 存档。 */
+  function transferUrl(nextUrl, save, history) {
+    var parts = String(nextUrl).split('#');
+    var hash = parts.length > 1 ? '#' + parts.slice(1).join('#') : '';
+    var beforeHash = parts[0];
+    var queryAt = beforeHash.indexOf('?');
+    var base = queryAt === -1 ? beforeHash : beforeHash.slice(0, queryAt);
+    var query = queryAt === -1 ? [] : beforeHash.slice(queryAt + 1).split('&').filter(function (p) {
+      return p && !/^(save|history)(=|$)/.test(p);
+    });
+    query.push('save=' + encodeURIComponent(encodeCode(save)));
+    query.push('history=' + encodeURIComponent(encodeCode(history)));
+    return base + '?' + query.join('&') + hash;
+  }
+
+  function jumpTo(nextUrl, save, passViaUrl) {
+    if (!nextUrl) return;
+    var url = nextUrl;
+    if (passViaUrl) {
+      url = transferUrl(nextUrl, save, readHistory());
+    }
+    global.location.href = url;
+  }
+
+  /* 自动过场演出：世界线移动画面 + 上家结尾钩子 + 通关存档卡 */
+  function showHandoffOverlay(config, save, warnings, nextUrl, passViaUrl) {
+    if (typeof document === 'undefined') return; /* 非浏览器环境（如自动化测试）跳过 UI */
+    var ov = document.createElement('div');
+    ov.className = 'wl-overlay';
+    var seconds = 8;
+    ov.innerHTML =
+      '<div class="wl-handoff">' +
+        '<div class="wl-handoff-kicker">世 界 线 移 动</div>' +
+        '<div class="wl-handoff-route">' + esc(config.world) + ' → ' + esc(config.nextWorld || '？？？') + '</div>' +
+        '<div class="wl-handoff-hook">“' + esc(save.exit_hook || '……') + '”</div>' +
+        renderSaveCard(save, config.level, config.world) +
+        (warnings.length ? '<div class="wl-warn">提示：' + warnings.map(esc).join('；') + '</div>' : '') +
+        '<button class="wl-btn" id="wl-next-btn" type="button">进入下一关（' + seconds + 's）</button>' +
+      '</div>';
+    document.body.appendChild(ov);
+    var done = false;
+    function go() {
+      if (done) return;
+      done = true;
+      clearInterval(timer);
+      jumpTo(nextUrl, save, passViaUrl);
+    }
+    document.getElementById('wl-next-btn').onclick = go;
+    var timer = setInterval(function () {
+      seconds--;
+      var btn = document.getElementById('wl-next-btn');
+      if (btn) btn.textContent = '进入下一关（' + seconds + 's）';
+      if (seconds <= 0) { clearInterval(timer); go(); }
+    }, 1000);
+  }
+
+  /* ---------------- 渲染组件 ---------------- */
+
+  function describeBag(items) {
+    if (!items.length) return '空';
+    return items.map(function (i) {
+      return esc(i.name) + '（' + (TYPE_LABELS[i.type] || i.type) + '类）';
+    }).join('、');
+  }
+
+  /* 前情提要条：每关开场自动渲染，零成本完成衔接最低保障 */
+  function renderOpening(save) {
+    if (save.prev_world) {
+      return '<div class="wl-opening">前情提要：你从『' + esc(save.prev_world) + '』的结局里醒来——' +
+        (save.exit_hook ? '“' + esc(save.exit_hook) + '”' : '（上家没有留下结尾钩子）') +
+        '<br>随身行李：' + describeBag(save.items) + '</div>';
+    }
+    return '<div class="wl-opening">前情提要：（未读到上家存档，按默认开局：命 3 · 理智 2 · 空背包。' +
+      '你可能是本世界线第 1 关，或直接打开了本页。）</div>';
+  }
+
+  /* 五行「通关存档卡」 */
+  function renderSaveCard(save, level, world) {
+    var lv = (level === undefined || level === null) ? save.level : level;
+    var w = world || save.prev_world || '？？？';
+    var cluesHtml = save.clues.length ? save.clues.map(esc).join('<br>') : '无';
+    return '<div class="wl-card">' +
+      '<div class="wl-card-title">【第 ' + toInt(lv, 1, 1) + ' 关 · ' + esc(w) + ' 通关存档卡】</div>' +
+      '<div class="wl-row">命：' + save.player.hp + '/' + (save.player.max_hp || 3) + '　　等级：' + (save.player.level || 1) + '/10　　理智：' + save.player.sanity + '</div>' +
+      '<div class="wl-row">背包：' + describeBag(save.items) + '</div>' +
+      '<div class="wl-row">线索：' + cluesHtml + '</div>' +
+      '<div class="wl-row">结尾一句话：' + (save.exit_hook ? esc(save.exit_hook) : '（未填写）') + '</div>' +
+      '<div class="wl-row wl-next">（下一关：' + esc(save.next_world || '未知') + '）</div>' +
+      '</div>';
+  }
+
+  /* ---------------- 调试工具 ---------------- */
+
+  var debug = {
+    json: function (save) {
+      try { return JSON.stringify(save, null, 2); } catch (e) { return '{}'; }
+    },
+    code: function (save) { return encodeCode(save); },
+    importCode: function (code) {
+      var raw = decodeCode(code);
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+      var save = normalize(raw, null);
+      persist(save);
+      return save;
+    },
+    reset: function () {
+      try { global.localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+    }
+  };
+
+  function mountDebug(save) {
+    var jsonEl = document.getElementById('debug-json');
+    var codeEl = document.getElementById('debug-code');
+    function sync() {
+      jsonEl.textContent = debug.json(save);
+      codeEl.value = debug.code(save);
+    }
+    sync();
+    document.getElementById('debug-copy').onclick = function () {
+      sync();
+      codeEl.select();
+      try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    };
+    document.getElementById('debug-import').onclick = function () {
+      var restored = debug.importCode(codeEl.value);
+      if (!restored) { global.alert('存档码无法识别'); return; }
+      /* 单独的存档码不含旅程；清掉当前 URL 的旧旅程，避免串线。 */
+      resetRun();
+      persist(restored);
+      jumpTo(global.location.href, restored, true);
+    };
+    document.getElementById('debug-reset').onclick = function () {
+      jumpTo(global.location.href, startRun(save.level), true);
+    };
+  }
+
+  /* ---------------- 内置样式（过场/存档卡，避免被队伍样式影响） ---------------- */
+
+  var LIB_CSS = [
+    '.wl-card{background:#0f1724;border:1px solid #2a3b57;border-left:3px solid #35e08c;border-radius:10px;padding:14px 16px;color:#e8eef8;font:14px/23px "PingFang SC","Microsoft YaHei",system-ui,sans-serif;max-width:560px;box-sizing:border-box;}',
+    '.wl-card-title{font-weight:600;margin-bottom:8px;color:#9ff5c8;}',
+    '.wl-row{margin:2px 0;}',
+    '.wl-next{color:#8fa3bf;font-size:12px;margin-top:6px;}',
+    '.wl-opening{background:#141d2e;border:1px dashed #33455f;border-radius:8px;padding:10px 14px;color:#c6d4e8;font:14px/22px "PingFang SC","Microsoft YaHei",sans-serif;margin:0 0 16px;}',
+    '.wl-overlay{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(5,10,18,.94);display:flex;align-items:center;justify-content:center;z-index:9999;animation:wl-fade .35s ease;}',
+    '.wl-handoff{display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px;text-align:center;max-width:640px;}',
+    '.wl-handoff-kicker{letter-spacing:12px;color:#35e08c;font:600 14px/20px sans-serif;}',
+    '.wl-handoff-route{color:#e8eef8;font:600 20px/28px "PingFang SC","Microsoft YaHei",sans-serif;}',
+    '.wl-handoff-hook{color:#aebdd4;font:15px/24px "PingFang SC","Microsoft YaHei",sans-serif;font-style:italic;max-width:520px;}',
+    '.wl-warn{color:#f0b429;font:12px/18px "PingFang SC","Microsoft YaHei",sans-serif;max-width:560px;text-align:left;}',
+    '.wl-btn{background:#35e08c;color:#04140b;border:none;border-radius:8px;padding:10px 26px;font:600 15px/22px "PingFang SC","Microsoft YaHei",sans-serif;cursor:pointer;}',
+    '.wl-btn:hover{filter:brightness(1.08);}',
+    '@keyframes wl-fade{from{opacity:0}to{opacity:1}}'
+  ].join('');
+
+  function injectStyles() {
+    try {
+      if (!document.getElementById('wl-lib-style')) {
+        var s = document.createElement('style');
+        s.id = 'wl-lib-style';
+        s.textContent = LIB_CSS;
+        document.head.appendChild(s);
+      }
+    } catch (e) { /* ignore */ }
+  }
+  if (typeof document !== 'undefined') injectStyles();
+
+  /* 外链作品没有云端注入桥时，也由核心库完成双向握手与裁判指令。 */
+  if (typeof global.addEventListener === 'function') {
+    global.addEventListener('message', function (event) {
+      var message = event.data;
+      if (!message || typeof message !== 'object') return;
+      if (message.type === 'IW_INIT_SAVE' || message.type === 'iw-init') {
+        var incoming = normalize(message.save || readSave(), message.save && message.save.level);
+        memoryInitialSave = normalize(incoming, incoming.level);
+        persist(incoming);
+        if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+          global.dispatchEvent(new global.CustomEvent('iw-save-ready', { detail: incoming }));
+        }
+      }
+      if (message.type !== 'IW_ADMIN_COMMAND') return;
+      var command = String(message.command || message.action || '').toLowerCase();
+      if (command === 'force_pass') command = 'forcepass';
+      if (command === 'heal_player') command = 'heal';
+      if (command === 'heal' || command === 'respawn') {
+        var restored = command === 'respawn' ? respawn() : readSave();
+        if (command === 'heal') {
+          setPlayer(restored, { hp: restored.player.max_hp || 3, status: 'normal' });
+          persist(restored);
+        }
+        if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+          global.dispatchEvent(new global.CustomEvent('iw-admin', { detail: { command: command, save: restored } }));
+        }
+      } else if (command === 'skip' || command === 'forcepass') {
+        forcePass();
+      } else if (command === 'reload' && global.location && typeof global.location.reload === 'function') {
+        global.location.reload();
+      } else if (command === 'audio' && typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
+        global.dispatchEvent(new global.CustomEvent('iw-admin', { detail: { command: 'audio' } }));
+      }
+    });
+    global.addEventListener('load', function () {
+      if (global.parent && global.parent !== global) global.parent.postMessage({ type: 'IW_READY' }, '*');
+    });
+  }
+
+  /* ---------------- 导出 ---------------- */
+
+  global.WL = {
+    version: SCHEMA,
+    ITEM_TYPES: ITEM_TYPES,
+    TYPE_LABELS: TYPE_LABELS,
+    readSave: readSave,
+    getInitialSave: getInitialSave,
+    respawn: respawn,
+    normalize: normalize,
+    completeLevel: completeLevel,
+    failLevel: failLevel,
+    forcePass: forcePass,
+    validateExit: validateExit,
+    goTo: function (url, save) { jumpTo(url, save, true); },
+    mountDebug: mountDebug,
+    consumeAny: consumeAny,
+    addItem: addItem,
+    addClue: addClue,
+    setPlayer: setPlayer,
+    renderOpening: renderOpening,
+    renderSaveCard: renderSaveCard,
+    readHistory: readHistory,
+    startRun: startRun,
+    resetRun: resetRun,
+    escapeHtml: esc,
+    encodeCode: encodeCode,
+    decodeCode: decodeCode,
+    debug: debug
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script><script>/*
+ * 废土集市：不依赖 DOM 的玩法模型。
+ * 浏览器：MarketModel.create / action / tick；Node：require('./model.js')。
+ * 状态由调用者持有，模型只改动传入的本关状态，不读写接力存档。
+ */
+(function (root, factory) {
+  'use strict';
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.MarketModel = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  var nodes = [
+    { id: 'water', kind: 'npc', name: '水婆', x: 166, y: 234 },
+    { id: 'oscillator', kind: 'npc', name: '老莫', x: 336, y: 232 },
+    { id: 'cable', kind: 'npc', name: '阿锈', x: 720, y: 230 },
+    { id: 'battery', kind: 'npc', name: '小满', x: 737, y: 435 },
+    { id: 'board', kind: 'board', name: '悬赏榜', x: 482, y: 308 },
+    { id: 'radio', kind: 'radio', name: '穿界电台', x: 480, y: 147 },
+    { id: 'camp', kind: 'camp', name: '旅人营火', x: 278, y: 445 },
+    { id: 'salvage1', kind: 'salvage', name: '废料堆', x: 104, y: 380 },
+    { id: 'salvage2', kind: 'salvage', name: '旧收音机', x: 820, y: 303 },
+    { id: 'salvage3', kind: 'salvage', name: '废车残骸', x: 824, y: 494 },
+    { id: 'salvage4', kind: 'salvage', name: '旧行李箱', x: 170, y: 505 },
+    { id: 'salvage5', kind: 'salvage', name: '废零件', x: 365, y: 360 },
+    { id: 'salvage6', kind: 'salvage', name: '铁皮箱', x: 571, y: 424 }
+  ];
+
+  var solids = [
+    { x: 100, y: 150, w: 135, h: 60 },
+    { x: 277, y: 150, w: 135, h: 60 },
+    { x: 650, y: 150, w: 145, h: 60 },
+    { x: 680, y: 355, w: 135, h: 60 },
+    { x: 420, y: 65, w: 122, h: 63 },
+    { x: 48, y: 105, w: 45, h: 65 }
+  ];
+
+  var salvageAmounts = [2, 3, 2, 3, 2, 2];
+
+  function integer(value, fallback) {
+    var n = Number(value);
+    return Number.isFinite(n) && value !== null && value !== ''
+      ? Math.max(0, Math.floor(n))
+      : fallback;
+  }
+
+  function create(incomingSave, hasTool) {
+    var incoming = incomingSave && incomingSave.player || {};
+    var hp = Math.max(1, integer(incoming.hp, 3));
+    return {
+      player: { x: 480, y: 500, dir: 'down', moving: false },
+      resources: { water: 3, scrap: hasTool ? 7 : 4, trust: 0 },
+      parts: { cable: false, battery: false, oscillator: false },
+      coil: 0,
+      relic: false,
+      flags: {},
+      salvaged: [],
+      elapsed: 0,
+      hydration: 0,
+      started: false,
+      repaired: false,
+      dead: false,
+      ending: null,
+      hp: hp,
+      maxHp: Math.max(3, hp),
+      sanity: integer(incoming.sanity, 2)
+    };
+  }
+
+  /* 在缺水伤害的准确时刻停表；暂停、死亡和修复完成均不再消耗净水。 */
+  function tick(state, seconds) {
+    var messages = [];
+    var remaining = Number(seconds);
+    if (!state.started || state.dead || state.repaired || !Number.isFinite(remaining) || remaining <= 0) return messages;
+
+    while (remaining > 0.000001 && !state.dead) {
+      if (!state.flags.storm && state.elapsed >= 300) {
+        state.flags.storm = true;
+        messages.push('沙暴卷过集市。风更大了，摊主们仍在等你。');
+      }
+      var untilWater = Math.max(0, 90 - state.hydration);
+      var untilStorm = state.flags.storm ? Infinity : Math.max(0, 300 - state.elapsed);
+      var step = Math.min(remaining, untilWater, untilStorm);
+      state.elapsed += step;
+      state.hydration += step;
+      remaining -= step;
+
+      if (state.hydration >= 90 - 0.000001) {
+        state.hydration = 0;
+        if (state.resources.water > 0) {
+          state.resources.water--;
+          messages.push(state.resources.water === 0
+            ? '喝完了最后一份净水。去找水婆，帮忙抽水也能换来补给。'
+            : '烈日下喝掉一份净水。净水 -1。');
+        } else {
+          state.hp = Math.max(0, state.hp - 1);
+          messages.push('缺水让你步履艰难。生命 -1，水婆的水泵还能使用。');
+          if (state.hp === 0) {
+            state.dead = true;
+            state.player.moving = false;
+            messages.push('你倒在黄沙中。重整行囊，再来一次吧。');
+          }
+        }
+      }
+      if (!state.flags.storm && state.elapsed >= 300 && !state.dead) {
+        state.flags.storm = true;
+        messages.push('沙暴卷过集市。风更大了，摊主们仍在等你。');
+      }
+    }
+    return messages;
+  }
+
+  function failure(message) {
+    return { ok: false, message: message };
+  }
+
+  function action(state, id) {
+    if (state.dead) return failure('旅程暂时结束了，重新开始本关再试一次吧。');
+    if (state.ending) return failure('这一段旅程已经完成。');
+    if (state.repaired && id !== 'ending_kindness' && id !== 'ending_leave') {
+      return failure('电台已修复，是时候选择如何告别集市了。');
+    }
+
+    var bag = state.resources;
+    var message = '';
+    var kind = 'trade';
+    var duration = 6;
+    var salvageIndex = /^salvage([1-6])$/.exec(id);
+
+    if (salvageIndex) {
+      if (state.salvaged.indexOf(id) !== -1) return failure('这里已经搜寻过了。');
+      var index = Number(salvageIndex[1]) - 1;
+      bag.scrap += salvageAmounts[index];
+      state.salvaged.push(id);
+      message = '拾荒有收获：废料 +' + salvageAmounts[index] + '。';
+      if (id === 'salvage2') {
+        state.coil++;
+        message += '你还找到一枚完整的旧线圈，老莫应该用得上。';
+      }
+      if (id === 'salvage4') {
+        state.relic = true;
+        message += '箱底躺着一只发条蜥蜴，依然轻轻转动。';
+      }
+      kind = 'salvage';
+    } else if (id === 'water_buy') {
+      if (bag.scrap < 1) return failure('需要 1 份废料。也可以免费帮水婆抽水。');
+      bag.scrap--;
+      bag.water += 2;
+      message = '水婆把水壶灌满。废料 -1，净水 +2。';
+    } else if (id === 'pump') {
+      /* 先拿到水，再推进时间，避免临界时刻的免费补给反而致命。 */
+      bag.water++;
+      duration = 14;
+      message = '你帮忙摇动水泵，水婆分给你一份净水。净水 +1。';
+      kind = 'water';
+    } else if (id === 'cable_full' || id === 'cable_fair' || id === 'cable_water') {
+      if (state.parts.cable) return failure('你已经拿到了绝缘电缆。');
+      if (id === 'cable_fair' && bag.trust < 1) return failure('阿锈还不认识你。先完成悬赏，或帮帮其他摊主。');
+      var cableCost = id === 'cable_fair' ? 2 : 4;
+      if (id === 'cable_water') {
+        if (bag.water < 2) return failure('这笔交换需要 2 份净水。');
+        bag.water -= 2;
+        message = '阿锈接过净水，把电缆推给你。净水 -2，绝缘电缆 +1。';
+      } else {
+        if (bag.scrap < cableCost) return failure('还需要 ' + cableCost + ' 份废料。周围的残骸里还能找到一些。');
+        bag.scrap -= cableCost;
+        message = id === 'cable_fair'
+          ? '“听说你帮了集市。”阿锈给你一个人情价。废料 -2，绝缘电缆 +1。'
+          : '交易达成。废料 -4，绝缘电缆 +1。';
+      }
+      state.parts.cable = true;
+    } else if (id === 'battery_water' || id === 'battery_scrap') {
+      if (state.parts.battery) return failure('你已经拿到了储能电池。');
+      if (id === 'battery_water') {
+        if (bag.water < 2) return failure('小满需要 2 份净水。去水婆那里看看吧。');
+        bag.water -= 2;
+        bag.trust += 2;
+        message = '小满给家人装好净水，郑重递来电池。净水 -2，储能电池 +1，声望 +2。';
+      } else {
+        if (bag.scrap < 3) return failure('这笔交换需要 3 份废料。');
+        bag.scrap -= 3;
+        message = '你用备用零件换下小满的储能电池。废料 -3，储能电池 +1。';
+      }
+      state.parts.battery = true;
+    } else if (id === 'oscillator_scrap' || id === 'oscillator_coil') {
+      if (state.parts.oscillator) return failure('你已经拿到了信号振荡器。');
+      if (id === 'oscillator_coil') {
+        if (state.coil < 1) return failure('需要一枚旧线圈。东侧的旧收音机也许还没坏透。');
+        state.coil--;
+        bag.trust++;
+        message = '旧线圈让老莫的收音机重新唱歌。旧线圈 -1，信号振荡器 +1，声望 +1。';
+      } else {
+        if (bag.scrap < 3) return failure('老莫需要 3 份废料来修他的机器。');
+        bag.scrap -= 3;
+        message = '老莫从工具箱底翻出一个振荡器。废料 -3，信号振荡器 +1。';
+      }
+      state.parts.oscillator = true;
+    } else if (id === 'bounty') {
+      if (state.flags.bounty) return failure('这张净水泵维修悬赏已经结清了。');
+      if (bag.scrap < 3) return failure('修水泵需要 3 份废料。完成后可领 4 份净水。');
+      bag.scrap -= 3;
+      bag.water += 4;
+      bag.trust++;
+      state.flags.bounty = true;
+      message = '水泵重新运转，集市记住了你的名字。废料 -3，净水 +4，声望 +1。';
+      kind = 'quest';
+    } else if (id === 'rest') {
+      var maxHp = Math.max(3, state.maxHp || 3);
+      if (state.hp >= maxHp) return failure('你现在精神不错，暂时不需要休息。');
+      if (bag.water < 1) return failure('休息需要 1 份净水。水婆的水泵一直开着。');
+      bag.water--;
+      state.hp++;
+      message = '在营火边喝一口水，缓过气来。净水 -1，生命 +1。';
+      kind = 'heal';
+    } else if (id === 'repair') {
+      if (!state.parts.cable || !state.parts.battery || !state.parts.oscillator) {
+        return failure('电台还缺零件：需要绝缘电缆、储能电池和信号振荡器。');
+      }
+      state.repaired = true;
+      state.player.moving = false;
+      message = '电流穿过旧线路，穿界电台终于亮了。明天，有了信号。';
+      kind = 'repair';
+      duration = 0;
+    } else if (id === 'ending_kindness' || id === 'ending_leave') {
+      if (!state.repaired) return failure('先修好北面的穿界电台，才能接通世界线。');
+      if (id === 'ending_kindness') {
+        if (bag.water < 1) return failure('至少留下一份净水，才能把这份希望交给集市。');
+        bag.water--;
+        state.ending = 'kindness';
+        message = '你留下一份净水。集市的灯火会替你守住这条回家的路。';
+      } else {
+        state.ending = 'leave';
+        message = '你带着集市的信号告别。下一段旅程，正在电波的另一端等你。';
+      }
+      kind = 'ending';
+      duration = 0;
+    } else {
+      return failure('这里暂时没有可以进行的交易。');
+    }
+
+    var events = tick(state, duration);
+    if (events.length) message += ' ' + events.join(' ');
+    return { ok: true, message: message, kind: kind, events: events };
+  }
+
+  return { create: create, action: action, tick: tick, nodes: nodes, solids: solids };
+});
+</script><script>/* Original, dependency-free pixel artwork for the Rustwind Bazaar. */
+(function (global) {
+  'use strict';
+
+  const C = {
+    sand: '#c8b481', pale: '#d9c797', path: '#dccb9c', shadow: '#a18e5e',
+    deep: '#5b6248', green: '#687651', moss: '#90936a', light: '#e8d8a9',
+    rust: '#a56b48', orange: '#c58c57', darkRust: '#845c43', teal: '#6e9184',
+    darkTeal: '#526d61', red: '#b57857', cream: '#e8d3a3', wood: '#8f7750',
+    darkWood: '#6c6244', metal: '#85836a', darkMetal: '#626a55'
+  };
+
+  function rect(ctx, x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+  }
+
+  function poly(ctx, points, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    points.forEach((p, i) => i ? ctx.lineTo(Math.round(p[0]), Math.round(p[1])) : ctx.moveTo(Math.round(p[0]), Math.round(p[1])));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function random(seed) {
+    let x = seed >>> 0;
+    return function () {
+      x = (Math.imul(1664525, x) + 1013904223) >>> 0;
+      return x / 4294967296;
+    };
+  }
+
+  function shadow(ctx, x, y, w, h) {
+    rect(ctx, x - w / 2, y - h / 2 + 2, w, h - 4, '#6c684329');
+    rect(ctx, x - w / 2 + 4, y - h / 2, w - 8, h, '#6c684329');
+  }
+
+  function crate(ctx, x, y, size, shade) {
+    const s = size || 24;
+    shadow(ctx, x + s / 2 + 4, y + s + 3, s + 10, 9);
+    rect(ctx, x, y, s, s, C.darkWood);
+    rect(ctx, x + 2, y + 2, s - 4, s - 4, shade || '#a88d5a');
+    rect(ctx, x + 4, y + 4, s - 8, s - 8, '#b39b68');
+    rect(ctx, x + 2, y + s / 2 - 1, s - 4, 3, '#897446');
+    rect(ctx, x + s / 2 - 1, y + 2, 3, s - 4, '#897446');
+    rect(ctx, x + 2, y + 2, s - 4, 2, '#d1b77e');
+    rect(ctx, x + 3, y + s - 4, s - 6, 2, '#8d784d');
+    for (let i = 3; i < s - 3; i += 4) {
+      rect(ctx, x + i, y + i, 3, 3, '#d0b078');
+      rect(ctx, x + s - i - 3, y + i, 3, 3, '#d0b078');
+    }
+    rect(ctx, x + 3, y + 3, 2, 2, '#675e42');
+    rect(ctx, x + s - 5, y + s - 5, 2, 2, '#675e42');
+  }
+
+  function barrel(ctx, x, y, color, scale) {
+    const s = scale || 1;
+    shadow(ctx, x + 11 * s, y + 27 * s, 30 * s, 10 * s);
+    rect(ctx, x + 3 * s, y, 16 * s, 3 * s, '#5d644d');
+    rect(ctx, x, y + 3 * s, 22 * s, 23 * s, color || '#8c9877');
+    rect(ctx, x + 3 * s, y + 26 * s, 16 * s, 3 * s, '#626c52');
+    rect(ctx, x + 3 * s, y + 4 * s, 5 * s, 21 * s, '#ffffff18');
+    rect(ctx, x, y + 8 * s, 22 * s, 3 * s, '#59665099');
+    rect(ctx, x, y + 20 * s, 22 * s, 3 * s, '#59665099');
+    rect(ctx, x + 4 * s, y + 2 * s, 13 * s, 3 * s, '#c0b995');
+    rect(ctx, x + 13 * s, y + 3 * s, 4 * s, 3 * s, '#626c52');
+  }
+
+  function cactus(ctx, x, y, s) {
+    s = s || 1;
+    shadow(ctx, x + 2 * s, y + 2 * s, 29 * s, 9 * s);
+    rect(ctx, x - 5 * s, y - 28 * s, 10 * s, 29 * s, '#778657');
+    rect(ctx, x - 2 * s, y - 31 * s, 5 * s, 4 * s, '#778657');
+    rect(ctx, x - 14 * s, y - 20 * s, 6 * s, 15 * s, '#748052');
+    rect(ctx, x - 11 * s, y - 9 * s, 8 * s, 5 * s, '#748052');
+    rect(ctx, x + 4 * s, y - 14 * s, 8 * s, 5 * s, '#69794e');
+    rect(ctx, x + 9 * s, y - 24 * s, 5 * s, 15 * s, '#69794e');
+    rect(ctx, x - 2 * s, y - 26 * s, 2 * s, 26 * s, '#a4ab73');
+    rect(ctx, x - 12 * s, y - 17 * s, 2 * s, 9 * s, '#a4ab73');
+    rect(ctx, x + 10 * s, y - 22 * s, 2 * s, 8 * s, '#92a16a');
+    rect(ctx, x + 2 * s, y - 18 * s, 2 * s, 2 * s, '#526346');
+    rect(ctx, x - 4 * s, y - 7 * s, 2 * s, 2 * s, '#526346');
+    rect(ctx, x - 1 * s, y - 33 * s, 4 * s, 3 * s, '#b88464');
+  }
+
+  function rock(ctx, x, y, s) {
+    s = s || 1;
+    poly(ctx, [[x, y], [x + 5 * s, y - 7 * s], [x + 15 * s, y - 8 * s], [x + 22 * s, y - 2 * s], [x + 23 * s, y + 5 * s], [x + 4 * s, y + 6 * s]], '#9b926c');
+    rect(ctx, x + 5 * s, y - 6 * s, 9 * s, 3 * s, '#b4aa7e');
+    rect(ctx, x + 6 * s, y + 4 * s, 16 * s, 2 * s, '#8e875f');
+  }
+
+  function grass(ctx, x, y, color) {
+    const c = color || '#999d69';
+    rect(ctx, x, y, 2, 8, c);
+    rect(ctx, x - 3, y + 2, 2, 5, c);
+    rect(ctx, x + 3, y - 2, 2, 9, c);
+    rect(ctx, x + 6, y + 3, 2, 4, c);
+  }
+
+  function rug(ctx, x, y, w, h, color) {
+    rect(ctx, x, y, w, h, '#796f4c36');
+    rect(ctx, x + 3, y + 2, w - 6, h - 5, color || '#b29169');
+    rect(ctx, x + 8, y + 7, w - 16, h - 15, '#cbb482');
+    rect(ctx, x + 12, y + 11, w - 24, h - 23, color || '#b29169');
+    for (let i = 8; i < w - 5; i += 8) {
+      rect(ctx, x + i, y - 3, 2, 5, '#dbbd8e');
+      rect(ctx, x + i, y + h - 3, 2, 5, '#dbbd8e');
+    }
+    for (let i = 21; i < w - 20; i += 17) {
+      rect(ctx, x + i, y + h / 2 - 2, 4, 4, '#ded0a1');
+      rect(ctx, x + i - 2, y + h / 2, 8, 2, '#ded0a1');
+    }
+  }
+
+  function pixelText(ctx, text, x, y, color, size, align) {
+    ctx.font = `${size || 11}px "Microsoft YaHei", "PingFang SC", sans-serif`;
+    ctx.textAlign = align || 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = color || C.deep;
+    ctx.fillText(text, Math.round(x), Math.round(y));
+  }
+
+  function sign(ctx, text, x, y, w, color) {
+    const width = w || text.length * 13 + 18;
+    rect(ctx, x - width / 2 + 2, y - 8, width, 21, '#76674836');
+    rect(ctx, x - width / 2, y - 11, width, 21, color || '#e9d6a6');
+    rect(ctx, x - width / 2, y - 11, width, 2, '#f2e3b9');
+    rect(ctx, x - width / 2, y + 8, width, 2, '#9b885f');
+    rect(ctx, x - width / 2 + 4, y - 3, 2, 2, '#9a885f');
+    rect(ctx, x + width / 2 - 6, y - 3, 2, 2, '#9a885f');
+    pixelText(ctx, text, x, y, '#6b664a', 10);
+  }
+
+  function stall(ctx, x, y, w, color, stripe, merchandise) {
+    const h = 61;
+    shadow(ctx, x + w / 2 + 4, y + 58, w + 22, 27);
+    rect(ctx, x + 6, y - 19, 5, h + 40, C.darkWood);
+    rect(ctx, x + w - 11, y - 19, 5, h + 40, C.darkWood);
+    rect(ctx, x + 7, y - 22, w - 14, 4, '#92805a');
+    rect(ctx, x + 8, y + 24, w - 16, 30, '#7d7653');
+    rect(ctx, x + 12, y + 27, w - 24, 24, '#9d8b5f');
+    rect(ctx, x + 11, y + 31, w - 22, 2, '#b29c6b');
+    rect(ctx, x + 11, y + 45, w - 22, 2, '#b29c6b');
+    rect(ctx, x + 18, y + 31, 2, 20, '#786d4b');
+    rect(ctx, x + w - 21, y + 31, 2, 20, '#786d4b');
+    rect(ctx, x + 3, y + 50, w - 6, 10, '#6b6447');
+    rect(ctx, x + 1, y + 47, w - 2, 7, '#b9a171');
+    rect(ctx, x + 1, y + 47, w - 2, 2, '#d5bc87');
+    // The roof is formed from hard, stepped pixels rather than smooth paths.
+    rect(ctx, x + 10, y - 17, w - 20, 5, color);
+    rect(ctx, x + 6, y - 12, w - 12, 9, color);
+    rect(ctx, x + 2, y - 3, w - 4, 12, color);
+    rect(ctx, x - 2, y + 9, w + 4, 14, color);
+    for (let i = 0; i < w; i += 28) {
+      const sw = Math.min(14, w - i);
+      rect(ctx, x + i + 4, y - 12, sw - 3, 8, stripe);
+      rect(ctx, x + i + 1, y - 4, sw + 1, 13, stripe);
+      rect(ctx, x + i - 2, y + 9, sw + 5, 14, stripe);
+    }
+    rect(ctx, x - 2, y + 22, w + 4, 6, color);
+    for (let i = 0; i < w + 2; i += 14) {
+      rect(ctx, x + i - 2, y + 28, 12, 7, i % 28 ? stripe : color);
+      rect(ctx, x + i, y + 35, 8, 3, i % 28 ? stripe : color);
+    }
+    rect(ctx, x + 13, y - 13, 19, 2, '#f2d9ac48');
+    rect(ctx, x + w - 28, y + 4, 12, 7, '#c4b18c');
+    rect(ctx, x + w - 28, y + 4, 12, 1, '#e3d2aa');
+    rect(ctx, x + w - 23, y + 3, 1, 9, '#7e7757');
+    if (merchandise === 'water') {
+      for (let i = 0; i < 5; i++) {
+        rect(ctx, x + 18 + i * 18, y + 39, 7, 8, '#759b91');
+        rect(ctx, x + 20 + i * 18, y + 35, 3, 5, '#8fb0a0');
+        rect(ctx, x + 20 + i * 18, y + 34, 3, 2, '#d2c49a');
+        rect(ctx, x + 19 + i * 18, y + 39, 2, 5, '#bad0b0');
+      }
+    } else if (merchandise === 'mechanic') {
+      rect(ctx, x + 21, y + 40, 19, 7, '#77836b');
+      rect(ctx, x + 23, y + 38, 12, 2, '#afb18b');
+      rect(ctx, x + 55, y + 39, 10, 8, '#5a6e5b');
+      rect(ctx, x + 57, y + 41, 6, 3, '#abbd8a');
+      rect(ctx, x + 83, y + 42, 23, 3, '#c5ac72');
+      rect(ctx, x + 93, y + 38, 4, 9, '#72745c');
+    } else {
+      for (let i = 0; i < 5; i++) {
+        rect(ctx, x + 19 + i * 21, y + 41, 13, 5, '#7e8264');
+        rect(ctx, x + 22 + i * 21, y + 37, 7, 12, '#a8a884');
+        rect(ctx, x + 24 + i * 21, y + 40, 3, 6, '#616e54');
+      }
+    }
+  }
+
+  function person(ctx, x, y, kind, dir, stride) {
+    x = Math.round(x / 2) * 2;
+    y = Math.round(y / 2) * 2;
+    const styles = {
+      player: { hat: '#536145', brim: '#6d7950', coat: '#6f8052', scarf: '#bb7c50', skin: '#d9b17b', pack: '#927d4e' },
+      water: { hat: '#ac8d68', brim: '#c5ad7d', coat: '#819a87', scarf: '#c8b98b', skin: '#c49464', pack: '#a88b5f' },
+      oscillator: { hat: '#8a8a67', brim: '#beb68d', coat: '#96885d', scarf: '#71836b', skin: '#c8a377', pack: '#616f57' },
+      cable: { hat: '#b17651', brim: '#d69a68', coat: '#8a7656', scarf: '#e3bd80', skin: '#d2a36e', pack: '#777d5e' },
+      battery: { hat: '#839071', brim: '#a3af86', coat: '#9d8b66', scarf: '#c58c65', skin: '#d9b17b', pack: '#7b7858' },
+      visitor: { hat: '#8e8664', brim: '#aba078', coat: '#8a8c69', scarf: '#b69e6e', skin: '#c6a371', pack: '#777951' }
+    };
+    const s = styles[kind] || styles.visitor;
+    const foot = stride || 0;
+    shadow(ctx, x + 1, y + 1, 28, 10);
+    if (kind === 'battery') { y += 4; }
+    rect(ctx, x - 8, y - 13, 6, 12 + Math.max(0, foot), '#5f6249');
+    rect(ctx, x + 3, y - 13, 6, 12 + Math.max(0, -foot), '#5f6249');
+    rect(ctx, x - 9, y - 3 + Math.max(0, foot), 8, 4, '#535a43');
+    rect(ctx, x + 3, y - 3 + Math.max(0, -foot), 8, 4, '#535a43');
+    rect(ctx, x - 11, y - 27, 22, 19, s.coat);
+    rect(ctx, x - 13, y - 25, 4, 15, s.coat);
+    rect(ctx, x + 10, y - 25, 4, 15, s.coat);
+    rect(ctx, x - 12, y - 12, 4, 5, s.skin);
+    rect(ctx, x + 10, y - 12, 4, 5, s.skin);
+    rect(ctx, x - 8, y - 10, 17, 3, '#5b684a');
+    rect(ctx, x - 6, y - 26, 3, 15, '#a4ac79');
+    rect(ctx, x - 5, y - 19, 4, 2, '#b5bb8a');
+    if (dir === 'up') {
+      rect(ctx, x - 8, y - 26, 16, 15, s.pack);
+      rect(ctx, x - 6, y - 24, 12, 2, '#b9a476');
+      rect(ctx, x - 5, y - 18, 10, 5, '#a58e5e');
+      rect(ctx, x - 8, y - 19, 16, 2, '#776848');
+    } else {
+      rect(ctx, x + (dir === 'left' ? 8 : -13), y - 25, 6, 16, s.pack);
+      rect(ctx, x + (dir === 'left' ? 9 : -12), y - 23, 3, 2, '#b5a071');
+    }
+    rect(ctx, x - 8, y - 40, 16, 15, s.skin);
+    rect(ctx, x - 10, y - 38, 2, 8, '#b08c61');
+    rect(ctx, x + 8, y - 38, 2, 8, '#b08c61');
+    rect(ctx, x - 8, y - 28, 16, 5, s.scarf);
+    rect(ctx, x + 5, y - 25, 5, 8, s.scarf);
+    rect(ctx, x - 10, y - 44, 20, 9, s.hat);
+    rect(ctx, x - 7, y - 47, 14, 4, s.hat);
+    rect(ctx, x - 14, y - 37, 28, 4, s.brim);
+    rect(ctx, x - 8, y - 44, 14, 2, '#d3c49a52');
+    if (dir !== 'up') {
+      if (dir !== 'right') rect(ctx, x - 5, y - 32, 2, 2, '#5b5c43');
+      if (dir !== 'left') rect(ctx, x + 4, y - 32, 2, 2, '#5b5c43');
+      rect(ctx, x - 2, y - 27, 5, 2, '#b18a61');
+    }
+    if (kind === 'oscillator') {
+      rect(ctx, x - 8, y - 33, 7, 5, '#535f4c');
+      rect(ctx, x + 2, y - 33, 7, 5, '#535f4c');
+      rect(ctx, x - 6, y - 32, 3, 2, '#b7c8a1');
+      rect(ctx, x + 4, y - 32, 3, 2, '#b7c8a1');
+      rect(ctx, x - 1, y - 32, 3, 2, '#6d6e51');
+    }
+    if (kind === 'water') {
+      rect(ctx, x - 8, y - 29, 3, 5, '#ddd0a5');
+      rect(ctx, x + 5, y - 29, 3, 5, '#ddd0a5');
+    }
+  }
+
+  function salvage(ctx, x, y, depleted) {
+    shadow(ctx, x + 3, y + 3, 50, 15);
+    const a = depleted ? '#a99b72' : '#85856a';
+    const b = depleted ? '#b5a379' : '#a18c60';
+    rect(ctx, x - 18, y - 8, 23, 11, a);
+    rect(ctx, x - 16, y - 13, 17, 6, b);
+    rect(ctx, x - 11, y - 15, 5, 3, '#c2b087');
+    rect(ctx, x + 4, y - 6, 16, 10, b);
+    rect(ctx, x + 8, y - 9, 10, 4, '#bba175');
+    rect(ctx, x - 6, y - 7, 18, 5, '#7e7859');
+    rect(ctx, x - 4, y - 4, 5, 12, a);
+    rect(ctx, x - 21, y + 3, 12, 4, '#a18d62');
+    rect(ctx, x + 9, y + 5, 14, 3, '#d0b57e');
+    if (!depleted) {
+      rect(ctx, x - 14, y - 7, 6, 2, '#c8c59a');
+      rect(ctx, x + 6, y - 3, 4, 4, '#c1c6a0');
+      rect(ctx, x + 10, y - 5, 4, 3, '#8a9e7f');
+    }
+  }
+
+  class MarketRenderer {
+    constructor(canvas, nodes, solids) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+      this.ctx.imageSmoothingEnabled = false;
+      this.nodes = Array.isArray(nodes) ? nodes : [];
+      this.solids = solids || [];
+      this.background = document.createElement('canvas');
+      this.background.width = 960;
+      this.background.height = 600;
+      this.makeBackground(this.background.getContext('2d'));
+    }
+
+    makeBackground(ctx) {
+      const rnd = random(42107);
+      rect(ctx, 0, 0, 960, 600, C.sand);
+      // A dust-softened skyline establishes the world beyond the bazaar.
+      rect(ctx, 0, 0, 960, 86, '#d3c293');
+      poly(ctx, [[0, 39], [44, 39], [44, 32], [100, 32], [100, 44], [159, 44], [159, 37], [216, 37], [216, 51], [301, 51], [301, 43], [382, 43], [382, 57], [478, 57], [478, 39], [589, 39], [589, 47], [670, 47], [670, 35], [733, 35], [733, 48], [815, 48], [815, 37], [887, 37], [887, 43], [960, 43], [960, 86], [0, 86]], '#c1b385');
+      for (let i = 0; i < 12; i++) {
+        const x = 22 + i * 88 + Math.floor(rnd() * 20);
+        const h = 17 + Math.floor(rnd() * 29);
+        rect(ctx, x, 52 - h, 27 + rnd() * 15, h + 17, '#aaa47b');
+        rect(ctx, x + 3, 49 - h, 17, 3, '#b9ad82');
+        if (i % 3 === 0) rect(ctx, x + 10, 37 - h, 3, 16, '#aaa47b');
+        rect(ctx, x + 6, 58 - h, 5, 6, '#bfb288');
+        rect(ctx, x + 18, 59 - h, 5, 6, '#bfb288');
+      }
+      rect(ctx, 0, 66, 960, 8, '#b7a77b');
+      rect(ctx, 0, 74, 960, 8, '#c3af7f');
+      // Old foundation stones and a deliberately open market street.
+      rect(ctx, 25, 89, 910, 470, '#bfa976');
+      rect(ctx, 31, 96, 898, 455, C.sand);
+      rect(ctx, 438, 133, 90, 410, C.path);
+      rect(ctx, 410, 318, 145, 157, C.path);
+      rect(ctx, 121, 247, 704, 42, C.path);
+      rect(ctx, 78, 276, 126, 64, '#cdb986');
+      rect(ctx, 718, 280, 135, 170, '#cdb986');
+      rect(ctx, 373, 279, 226, 80, C.path);
+      rect(ctx, 359, 302, 255, 33, C.path);
+      rect(ctx, 443, 533, 87, 56, '#cbb988');
+      for (let i = 0; i < 2300; i++) {
+        const x = Math.floor(rnd() * 960 / 3) * 3;
+        const y = 82 + Math.floor(rnd() * 518 / 3) * 3;
+        const shade = i % 5 === 0 ? '#e5d3a140' : i % 3 === 0 ? '#9a895e24' : '#ab98662a';
+        rect(ctx, x, y, i % 7 ? 2 : 5, 2, shade);
+      }
+      for (let i = 0; i < 82; i++) {
+        const y = 92 + i * 6;
+        rect(ctx, 434 - Math.floor(rnd() * 8), y, 4 + rnd() * 9, 3, '#d6c28e');
+        rect(ctx, 527 + Math.floor(rnd() * 8), y, 4 + rnd() * 9, 3, '#d6c28e');
+      }
+      // A broken wall and small fenced enclosures frame the playable area.
+      for (let y = 99; y < 553; y += 22) {
+        rect(ctx, 17, y, 16, 15, '#9c946b');
+        rect(ctx, 19, y, 12, 3, '#b6ac7d');
+        rect(ctx, 930, y + 6, 16, 15, '#a2986d');
+        rect(ctx, 933, y + 6, 12, 3, '#b8ab79');
+      }
+      for (let x = 40; x < 430; x += 24) {
+        rect(ctx, x, 550, 20, 14, '#a39569');
+        rect(ctx, x + 2, 550, 17, 3, '#c0ad7b');
+      }
+      for (let x = 545; x < 936; x += 24) {
+        rect(ctx, x, 550, 20, 14, '#a39569');
+        rect(ctx, x + 2, 550, 17, 3, '#c0ad7b');
+      }
+      rect(ctx, 410, 533, 8, 40, '#766b48');
+      rect(ctx, 543, 531, 8, 42, '#766b48');
+      rect(ctx, 413, 534, 3, 36, '#a7925f');
+      rect(ctx, 546, 533, 3, 37, '#a7925f');
+      for (let x = 415; x < 548; x += 15) rect(ctx, x, 529 + ((x / 15 | 0) % 2) * 3, 13, 4, '#998454');
+      sign(ctx, '锈 风 集 市', 482, 560, 112, '#ddc28e');
+
+      // The water tank, complete with ladder, spigot, and patched pipes.
+      shadow(ctx, 76, 171, 66, 16);
+      rect(ctx, 49, 109, 43, 52, '#607e6f');
+      rect(ctx, 53, 103, 35, 7, '#8b9c80');
+      rect(ctx, 53, 159, 35, 5, '#4f6c5f');
+      rect(ctx, 54, 111, 7, 44, '#8aa48a');
+      rect(ctx, 49, 118, 43, 4, '#adb394');
+      rect(ctx, 49, 146, 43, 4, '#a6af8c');
+      rect(ctx, 59, 128, 15, 12, '#c0c2a0');
+      rect(ctx, 64, 130, 5, 8, '#7e9a85');
+      rect(ctx, 51, 164, 5, 12, '#716f4e');
+      rect(ctx, 85, 163, 5, 13, '#716f4e');
+      rect(ctx, 83, 107, 3, 51, '#c5b691');
+      for (let y = 113; y < 156; y += 10) rect(ctx, 80, y, 11, 2, '#c5b691');
+      rect(ctx, 91, 145, 9, 5, '#737a5e');
+      rect(ctx, 96, 148, 4, 15, '#737a5e');
+      rect(ctx, 93, 161, 10, 3, '#737a5e');
+      rect(ctx, 98, 169, 12, 4, '#91a68a');
+      rug(ctx, 97, 214, 137, 25, '#ac9270');
+      stall(ctx, 100, 150, 135, '#708c79', '#c1c3a0', 'water');
+      sign(ctx, '水 婆 · 净水', 167, 132, 94, '#e6d3a3');
+      barrel(ctx, 102, 224, '#829980', .8);
+      barrel(ctx, 214, 218, '#799182', .8);
+      crate(ctx, 245, 185, 22);
+      crate(ctx, 248, 209, 25);
+
+      rug(ctx, 281, 214, 127, 23, '#b99b70');
+      stall(ctx, 277, 150, 135, '#aa7753', '#d3b884', 'mechanic');
+      sign(ctx, '老 莫 · 修理铺', 344, 132, 109, '#e3c999');
+      crate(ctx, 286, 223, 20, '#8c8e6b');
+      rect(ctx, 390, 217, 24, 4, '#79754e');
+      rect(ctx, 392, 219, 4, 17, '#7b714d');
+      rect(ctx, 410, 219, 4, 17, '#7b714d');
+      rect(ctx, 394, 212, 16, 5, '#a7956a');
+      barrel(ctx, 260, 138, '#989d77', .7);
+
+      rug(ctx, 652, 214, 140, 23, '#a19d73');
+      stall(ctx, 650, 150, 145, '#b88d4d', '#ddbf82', 'cable');
+      sign(ctx, '阿 锈 · 旧物交换', 723, 132, 120, '#dfc89b');
+      crate(ctx, 803, 181, 29);
+      crate(ctx, 809, 158, 23, '#8c8c68');
+      barrel(ctx, 626, 202, '#959b73', .85);
+      // Tires and old machinery sit in the far east, away from the crossing.
+      rect(ctx, 866, 179, 39, 14, '#7e7f63');
+      rect(ctx, 860, 188, 48, 31, '#97906a');
+      rect(ctx, 868, 192, 11, 14, '#b2a074');
+      rect(ctx, 886, 190, 14, 18, '#666e55');
+      rect(ctx, 865, 216, 13, 10, '#60684f');
+      rect(ctx, 891, 216, 13, 10, '#60684f');
+      rect(ctx, 867, 219, 8, 4, '#b6aa7d');
+      rect(ctx, 894, 219, 7, 4, '#b6aa7d');
+
+      // The child's home is a patched sailcloth tent rather than another stall.
+      shadow(ctx, 748, 411, 158, 33);
+      poly(ctx, [[677, 408], [691, 381], [705, 357], [726, 332], [747, 332], [772, 358], [800, 385], [818, 409]], '#9a916c');
+      poly(ctx, [[682, 405], [702, 366], [726, 337], [741, 337], [760, 363], [787, 405]], '#d5bc84');
+      poly(ctx, [[742, 338], [767, 357], [799, 388], [811, 405], [789, 405]], '#b29b70');
+      rect(ctx, 704, 379, 6, 30, '#d9c18c');
+      poly(ctx, [[711, 407], [722, 375], [731, 360], [744, 379], [752, 407]], '#6e7051');
+      poly(ctx, [[716, 405], [727, 373], [731, 369], [737, 405]], '#848362');
+      rect(ctx, 752, 359, 16, 12, '#9b9d75');
+      rect(ctx, 757, 357, 2, 16, '#c9ba8a');
+      rect(ctx, 750, 364, 20, 2, '#c9ba8a');
+      rect(ctx, 675, 407, 146, 4, '#8a7b54');
+      rect(ctx, 672, 405, 3, 12, '#84724c');
+      rect(ctx, 824, 405, 3, 12, '#84724c');
+      rug(ctx, 710, 416, 71, 24, '#b28e65');
+      crate(ctx, 800, 420, 24);
+      barrel(ctx, 670, 422, '#9a9a70', .7);
+      rect(ctx, 783, 438, 12, 4, '#7f8161');
+      rect(ctx, 785, 435, 8, 4, '#aba37d');
+
+      // Satellite architecture, old cables, and the crossing's stone plinth.
+      rect(ctx, 411, 120, 140, 14, '#b19b6e');
+      rect(ctx, 418, 113, 126, 15, '#c7b381');
+      rect(ctx, 426, 105, 109, 15, '#d3c18f');
+      rect(ctx, 432, 74, 12, 43, '#6a7456');
+      rect(ctx, 519, 74, 12, 43, '#6a7456');
+      rect(ctx, 436, 78, 4, 35, '#a5ae7a');
+      rect(ctx, 522, 77, 4, 34, '#a5ae7a');
+      rect(ctx, 440, 66, 85, 10, '#6a7456');
+      rect(ctx, 448, 59, 68, 10, '#87916a');
+      rect(ctx, 455, 55, 54, 7, '#a2a67b');
+      rect(ctx, 443, 74, 77, 31, '#87906c');
+      rect(ctx, 449, 78, 64, 25, '#a6ac81');
+      rect(ctx, 454, 83, 52, 16, '#657b5d');
+      for (let i = 0; i < 6; i++) rect(ctx, 458 + i * 8, 91 - (i % 3) * 3, 4, 3 + (i % 3) * 3, '#a8bc86');
+      rect(ctx, 471, 102, 20, 6, '#686d50');
+      rect(ctx, 460, 110, 42, 8, '#8b8e67');
+      rect(ctx, 467, 109, 5, 3, '#bdad79');
+      rect(ctx, 482, 109, 5, 3, '#bf9867');
+      rect(ctx, 496, 108, 3, 4, '#c4bd89');
+      rect(ctx, 537, 66, 4, 52, '#8b8b62');
+      rect(ctx, 535, 59, 8, 8, '#a4a97b');
+      rect(ctx, 539, 31, 2, 30, '#727c5c');
+      rect(ctx, 525, 39, 30, 2, '#76825e');
+      rect(ctx, 530, 47, 20, 2, '#76825e');
+      rect(ctx, 536, 28, 7, 4, '#a17f52');
+      sign(ctx, '穿 界 电 台', 481, 40, 104, '#dcca9d');
+      rect(ctx, 385, 87, 18, 26, '#747e5f');
+      rect(ctx, 388, 90, 12, 17, '#99a080');
+      rect(ctx, 390, 93, 8, 9, '#566d57');
+      rect(ctx, 389, 108, 3, 2, '#c4b785');
+      rect(ctx, 396, 108, 3, 2, '#c4b785');
+      for (let x = 401; x < 431; x += 4) rect(ctx, x, 112 + (x % 3), 6, 2, '#7c7b53');
+      barrel(ctx, 561, 100, '#839174', .8);
+
+      // The bounty board is a landmark in the central market square.
+      shadow(ctx, 483, 303, 66, 12);
+      rect(ctx, 453, 250, 5, 56, '#766c48');
+      rect(ctx, 509, 250, 5, 56, '#766c48');
+      rect(ctx, 449, 247, 69, 40, '#766c48');
+      rect(ctx, 452, 250, 63, 33, '#9c8d60');
+      rect(ctx, 448, 245, 71, 5, '#b5a075');
+      rect(ctx, 456, 255, 19, 20, '#e2cca1');
+      rect(ctx, 479, 254, 14, 17, '#c8b48e');
+      rect(ctx, 495, 257, 14, 21, '#ddd2aa');
+      rect(ctx, 459, 259, 12, 2, '#a5906b');
+      rect(ctx, 459, 264, 10, 2, '#a5906b');
+      rect(ctx, 459, 269, 7, 2, '#a5906b');
+      rect(ctx, 482, 258, 7, 2, '#94866b');
+      rect(ctx, 498, 262, 8, 2, '#a5906b');
+      rect(ctx, 499, 267, 5, 5, '#b58a61');
+      rect(ctx, 461, 253, 2, 2, '#b17e55');
+      rect(ctx, 500, 255, 2, 2, '#b17e55');
+
+      // A fire ring, stools, cups, and a tarpaulin cart make the lower half lived-in.
+      rug(ctx, 228, 434, 103, 48, '#a99168');
+      const stones = [[-17, -4], [-8, -12], [5, -12], [16, -5], [17, 5], [6, 12], [-7, 12], [-18, 5]];
+      stones.forEach(p => { rect(ctx, 278 + p[0], 430 + p[1], 9, 6, '#8e8d67'); rect(ctx, 279 + p[0], 430 + p[1], 6, 2, '#b3a67a'); });
+      rect(ctx, 268, 430, 26, 5, '#6d6546');
+      rect(ctx, 273, 424, 5, 17, '#8c714b');
+      rect(ctx, 286, 425, 5, 15, '#886c48');
+      rect(ctx, 237, 417, 14, 13, '#8a7c52');
+      rect(ctx, 235, 415, 18, 6, '#b19a6c');
+      rect(ctx, 309, 449, 15, 12, '#8a7c52');
+      rect(ctx, 307, 447, 19, 5, '#b19a6c');
+      rect(ctx, 241, 463, 12, 5, '#8d7b55');
+      rect(ctx, 244, 459, 6, 4, '#c2af7f');
+      rect(ctx, 312, 419, 8, 6, '#bba67a');
+      rect(ctx, 314, 417, 4, 3, '#d3c393');
+      shadow(ctx, 80, 466, 90, 23);
+      rect(ctx, 47, 431, 74, 27, '#8d835c');
+      rect(ctx, 51, 434, 65, 19, '#b29d6c');
+      rect(ctx, 48, 432, 4, 25, '#d0b480');
+      rect(ctx, 115, 432, 4, 25, '#c8b07a');
+      rect(ctx, 55, 437, 55, 2, '#928456');
+      rect(ctx, 55, 446, 55, 2, '#928456');
+      rect(ctx, 59, 424, 49, 9, '#91a081');
+      rect(ctx, 64, 420, 38, 6, '#9caa88');
+      rect(ctx, 71, 420, 4, 14, '#d0c49b');
+      rect(ctx, 96, 420, 4, 14, '#d0c49b');
+      rect(ctx, 42, 454, 14, 18, '#656c51');
+      rect(ctx, 45, 458, 8, 9, '#b9a77c');
+      rect(ctx, 107, 454, 14, 18, '#656c51');
+      rect(ctx, 110, 458, 8, 9, '#b9a77c');
+      rect(ctx, 121, 444, 29, 4, '#8b7a51');
+      rect(ctx, 145, 444, 4, 12, '#8b7a51');
+      crate(ctx, 60, 491, 29);
+      crate(ctx, 92, 501, 22, '#919674');
+      crate(ctx, 58, 472, 20);
+
+      // String lights across the crossing, in deliberately stepped runs.
+      for (let i = 0; i < 88; i++) {
+        const x = 198 + i * 6;
+        const y = 107 + Math.round((1 - Math.pow((i - 44) / 44, 2)) * 18 / 2) * 2;
+        rect(ctx, x, y, 7, 2, '#6b72514d');
+        if (i % 8 === 0) {
+          rect(ctx, x + 2, y + 2, 2, 7, '#797958');
+          rect(ctx, x, y + 7, 6, 6, '#ddc58b');
+          rect(ctx, x + 2, y + 8, 2, 4, '#f0dda5');
+        }
+      }
+      // Scatter is kept to the margins, leaving every documented interaction reachable.
+      [[55, 256, 1], [890, 291, 1.2], [600, 181, .75], [64, 348, .8], [893, 475, 1.15], [220, 518, .8], [601, 516, .65], [391, 488, .55]].forEach(a => cactus(ctx, ...a));
+      [[57, 294, 1], [857, 336, .8], [389, 90, .7], [624, 331, .6], [40, 523, .6], [864, 525, 1], [205, 363, .7], [604, 480, .65], [205, 112, .6]].forEach(a => rock(ctx, ...a));
+      [[82, 315], [210, 328], [56, 394], [228, 389], [618, 380], [887, 390], [900, 427], [327, 513], [641, 501], [380, 459], [843, 115], [592, 268], [122, 509], [36, 212], [607, 134], [615, 446], [839, 444]].forEach(a => grass(ctx, ...a));
+      // Footprints add scale and subtle life to the bare sand.
+      for (let i = 0; i < 13; i++) {
+        const x = 463 + Math.sin(i * .7) * 7;
+        const y = 364 + i * 9;
+        rect(ctx, x, y, 3, 4, '#9c8d6030');
+        rect(ctx, x + 9, y + 5, 3, 4, '#9c8d6030');
+      }
+      // A small pack animal waits beside the west wall.
+      shadow(ctx, 83, 292, 38, 10);
+      rect(ctx, 70, 271, 26, 16, '#b1996f');
+      rect(ctx, 66, 267, 12, 14, '#b1996f');
+      rect(ctx, 66, 261, 3, 8, '#ae926b');
+      rect(ctx, 74, 260, 3, 9, '#ae926b');
+      rect(ctx, 64, 273, 5, 5, '#d1bd8a');
+      rect(ctx, 69, 270, 2, 2, '#63654a');
+      rect(ctx, 73, 285, 4, 9, '#827756');
+      rect(ctx, 90, 285, 4, 9, '#827756');
+      rect(ctx, 79, 269, 13, 11, '#839070');
+      rect(ctx, 83, 267, 3, 16, '#d1c091');
+      rect(ctx, 96, 271, 4, 13, '#9b845e');
+      // A reclaimed road sign on the right tells the oldest joke in the market.
+      rect(ctx, 872, 92, 4, 39, '#8e8057');
+      rect(ctx, 839, 96, 73, 19, '#bdb187');
+      rect(ctx, 842, 98, 67, 15, '#d2c193');
+      pixelText(ctx, '明天再来 →', 876, 106, '#8a805e', 10);
+    }
+
+    label(ctx, node, nearest, depleted) {
+      const names = {
+        water: '水婆 · 净水', oscillator: '老莫 · 振荡器', cable: '阿锈 · 电缆',
+        battery: '小满 · 蓄电池', board: '悬赏榜', radio: '穿界电台', camp: '篝火'
+      };
+      let label = names[node.id] || node.name || '废料堆';
+      if (node.id.indexOf('salvage') === 0) label = depleted ? '已拾取' : '拾荒';
+      const small = node.id.indexOf('salvage') === 0 || node.id === 'camp';
+      ctx.font = `${small ? 10 : 11}px "Microsoft YaHei", sans-serif`;
+      const width = Math.ceil(ctx.measureText(label).width) + (small ? 12 : 18);
+      const y = node.y + (node.id === 'camp' ? 21 : 24);
+      const color = nearest ? '#f7efd5' : small ? '#e6d6adcf' : '#f1e3bfdf';
+      if (depleted && !nearest) return;
+      rect(ctx, node.x - width / 2 + 2, y - 7, width, small ? 17 : 20, '#7467471c');
+      rect(ctx, node.x - width / 2, y - 9, width, small ? 17 : 20, color);
+      if (nearest) {
+        rect(ctx, node.x - width / 2, y - 9, width, 1, '#8e9c6d');
+        rect(ctx, node.x - width / 2, y + (small ? 7 : 10), width, 1, '#8e9c6d');
+      }
+      pixelText(ctx, label, node.x, y + (small ? -1 : 1), nearest ? '#4e6541' : '#767654', small ? 10 : 11);
+    }
+
+    render(state, nowMs, target, nearestId) {
+      const ctx = this.ctx;
+      const now = Number.isFinite(nowMs) ? nowMs : 0;
+      const player = state.player || { x: 480, y: 500, dir: 'down', moving: false };
+      ctx.clearRect(0, 0, 960, 600);
+      ctx.drawImage(this.background, 0, 0);
+      const time = now / 1000;
+      const salvaged = Array.isArray(state.salvaged) ? state.salvaged : [];
+      // Interactive scrap has its own sprite so that depletion is immediately visible.
+      this.nodes.filter(n => n.id.indexOf('salvage') === 0).forEach(n => {
+        const depleted = salvaged.indexOf(n.id) !== -1;
+        salvage(ctx, n.x, n.y, depleted);
+        if (!depleted) {
+          const d = Math.sin(time * 2.3 + n.x) > -.25;
+          const sparkleY = n.y - 23 - Math.round(Math.sin(time * 2 + n.x) * 2);
+          if (d) {
+            rect(ctx, n.x + 17, sparkleY, 2, 8, '#f5e3af');
+            rect(ctx, n.x + 14, sparkleY + 3, 8, 2, '#f5e3af');
+            rect(ctx, n.x - 18, n.y - 17, 2, 2, '#e9dca8');
+          }
+        }
+      });
+
+      // Embers are tiny hard-edged clusters, keeping the canvas consistently pixel based.
+      const fire = Math.floor(time * 6) % 3;
+      rect(ctx, 274, 416 - fire * 2, 10, 18 + fire * 2, '#bb8050');
+      rect(ctx, 282, 412 + fire * 2, 8, 20 - fire * 2, '#c58d50');
+      rect(ctx, 277, 420 - fire * 2, 7, 13 + fire * 2, '#e5b76b');
+      rect(ctx, 281, 424, 4, 9, '#f1d293');
+      for (let i = 0; i < 4; i++) {
+        const p = (time * 12 + i * 12) % 43;
+        rect(ctx, 281 + Math.round(Math.sin(p / 7 + i) * 8 / 2) * 2, 414 - p, 2, 3, i % 2 ? '#c3bb9444' : '#bfaf8455');
+      }
+
+      const people = this.nodes.filter(n => ['water', 'oscillator', 'cable', 'battery'].indexOf(n.id) !== -1).map(n => ({ x: n.x, y: n.y, kind: n.id, dir: 'down', stride: 0 }));
+      people.push({ x: player.x, y: player.y, kind: 'player', dir: player.dir, stride: player.moving ? Math.sin(time * 14) > 0 ? 3 : -3 : 0 });
+      people.push({ x: 596 + Math.round(Math.sin(time * .22) * 8), y: 286, kind: 'visitor', dir: 'left', stride: 0 });
+      people.push({ x: 207, y: 393, kind: 'visitor', dir: 'right', stride: 0 });
+      people.sort((a, b) => a.y - b.y).forEach(p => person(ctx, p.x, p.y, p.kind, p.dir, p.stride));
+
+      // A pale triangle makes the player's identity clear without a modern outline.
+      const markerY = Math.round(player.y - 59 + Math.sin(time * 2) * 2);
+      rect(ctx, player.x - 5, markerY, 10, 2, '#ede4b8');
+      rect(ctx, player.x - 3, markerY + 2, 6, 2, '#ede4b8');
+      rect(ctx, player.x - 1, markerY + 4, 2, 2, '#ede4b8');
+      if (target && Number.isFinite(target.x) && Number.isFinite(target.y)) {
+        const x = Math.round(target.x), y = Math.round(target.y);
+        const s = 8 + (Math.sin(time * 5) > 0 ? 2 : 0);
+        rect(ctx, x - s, y - s, 6, 2, '#f1e8c7');
+        rect(ctx, x - s, y - s, 2, 6, '#f1e8c7');
+        rect(ctx, x + s - 5, y - s, 6, 2, '#f1e8c7');
+        rect(ctx, x + s, y - s, 2, 6, '#f1e8c7');
+        rect(ctx, x - s, y + s, 6, 2, '#f1e8c7');
+        rect(ctx, x - s, y + s - 4, 2, 6, '#f1e8c7');
+        rect(ctx, x + s - 5, y + s, 7, 2, '#f1e8c7');
+        rect(ctx, x + s, y + s - 4, 2, 6, '#f1e8c7');
+      }
+
+      if (state.repaired) {
+        // The working radio is a visual payoff that remains readable behind the ending.
+        rect(ctx, 454, 83, 52, 16, '#5d805f');
+        const p = Math.floor(time * 6) % 6;
+        for (let i = 0; i < 6; i++) rect(ctx, 458 + i * 8, 88 - (i + p) % 3, 4, 7 + (i + p) % 3, '#bacc8d');
+        for (let i = 0; i < 3; i++) {
+          const r = 12 + ((time * 14 + i * 13) % 38);
+          const a = Math.max(0, .55 - (r - 12) / 85);
+          ctx.strokeStyle = `rgba(223,231,166,${a})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(540, 34, r, -.7, .7);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(540, 34, r, Math.PI - .7, Math.PI + .7);
+          ctx.stroke();
+        }
+      } else {
+        rect(ctx, 496, 108, 3, 4, Math.sin(time * 2) > 0 ? '#d8aa6c' : '#a09262');
+      }
+
+      // Labels render after characters, preventing a merchant from hiding their own name.
+      this.nodes.forEach(n => this.label(ctx, n, n.id === nearestId, salvaged.indexOf(n.id) !== -1));
+      if (nearestId) {
+        const node = this.nodes.find(n => n.id === nearestId);
+        if (node) {
+          const y = node.y - (['water', 'cable', 'oscillator', 'battery'].indexOf(node.id) !== -1 ? 58 : 39);
+          rect(ctx, node.x - 7, y, 14, 12, '#f4e8c5');
+          pixelText(ctx, '· · ·', node.x + 1, y + 4, '#8b9367', 10);
+          rect(ctx, node.x - 2, y + 11, 4, 3, '#f4e8c5');
+        }
+      }
+
+      // Sparse drifting sand and an occasional bird make the still world feel alive.
+      for (let i = 0; i < 24; i++) {
+        const x = (i * 173 + time * (9 + i % 3) + Math.sin(i) * 60) % 1000 - 20;
+        const y = 90 + (i * 97 % 475) + Math.sin(time * .5 + i) * 2;
+        rect(ctx, x, y, i % 3 === 0 ? 6 : 3, 1, '#f4e5b955');
+      }
+      const birdX = (time * 12 + 219) % 1100 - 60;
+      if (birdX > 0 && birdX < 960) {
+        const birdY = 15 + Math.sin(time * .3) * 5;
+        rect(ctx, birdX, birdY, 3, 2, '#8e977039');
+        rect(ctx, birdX - 4, birdY - (Math.sin(time * 4) > 0 ? 2 : 0), 4, 1, '#8e977039');
+        rect(ctx, birdX + 3, birdY - (Math.sin(time * 4) > 0 ? 2 : 0), 4, 1, '#8e977039');
+      }
+      if ((state.elapsed || 0) > 300) {
+        const intensity = Math.min(.14, ((state.elapsed || 0) - 300) / 1800);
+        rect(ctx, 0, 0, 960, 600, `rgba(171,133,70,${intensity})`);
+        for (let i = 0; i < 32; i++) {
+          rect(ctx, (time * (42 + i % 4 * 11) + i * 119) % 1010 - 50, (i * 53 + time * 2) % 600, 14 + i % 7, 2, '#e3c28637');
+        }
+      }
+    }
+  }
+
+  global.MarketRenderer = MarketRenderer;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script><script>/* 正式比赛只需根据接线表填写下列配置；世界签编号 05 不是本线关序。 */
+var CONFIG = {
+  level: 1,
+  world: '废土集市',
+  prevWorld: '主神大厅',
+  nextWorld: '幽冥戏班',
+  nextUrl: '../ghost-opera/index.html',
+  passViaUrl: true
+};
+
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = WL.escapeHtml;
+  var canvas = $('game-canvas');
+  var model = MarketModel;
+  var renderer = new MarketRenderer(canvas, model.nodes, model.solids);
+  var entry = WL.readSave(CONFIG.level);
+  var fingerprint = WL.encodeCode(entry);
+  var sessionKey = 'wasteland_market_session_v1';
+  var state, save, logs = [], echo = '', finished = false, paused = false;
+  var keys = {}, path = [], target = null, pendingNode = null, near = null;
+  var lastTime = 0, saveTimer = 0, toastTimer = 0, currentEntity = null;
+  var audioContext = null, soundOn = false, lastFootstep = 0;
+
+  function freshState() {
+    save = WL.normalize(JSON.parse(JSON.stringify(entry)), CONFIG.level);
+    var tool = WL.consumeAny(save.items, 'tool');
+    state = model.create(save, !!tool);
+    echo = tool
+      ? '你用从「' + (entry.prev_world || '上一个世界') + '」带来的「' + tool.name + '」帮守门人修好了推车。他送你 3 份废料作为谢礼。'
+      : '没有工具也没关系。守门人递来一根撬棍和一小袋废料：「去找摊主聊聊，锈风从不拒绝空手的旅人。」';
+    if (entry.player.hp === 0) echo += ' 水婆先替你包扎了伤口，你以 1 点生命重新站起。';
+    logs = [{ time: '09:00', text: tool ? '旧世界的工具，换来了集市的第一份善意。' : '抵达锈风集市。先去看看中央的悬赏榜吧。' }];
+  }
+
+  function initialize() {
+    freshState();
+    try {
+      var stored = JSON.parse(localStorage.getItem(sessionKey) || 'null');
+      if (stored && stored.v === 1 && stored.fingerprint === fingerprint && stored.state && stored.state.player && stored.state.resources && stored.state.parts && Array.isArray(stored.state.salvaged) && Array.isArray(stored.logs) && !stored.finished) {
+        state = stored.state;
+        state.player.moving = false;
+        save = WL.normalize(stored.relay, CONFIG.level);
+        logs = stored.logs;
+        echo = stored.echo || echo;
+      }
+    } catch (e) { /* 浏览器禁用存储或旧快照损坏时，仍可从上家入口游玩。 */ }
+    $('opening-strip').innerHTML = WL.renderOpening(entry);
+    $('echo-log').textContent = echo;
+    $('entry-echo').textContent = (entry.exit_hook ? '「' + entry.exit_hook + '」\n\n' : '') + echo;
+    $('intro-note').hidden = state.started;
+    WL.mountDebug(save);
+    $('debug-reset').onclick = confirmRestart;
+    renderUI();
+    if (state.dead) showGameOver();
+    else if (state.repaired) showEnding();
+  }
+
+  function clockText() {
+    var minutes = 9 * 60 + Math.floor(state.elapsed / 3);
+    return String(Math.floor(minutes / 60)).padStart(2, '0') + ':' + String(minutes % 60).padStart(2, '0');
+  }
+
+  function persist() {
+    if (finished) return;
+    WL.setPlayer(save, { hp: state.hp, sanity: state.sanity });
+    try {
+      localStorage.setItem(sessionKey, JSON.stringify({ v: 1, fingerprint: fingerprint, state: state, relay: save, logs: logs, echo: echo, finished: false }));
+      $('save-status').innerHTML = '<i></i> 旅程自动保存';
+    } catch (e) {
+      $('save-status').textContent = '此浏览器未开放本地存储';
+    }
+  }
+
+  function addLog(text) {
+    logs.unshift({ time: clockText(), text: text });
+    logs = logs.slice(0, 18);
+    renderUI();
+  }
+
+  function toast(text) {
+    $('toast').textContent = text;
+    $('toast').hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { $('toast').hidden = true; }, 3400);
+  }
+
+  function renderUI() {
+    $('water-count').textContent = state.resources.water;
+    $('scrap-count').textContent = state.resources.scrap;
+    $('trust-count').textContent = state.resources.trust;
+    $('hp').textContent = '♥ '.repeat(Math.min(8, state.hp)) + '♡ '.repeat(Math.max(0, 3 - state.hp));
+    $('hp').setAttribute('aria-label', '生命 ' + state.hp);
+    $('sanity').textContent = '理智 ' + state.sanity;
+    $('clock').textContent = clockText();
+    $('weather-text').textContent = state.flags.storm ? '扬沙 · 注意饮水' : '晴 · 东南风';
+    var parts = [
+      { id: 'oscillator', name: '寻回振荡器', icon: '▥', hint: '老莫 · 西北修理摊' },
+      { id: 'cable', name: '换取铜线组', icon: '≋', hint: '阿锈 · 东北零件摊' },
+      { id: 'battery', name: '找到蓄电池', icon: '▣', hint: '小满 · 东南帐篷' }
+    ];
+    var count = parts.filter(function (p) { return state.parts[p.id]; }).length;
+    $('mission-progress').style.width = count / 3 * 100 + '%';
+    $('objectives').innerHTML = parts.map(function (p) {
+      return '<div class="objective ' + (state.parts[p.id] ? 'complete' : '') + '" title="' + p.hint + '"><span class="check">' + (state.parts[p.id] ? '✓' : '') + '</span><span>' + p.name + '</span><span class="objective-count">' + (state.parts[p.id] ? '1' : '0') + '/1</span></div>';
+    }).join('');
+    var bag = parts.filter(function (p) { return state.parts[p.id]; }).map(function (p) { return { name: p.name.slice(2), icon: p.icon }; });
+    if (state.coil) bag.push({ name: '旧线圈 · 可与老莫交换', icon: '◎' });
+    if (state.relic) bag.push({ name: '机械蜥蜴 · 废土纪念物', icon: '⌁' });
+    save.items.forEach(function (item) { if (bag.length < 6) bag.push({ name: item.name + ' · 来自上一个世界', icon: '◇' }); });
+    $('bag-count').textContent = bag.length + ' / 6';
+    $('bag-grid').innerHTML = Array.from({ length: 6 }, function (_, i) {
+      var item = bag[i];
+      return '<div class="bag-slot ' + (item ? 'filled' : '') + '" title="' + esc(item ? item.name : '空位') + '" aria-label="' + esc(item ? item.name : '空位') + '">' + (item ? item.icon : '·') + (item ? '<span>1</span>' : '') + '</div>';
+    }).join('');
+    $('bag-caption').textContent = count === 3 ? '零件齐了。去北面的电台试试吧。' : state.coil ? '旧线圈，也许有人用得上。' : '轻装上路，也是一种勇气。';
+    $('activity-log').innerHTML = logs.slice(0, 3).map(function (l) { return '<div class="log-entry"><time>' + esc(l.time) + '</time><span>' + esc(l.text) + '</span></div>'; }).join('');
+    WL.setPlayer(save, { hp: state.hp, sanity: state.sanity });
+    $('card-preview').innerHTML = WL.renderSaveCard(save, CONFIG.level, CONFIG.world);
+    $('debug-json').textContent = WL.debug.json(save);
+  }
+
+  function closeDialog() {
+    $('game-dialog').close();
+    currentEntity = null;
+    keys = {};
+    canvas.focus({ preventScroll: true });
+  }
+
+  function openDialog(kicker, title, body, choices) {
+    path = []; target = null; pendingNode = null; keys = {};
+    state.player.moving = false;
+    $('dialog-kicker').textContent = kicker;
+    $('dialog-body').innerHTML = '<h2 id="dialog-title">' + esc(title) + '</h2>' + body;
+    $('dialog-actions').innerHTML = '';
+    (choices || []).forEach(function (choice) {
+      var button = document.createElement('button');
+      button.className = 'action-button' + (choice.featured ? ' featured' : '');
+      button.innerHTML = '<span>' + esc(choice.label) + '</span>' + (choice.hint ? '<small>' + esc(choice.hint) + '</small>' : '');
+      button.disabled = !!choice.disabled;
+      if (choice.id) button.dataset.action = choice.id;
+      button.onclick = choice.onClick || function () {
+        var entity = currentEntity;
+        var result = doAction(choice.id);
+        if (!result.ok) return;
+        if (state.dead) return;
+        if (state.repaired) { showEnding(); return; }
+        if (entity) openEntity(entity);
+      };
+      $('dialog-actions').appendChild(button);
+    });
+    if (!$('game-dialog').open) $('game-dialog').showModal();
+  }
+
+  function doAction(id) {
+    if (finished) return { ok: false };
+    var result = model.action(state, id);
+    if (result.ok) {
+      addLog(result.message);
+      tone(id.indexOf('salvage') === 0 ? 'loot' : 'trade');
+      if (id === 'bounty') WL.addClue(save, '悬赏榜背面刻着一组穿界频率：07-24-6。');
+      if (id === 'oscillator_coil') WL.addClue(save, '老莫说：穿界频率 07-24-6，只有信任能让它稳定。');
+    }
+    toast(result.message || '这笔交换暂时做不了。');
+    renderUI(); persist();
+    if (state.dead) showGameOver();
+    return result;
+  }
+
+  function openEntity(id) {
+    var node = model.nodes.find(function (n) { return n.id === id; });
+    if (!node || !state.started || state.dead || finished) return;
+    if (node.kind === 'salvage') { doAction(id); return; }
+    currentEntity = id;
+    var r = state.resources;
+    if (id === 'water') {
+      openDialog('水婆 / 净水摊', '在这里，水比承诺更珍贵。', '<p class="character-quote">「喝一口再谈买卖吧，孩子。你要是没东西换，就帮我抽一会儿水。」</p><p>你可以用废料交换净水，也可以花一点时间帮忙抽水。行走和交易都会消耗时间；每 90 秒需要饮用 1 份净水。</p>', [
+        { id: 'water_buy', label: '换两份净水', hint: '1 废料 → 2 净水', disabled: r.scrap < 1 },
+        { id: 'pump', label: '帮忙抽水', hint: '+1 净水 · 花费 14 秒', featured: !r.water },
+        { label: '把水壶收好，继续逛逛', onClick: closeDialog }
+      ]);
+    } else if (id === 'oscillator') {
+      openDialog('老莫 / 旧物修理铺', state.parts.oscillator ? '旧东西，还能有新去处。' : '要让电台发声，先找回心跳。', '<p class="character-quote">「这枚振荡器还管用。拿三份废料来，或者——东边废料堆里的旧线圈，我找它很久了。」</p><p>旧线圈藏在集市东面的废料堆里。帮老莫找回来，他会记住你的这份心意。</p>', state.parts.oscillator ? [
+        { label: '多谢了，老莫', onClick: closeDialog }
+      ] : [
+        { id: 'oscillator_coil', label: '用找回的旧线圈交换', hint: '1 旧线圈 · 声望 +1', disabled: !state.coil, featured: !!state.coil },
+        { id: 'oscillator_scrap', label: '用废料交换振荡器', hint: '3 废料', disabled: r.scrap < 3 },
+        { label: '我再去找找', onClick: closeDialog }
+      ]);
+    } else if (id === 'cable') {
+      openDialog('阿锈 / 零件摊', state.parts.cable ? '这笔生意，做得不赖。' : '好铜线，要给值得的人。', '<p class="character-quote">「四份废料，不二价。嗯……如果你在集市帮过忙，两份也能谈。两壶水？那也成。」</p><p>完成中央悬赏、帮老莫找回线圈，或为小满送水，都能获得声望。熟人的价格，总会温柔一点。</p>', state.parts.cable ? [
+        { label: '收好铜线，告辞', onClick: closeDialog }
+      ] : [
+        { id: 'cable_fair', label: '谈一笔熟人的买卖', hint: '2 废料 · 需声望 1', disabled: r.trust < 1 || r.scrap < 2, featured: r.trust >= 1 },
+        { id: 'cable_full', label: '按原价交换铜线', hint: '4 废料', disabled: r.scrap < 4 },
+        { id: 'cable_water', label: '用净水以物易物', hint: '2 净水', disabled: r.water < 2 },
+        { label: '先去别处转转', onClick: closeDialog }
+      ]);
+    } else if (id === 'battery') {
+      openDialog('小满 / 南边的帐篷', state.parts.battery ? '希望你能收到，明天的声音。' : '一块电池，两个人的明天。', '<p class="character-quote">「这块蓄电池是爸爸留下的。我们缺水……你能给我们两份净水吗？或者，三份废料也可以。」</p><p>给小满净水，可以得到蓄电池和 2 点声望。废土里的选择，总有买卖之外的分量。</p>', state.parts.battery ? [
+        { label: '愿你们的水壶一直满着', onClick: closeDialog }
+      ] : [
+        { id: 'battery_water', label: '把两份净水递给小满', hint: '2 净水 · 声望 +2', disabled: r.water < 2, featured: r.water >= 2 },
+        { id: 'battery_scrap', label: '用废料交换蓄电池', hint: '3 废料', disabled: r.scrap < 3 },
+        { label: '等我一会儿', onClick: closeDialog }
+      ]);
+    } else if (id === 'board') {
+      openDialog('悬赏榜 / 集市公告', '有些委托，值得多走几步。', '<span class="dialog-chip">公开悬赏</span><span class="dialog-chip">水是共同的财富</span><p class="character-quote">「净水泵缺少修补材料。交来三份废料，换四份净水；集市会记住帮忙的人。」</p><p>主线线索：老莫有振荡器，阿锈有铜线组，小满有蓄电池。凑齐三件后，去北面的穿界电台。</p><p class="dialog-small">公告背面有人刻着：07-24-6。旁边写了一句——别忘了留下一个信号。</p>', [
+        { id: 'bounty', label: state.flags.bounty ? '净水泵已修好，悬赏已领取' : '完成净水泵悬赏', hint: '3 废料 → 4 净水 · 声望 +1', disabled: !!state.flags.bounty || r.scrap < 3, featured: !state.flags.bounty && r.scrap >= 3 },
+        { label: '记下线索，继续探索', onClick: closeDialog }
+      ]);
+      if (!state.flags.readBoard) {
+        state.flags.readBoard = true;
+        WL.addClue(save, '悬赏榜背面刻着一组穿界频率：07-24-6。');
+        addLog('看过悬赏榜：三名摊主，各有一件电台零件。'); persist();
+      }
+    } else if (id === 'camp') {
+      openDialog('营火 / 短暂歇脚', '风在走，你可以歇一会儿。', '<p class="character-quote">「人只要还有一口水，就总能再往前走一点。」</p><p>喝一份净水，恢复 1 点生命。停在对话中时，时间暂停。</p>', [
+        { id: 'rest', label: '在营火边喝水休息', hint: '1 净水 → 1 生命', disabled: r.water < 1 || state.hp >= Math.max(3, entry.player.hp), featured: state.hp < 3 && r.water > 0 },
+        { label: '拍拍尘土，继续上路', onClick: closeDialog }
+      ]);
+    } else if (id === 'radio') {
+      if (state.repaired) { showEnding(); return; }
+      var ready = state.parts.cable && state.parts.battery && state.parts.oscillator;
+      openDialog('穿界电台 / 北方旧站', ready ? '零件齐了。试着呼叫明天吧。' : '沉默的电台，等一个声音。', '<p class="character-quote">「……这里是……锈风……有……人……吗？」</p><p>电台还缺少振荡器、铜线组和蓄电池。把三件零件装回去，就能接通离开废土的世界线。</p><p class="dialog-small">下一世界：' + esc(CONFIG.nextWorld) + (CONFIG.nextWorld === '待接线世界' ? '（演示接入虚拟下家，正式比赛按接线表配置）' : '') + '</p>', [
+        { id: 'repair', label: ready ? '装好零件，接通电台' : '还需要集齐三件零件', hint: ready ? '开启结局' : '收集进度见旅人日志', disabled: !ready, featured: ready },
+        { label: '再去集市看看', onClick: closeDialog }
+      ]);
+    }
+    currentEntity = id;
+  }
+
+  function showEnding() {
+    currentEntity = null;
+    if (!state.ending) {
+      tone('win');
+      openDialog('信号已接通 / A LITTLE HOPE', '原来，明天也可以交换。', '<p>电台里的杂音渐渐退去。集市的灯一盏盏亮起来，你听见了另一端的风声。</p><p class="character-quote">「旅人，能不能给后来的人，也留下一个信号？」</p><p>离开之前，你还可以选择给集市留下一份净水。</p>', [
+        { label: '留一份净水，再向明天出发', hint: '净水 −1 · 余温结局', disabled: state.resources.water < 1, featured: true, onClick: function () { if (doAction('ending_kindness').ok) showEnding(); } },
+        { label: '带着集市的信号继续上路', hint: '远行结局', onClick: function () { if (doAction('ending_leave').ok) showEnding(); } }
+      ]);
+      return;
+    }
+    var kind = state.ending === 'kindness';
+    openDialog('旅程完成 / ' + (kind ? 'THE EMBER PACT' : 'THE NEXT FREQUENCY'), kind ? '你留下的水，长成了明天。' : '带着一缕信号，继续远行。', '<p>' + (kind ? '水婆把一枚刻着火种的铜牌放进你掌心。小满朝你挥手，集市的电台第一次播出了清晰的声音。' : '阿锈把一枚集市通行牌递给你。风穿过布棚，电台替你记住了这条来时的路。') + '</p><div class="result-stats"><div><b>' + state.resources.trust + '</b><span>收获声望</span></div><div><b>' + state.salvaged.length + '/6</b><span>探索废墟</span></div><div><b>' + Math.floor(state.elapsed / 60) + ':' + String(Math.floor(state.elapsed % 60)).padStart(2, '0') + '</b><span>旅途用时</span></div></div><p>随身带走：集市通行牌、信号提灯' + (state.resources.water > 0 ? '和封好的净水' : '') + '。你的道具和线索会通过主办方的接力存档，真实流入下一关。</p>', [
+      { label: '保存旅程，进入下一世界', hint: '接力交接 →', featured: true, onClick: finish },
+      { label: '再看一眼集市', onClick: closeDialog }
+    ]);
+    persist();
+  }
+
+  function finish() {
+    if (finished || !state.repaired || !state.ending) return;
+    if (!state.flags.rewards) {
+      WL.addItem(save, { id: 'rustwind_pass', name: '锈风集市通行牌', type: 'token' });
+      WL.addItem(save, { id: 'frequency_lantern', name: '穿界信号提灯', type: 'light' });
+      if (state.resources.water > 0) WL.addItem(save, { id: 'sealed_market_water', name: '封好的废土净水', type: 'food' });
+      WL.addClue(save, CONFIG.nextWorld === '幽冥戏班' ? '电台戏腔唱着：空位留客，脸谱归真，落幕莫回头。信号提灯靠近朱门时泛起青光。' : '穿界电台的稳定频率是 07-24-6；信号提灯能引出同一频率的门。');
+      WL.addClue(save, state.ending === 'kindness' ? '锈风集市相信：给后来者留下水的人，能被火种铜牌认出。' : '通行牌背面写着：遇见陌生的门，先听一听门后的电台声。');
+      state.flags.rewards = true;
+    }
+    WL.setPlayer(save, { hp: state.hp, sanity: state.sanity });
+    var hook = CONFIG.nextWorld === '幽冥戏班'
+      ? '电台忽然传出一段戏腔，三声锣响压过集市的风。信号提灯泛起青光，照出一道朱门。你推门而入，红灯笼下坐满了没有影子的看客——幽冥戏班，今夜等你替班。'
+      : '电台锁定了「' + CONFIG.nextWorld + '」的频率。信号提灯照出一道门，你推开门，集市的风声在身后消失——另一段世界正等着你。';
+    var complete = WL.completeLevel(CONFIG, save, { exitHook: hook, nextUrl: CONFIG.nextUrl, passViaUrl: CONFIG.passViaUrl });
+    if (complete) {
+      finished = true;
+      $('game-dialog').close();
+      keys = {}; path = [];
+      try { localStorage.removeItem(sessionKey); } catch (e) { /* URL 交接不依赖本地存储。 */ }
+    } else {
+      toast('出口交接还未配置完整，请打开接力存档查看提示。');
+    }
+  }
+
+  function showGameOver() {
+    openDialog('旅途暂歇 / THE DUST SETTLES', '先把自己，从风里找回来。', '<p>水壶空了，你的脚步也慢了下来。集市的守门人把你带回入口。</p><p>下一次可以先在水婆处补水，或帮忙抽水。每 90 秒需要 1 份净水；对话时不会消耗时间。</p>', [{ label: '从这一关的入口重新出发', featured: true, onClick: restart }]);
+  }
+
+  function confirmRestart() {
+    openDialog('重走旅程', '回到第一次抵达集市的时候？', '<p>本关的探索和交易将重新开始。上一个世界传来的道具、面板和故事会重新带入。</p>', [
+      { label: '重新开始本关', featured: true, onClick: restart },
+      { label: '继续眼前的旅程', onClick: closeDialog }
+    ]);
+  }
+
+  function restart() {
+    finished = false; paused = false; path = []; target = null; pendingNode = null; keys = {};
+    $('pause-badge').hidden = true;
+    $('pause-button').textContent = 'Ⅱ';
+    if ($('relay-dialog').open) $('relay-dialog').close();
+    closeDialog(); freshState();
+    $('intro-note').hidden = false;
+    $('entry-echo').textContent = (entry.exit_hook ? '「' + entry.exit_hook + '」\n\n' : '') + echo;
+    $('echo-log').textContent = echo;
+    WL.mountDebug(save); $('debug-reset').onclick = confirmRestart;
+    renderUI(); persist();
+  }
+
+  function showGuide() {
+    openDialog('旅人手册 / FIELD GUIDE', '在废土里，做一点有用的事。', '<div class="help-controls"><span><kbd>W A S D</kbd> 或方向键 · 移动</span><span><kbd>E</kbd> 靠近人物、公告和废料堆后交互</span><span><kbd>SHIFT</kbd> 按住快跑</span><span>鼠标 / 触屏 · 点击人物或物资，自动前往</span><span><kbd>ESC</kbd> 暂停或关闭对话</span></div><p>你的目标是换齐三件零件，修好北面的穿界电台。可以先看中央悬赏榜，再拾荒、换水、与摊主谈条件。</p><p>水既是生存物资，也是交换的筹码。每 90 秒需要 1 份水；缺水会损失生命。物资不足时，可在水婆处帮忙抽水。</p><p class="dialog-small">游戏会自动记录本关进度。上家道具按类型接入；没有对应道具也有完整通关路线。声音默认关闭，可从右上角开启。</p>', [{ label: '记住了，出发', featured: true, onClick: closeDialog }]);
+  }
+
+  function showMission() {
+    openDialog('当前委托 / THE NEXT FREQUENCY', '给明天一个信号', '<p>① 西北修理铺：老莫保管着振荡器。东边废料堆里的旧线圈能换到它。</p><p>② 东北零件摊：阿锈出售铜线。积攒 1 点声望后，可以把四份废料的价格谈到两份。</p><p>③ 东南帐篷：小满愿意用蓄电池交换净水，也接受废料。</p><p>凑齐三件零件后，到北面的穿界电台接通下一世界。不要忘记，中央悬赏榜和水婆能帮你补给。</p>', [
+      { label: '在地图上前往电台', hint: '自动寻路', onClick: function () { closeDialog(); if (state.started) navigateTo(model.nodes.find(function (n) { return n.id === 'radio'; }), 'radio'); else toast('先点击「进入集市」开启旅程。'); } },
+      { label: '继续探索', featured: true, onClick: closeDialog }
+    ]);
+  }
+
+  function showRelay() {
+    keys = {}; path = []; target = null; pendingNode = null;
+    renderUI();
+    $('debug-code').value = WL.debug.code(save);
+    if (!$('relay-dialog').open) $('relay-dialog').showModal();
+  }
+
+  function blocked(x, y) {
+    if (x < 24 || x > 936 || y < 90 || y > 558) return true;
+    return model.solids.some(function (s) { return x > s.x - 9 + 0.01 && x < s.x + s.w + 9 - 0.01 && y > s.y - 9 + 0.01 && y < s.y + s.h + 9 - 0.01; });
+  }
+
+  // 小地图使用网格寻路；拒绝穿过摊位，也不让斜线切过障碍物的角。
+  function findPath(destination) {
+    var step = 12, cols = 80, rows = 50;
+    var start = { x: Math.round(state.player.x / step), y: Math.round(state.player.y / step) };
+    var end = { x: Math.round(destination.x / step), y: Math.round(destination.y / step) };
+    function index(p) { return p.y * cols + p.x; }
+    function free(x, y) { return x >= 0 && x < cols && y >= 0 && y < rows && !blocked(x * step, y * step); }
+    function nearestFree(p) {
+      if (free(p.x, p.y)) return p;
+      for (var r = 1; r < 16; r++) {
+        for (var dy = -r; dy <= r; dy++) for (var dx = -r; dx <= r; dx++) {
+          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+          if (free(p.x + dx, p.y + dy)) return { x: p.x + dx, y: p.y + dy };
+        }
+      }
+      return null;
+    }
+    start = nearestFree(start); end = nearestFree(end);
+    if (!start || !end) return [];
+    var queue = [start], parents = new Int32Array(cols * rows).fill(-1), seen = new Uint8Array(cols * rows);
+    seen[index(start)] = 1;
+    var found = false;
+    var directions = [[0, 1], [1, 0], [0, -1], [-1, 0], [1, 1], [1, -1], [-1, 1], [-1, -1]];
+    for (var head = 0; head < queue.length; head++) {
+      var p = queue[head];
+      if (p.x === end.x && p.y === end.y) { found = true; break; }
+      directions.forEach(function (d) {
+        var x = p.x + d[0], y = p.y + d[1], i = y * cols + x;
+        if (!free(x, y) || seen[i]) return;
+        if (d[0] && d[1] && (!free(p.x + d[0], p.y) || !free(p.x, p.y + d[1]))) return;
+        seen[i] = 1; parents[i] = index(p); queue.push({ x: x, y: y });
+      });
+    }
+    if (!found) return [];
+    var points = [], cursor = index(end), origin = index(start);
+    while (cursor !== origin && cursor >= 0) { points.push({ x: cursor % cols * step, y: Math.floor(cursor / cols) * step }); cursor = parents[cursor]; }
+    points.reverse();
+    return points;
+  }
+
+  function navigateTo(destination, nodeId) {
+    path = findPath(destination); target = { x: destination.x, y: destination.y }; pendingNode = nodeId || null;
+    if (!path.length) {
+      target = null;
+      if (nodeId && Math.hypot(state.player.x - destination.x, state.player.y - destination.y) < 55) openEntity(nodeId);
+      else if (nodeId) toast('那边暂时走不过去，试试另一条路。');
+      pendingNode = null;
+    }
+  }
+
+  function updateMovement(dt) {
+    var dx = (keys.d || keys.arrowright ? 1 : 0) - (keys.a || keys.arrowleft ? 1 : 0);
+    var dy = (keys.s || keys.arrowdown ? 1 : 0) - (keys.w || keys.arrowup ? 1 : 0);
+    var speed = (keys.shift ? 177 : 113) * (state.flags.storm ? 0.82 : 1);
+    if (dx || dy) { path = []; target = null; pendingNode = null; }
+    else if (path.length) {
+      var next = path[0], distance = Math.hypot(next.x - state.player.x, next.y - state.player.y);
+      if (distance <= speed * dt + 1) {
+        state.player.x = next.x; state.player.y = next.y; path.shift();
+        if (!path.length) {
+          target = null;
+          var id = pendingNode; pendingNode = null;
+          if (id) { openEntity(id); return; }
+        }
+        return;
+      }
+      dx = next.x - state.player.x; dy = next.y - state.player.y;
+    }
+    var length = Math.hypot(dx, dy);
+    state.player.moving = length > 0;
+    if (!length) return;
+    dx /= length; dy /= length;
+    state.player.dir = Math.abs(dx) > Math.abs(dy) ? dx > 0 ? 'right' : 'left' : dy > 0 ? 'down' : 'up';
+    var nx = state.player.x + dx * speed * dt, ny = state.player.y + dy * speed * dt;
+    if (!blocked(nx, state.player.y)) state.player.x = nx;
+    if (!blocked(state.player.x, ny)) state.player.y = ny;
+    if (soundOn && performance.now() - lastFootstep > 350) { tone('step'); lastFootstep = performance.now(); }
+  }
+
+  function updateNear() {
+    var best = null, distance = 57;
+    model.nodes.forEach(function (node) {
+      if (node.kind === 'salvage' && state.salvaged.indexOf(node.id) !== -1) return;
+      var d = Math.hypot(state.player.x - node.x, state.player.y - node.y);
+      if (d < distance) { distance = d; best = node; }
+    });
+    near = best;
+    var prompt = $('interaction-prompt');
+    prompt.hidden = !best || !state.started || state.dead || paused || finished || $('game-dialog').open || $('relay-dialog').open;
+    if (best) prompt.innerHTML = '<kbd>E</kbd><span>' + (best.kind === 'salvage' ? '搜寻' : best.id === 'board' ? '查看' : best.id === 'radio' ? '检查' : '交谈 · ') + esc(best.name) + '</span>';
+  }
+
+  function isActive() {
+    return state.started && !state.dead && !paused && !finished && !$('game-dialog').open && !$('relay-dialog').open && !document.hidden;
+  }
+
+  function frame(now) {
+    var dt = lastTime ? Math.min((now - lastTime) / 1000, 0.06) : 0;
+    lastTime = now;
+    if (isActive()) {
+      updateMovement(dt);
+      if (isActive()) {
+        var events = model.tick(state, dt) || [];
+        events.forEach(function (event) { var message = typeof event === 'string' ? event : event.message; addLog(message); toast(message); });
+        if (state.dead) showGameOver();
+        saveTimer += dt;
+        if (saveTimer >= 2) { saveTimer = 0; renderUI(); persist(); }
+      }
+    } else state.player.moving = false;
+    updateNear();
+    renderer.render(state, now, target, near ? near.id : null);
+    requestAnimationFrame(frame);
+  }
+
+  function togglePause() {
+    if (!state.started || state.dead || finished || $('game-dialog').open || $('relay-dialog').open) return;
+    paused = !paused; keys = {};
+    $('pause-badge').hidden = !paused;
+    $('pause-button').textContent = paused ? '▷' : 'Ⅱ';
+    $('pause-button').setAttribute('aria-label', paused ? '继续游戏' : '暂停游戏');
+    persist();
+  }
+
+  function tone(kind) {
+    if (!soundOn) return;
+    try {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      var frequencies = kind === 'win' ? [392, 494, 587, 784] : kind === 'loot' ? [523, 784] : kind === 'trade' ? [440, 659] : [110];
+      frequencies.forEach(function (f, i) {
+        var osc = audioContext.createOscillator(), gain = audioContext.createGain(), at = audioContext.currentTime + i * 0.09;
+        osc.type = kind === 'step' ? 'triangle' : 'square'; osc.frequency.value = f;
+        gain.gain.setValueAtTime(kind === 'step' ? 0.012 : 0.025, at); gain.gain.exponentialRampToValueAtTime(0.001, at + 0.12);
+        osc.connect(gain); gain.connect(audioContext.destination); osc.start(at); osc.stop(at + 0.13);
+      });
+    } catch (e) { soundOn = false; }
+  }
+
+  $('start-button').onclick = function () { state.started = true; $('intro-note').hidden = true; persist(); canvas.focus({ preventScroll: true }); toast('点击人物或废料堆即可前往。先看看中央悬赏榜吧。'); };
+  $('guide-button').onclick = showGuide;
+  $('mission-button').onclick = showMission;
+  $('world-button').onclick = showRelay;
+  $('relay-button').onclick = showRelay;
+  $('market-tab').onclick = function () { if ($('relay-dialog').open) $('relay-dialog').close(); if ($('game-dialog').open) closeDialog(); canvas.focus({ preventScroll: true }); };
+  $('dialog-close').onclick = closeDialog;
+  $('relay-close').onclick = function () { $('relay-dialog').close(); canvas.focus({ preventScroll: true }); };
+  $('restart-button').onclick = confirmRestart;
+  $('pause-button').onclick = togglePause;
+  $('resume-button').onclick = togglePause;
+  $('interaction-prompt').onclick = function () { if (near && isActive()) openEntity(near.id); };
+  $('touch-interact').onclick = function () { if (near && isActive()) openEntity(near.id); else if (state.repaired) showEnding(); else toast('靠近摊主、悬赏榜或废料堆再交互。'); };
+  $('map-button').onclick = function () { $('map-note').hidden = !$('map-note').hidden; $('map-button').setAttribute('aria-pressed', String(!$('map-note').hidden)); };
+  $('sound-button').onclick = function () { soundOn = !soundOn; $('sound-button').querySelector('.sound-off').hidden = soundOn; $('sound-button').setAttribute('aria-label', soundOn ? '关闭声音' : '开启声音'); $('sound-button').title = soundOn ? '关闭声音' : '开启声音'; if (soundOn) tone('trade'); };
+
+  canvas.addEventListener('pointerdown', function (event) {
+    if (!isActive()) return;
+    event.preventDefault(); canvas.focus({ preventScroll: true });
+    var box = canvas.getBoundingClientRect();
+    var point = { x: (event.clientX - box.left) / box.width * canvas.width, y: (event.clientY - box.top) / box.height * canvas.height };
+    var selected = model.nodes.map(function (n) { return { node: n, d: Math.min(Math.hypot(point.x - n.x, point.y - n.y), Math.hypot(point.x - n.x, point.y - (n.y - 27))) }; }).sort(function (a, b) { return a.d - b.d; })[0];
+    if (selected && selected.d < 38) navigateTo(selected.node, selected.node.id);
+    else navigateTo(point, null);
+  });
+
+  document.addEventListener('keydown', function (event) {
+    var key = event.key.toLowerCase();
+    if (/input|textarea/i.test(event.target.tagName)) return;
+    if ($('game-dialog').open || $('relay-dialog').open) return;
+    if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift', 'e', 'escape'].indexOf(key) !== -1) event.preventDefault();
+    if (key === 'escape' && !event.repeat) { togglePause(); return; }
+    if (key === 'e' && !event.repeat && isActive()) {
+      if (near) openEntity(near.id);
+      else if (state.repaired) showEnding();
+      else toast('靠近摊主、悬赏榜或发光的废料堆再按 E。');
+      return;
+    }
+    if (isActive()) keys[key] = true;
+  });
+  document.addEventListener('keyup', function (event) { keys[event.key.toLowerCase()] = false; });
+  document.querySelectorAll('[data-dir]').forEach(function (button) {
+    var key = { up: 'w', left: 'a', down: 's', right: 'd' }[button.dataset.dir];
+    button.addEventListener('pointerdown', function (event) { event.preventDefault(); if (isActive()) { button.setPointerCapture(event.pointerId); keys[key] = true; } });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (type) { button.addEventListener(type, function () { keys[key] = false; }); });
+  });
+  window.addEventListener('blur', function () { keys = {}; });
+  document.addEventListener('visibilitychange', function () { keys = {}; lastTime = 0; if (document.hidden) persist(); });
+  window.addEventListener('pagehide', persist);
+  $('game-dialog').addEventListener('close', function () { keys = {}; currentEntity = null; });
+  $('relay-dialog').addEventListener('close', function () { keys = {}; });
+
+  initialize();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

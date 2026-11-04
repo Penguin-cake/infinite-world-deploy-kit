@@ -1,0 +1,157 @@
+/* =========================================================
+ * 终局结算页样式（主办方页面，队伍不用改）
+ * ========================================================= */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #0b1120;
+  color: #dce6f5;
+  font: 15px/24px "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.stage {
+  width: 100%;
+  max-width: 720px;
+  padding: 48px 20px 60px;
+}
+
+/* ---------- 页头 ---------- */
+
+.finale-header { text-align: center; margin-bottom: 30px; }
+
+.finale-kicker {
+  font: 600 12px/18px Consolas, monospace;
+  letter-spacing: 5px;
+  color: #35e08c;
+}
+
+h1 {
+  margin: 10px 0 8px;
+  font: 600 34px/44px "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #f2f6fd;
+}
+
+.finale-sub {
+  margin: 0;
+  color: #8fa3bf;
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* ---------- 面板 ---------- */
+
+.panel {
+  background: #121b2d;
+  border: 1px solid #22334f;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font: 600 15px/22px "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #9ff5c8;
+}
+
+.panel p { margin: 6px 0; color: #c6d4e8; }
+
+.dim { color: #7d90ad; font-size: 13px; }
+
+/* ---------- 结算评级 ---------- */
+
+.grade { display: flex; align-items: center; gap: 18px; }
+
+.grade-rank {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #182546;
+  border: 2px solid #35e08c;
+  border-radius: 14px;
+  font: 700 34px/40px Consolas, monospace;
+  color: #35e08c;
+}
+
+.grade-label { font: 600 16px/24px "PingFang SC", "Microsoft YaHei", sans-serif; color: #e8eef8; }
+
+.grade-stats { color: #8fa3bf; font-size: 13px; margin-top: 2px; }
+
+/* ---------- 旅程回放 ---------- */
+
+.journey-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed #22334f;
+}
+
+.journey-row:last-child { border-bottom: none; }
+
+.j-lv {
+  flex: none;
+  font: 600 12px/18px Consolas, monospace;
+  color: #35e08c;
+}
+
+.j-world { flex: none; font-weight: 600; color: #e8eef8; }
+
+.j-hook { color: #8fa3bf; font-size: 13px; font-style: italic; }
+
+/* ---------- 遗物与线索 ---------- */
+
+.carry-row { margin: 4px 0; color: #c6d4e8; }
+
+.tag {
+  display: inline-block;
+  background: #182546;
+  border: 1px solid #2c4066;
+  border-radius: 6px;
+  padding: 1px 8px;
+  margin: 2px 6px 2px 0;
+  font: 13px/20px "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #cfe0f5;
+}
+
+/* ---------- 通关者名单 ---------- */
+
+.credit-row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px dashed #22334f;
+  font-size: 14px;
+}
+
+.credit-row:last-child { border-bottom: none; }
+
+.c-lv { flex: none; font: 600 12px/18px Consolas, monospace; color: #35e08c; }
+.c-world { flex: none; color: #e8eef8; }
+.c-team { color: #8fa3bf; }
+
+/* ---------- 重新开始 ---------- */
+
+.restart-btn {
+  display: block;
+  width: 100%;
+  background: #182546;
+  color: #dce6f5;
+  border: 1px solid #2c4066;
+  border-radius: 10px;
+  padding: 13px 16px;
+  margin-top: 18px;
+  font: 600 15px/24px "PingFang SC", "Microsoft YaHei", sans-serif;
+  cursor: pointer;
+}
+
+.restart-btn:hover { border-color: #35e08c; }

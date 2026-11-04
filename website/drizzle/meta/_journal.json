@@ -15,6 +15,13 @@
       "when": 1793102639189,
       "tag": "0001_seed_worlds",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1793719592663,
+      "tag": "0002_external_url",
+      "breakpoints": true
     }
   ]
 }

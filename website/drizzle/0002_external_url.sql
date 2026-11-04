@@ -1,0 +1,1 @@
+ALTER TABLE `submissions` ADD `external_url` text;
