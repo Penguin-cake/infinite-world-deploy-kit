@@ -9,7 +9,7 @@ export function validateGroup(title,routes){
 export function validateResult(body,group){
  if(!body||typeof body!=='object')throw new PortalError('终局记录格式无效。');
  const lane=group.lanes.find(r=>r.id===body.routeId);if(!lane)throw new PortalError('路线不属于本场赛事。');
- if(!/^[a-zA-Z0-9-]{8,80}$/.test(body.runId||'')||body.save?.schema!=='v2'||!Array.isArray(body.history)||body.history.length!==lane.stages.length||JSON.stringify(body).length>60000)throw new PortalError('终局记录格式无效。');
+ if(!/^[a-zA-Z0-9-]{8,80}$/.test(body.runId||'')||!['v2','v3'].includes(body.save?.schema)||!Array.isArray(body.history)||body.history.length!==lane.stages.length||JSON.stringify(body).length>60000)throw new PortalError('终局记录格式无效。');
  if(!Array.isArray(body.save.items)||body.save.items.length>100||!Array.isArray(body.save.clues)||body.save.clues.length>100||body.history.some((h,i)=>!h||typeof h!=='object'||h.world!==lane.stages[i].world))throw new PortalError('终局旅程与路线不符。');
  return {runId:body.runId,routeId:lane.id,lane:lane.label,save:body.save,history:body.history,source:'player-reported',createdAt:new Date().toISOString()};
 }

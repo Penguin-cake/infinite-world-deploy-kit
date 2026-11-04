@@ -117,13 +117,13 @@ export default function Run({id}:{id:string}){
    const reason=String(d.reason||'探索者力竭倒地').slice(0,100),slot=stepRef.current;
    setRescueNotice('本关已按失败交接：遗物与墓碑将传给下一位探索者。');
    const failed=relicSave(d.fallenSave||saveRef.current,route,slot,reason);
-   advanceRef.current(failed,[...historyRef.current,{level:slot+1,world:route.stages[slot].world,hook:failed.exit_hook}]);return;
+   advanceRef.current(failed,historyRef.current);return;
   }
   if(d.type==='iw-save'||d.type==='IW_SAVE'||d.type==='IW_COMPLETE'){
    if(!d.save||typeof d.save!=='object')return;
    const journey=Array.isArray(d.history)?d.history:historyRef.current;
    const nextSave=d.failure===true?relicSave(d.fallenSave||d.save,route,stepRef.current,String(d.reason||'探索者力竭倒地').slice(0,100)):d.save;
-   saveRef.current=nextSave;historyRef.current=journey;advanceRef.current(nextSave,journey);
+   advanceRef.current(nextSave,journey);
   }
  },[id,route,group,runId,finishJourney,step]);
 

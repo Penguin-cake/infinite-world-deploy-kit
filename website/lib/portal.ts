@@ -23,7 +23,7 @@ async function boundedForm(req:Request){
 }
 const dto=(g:Game)=>({id:g.id,team:g.team,title:g.title,world:g.world,entry:g.entry_path,externalUrl:g.external_url||null,description:g.description,exitHook:g.exit_hook,byteSize:g.byte_size,fileCount:g.file_count,hasRelay:!!g.has_relay,status:g.status,reviewNote:g.review_note,createdAt:g.created_at});
 const stageOf=(g:Game,exitHook=g.exit_hook):Stage=>({id:g.id,title:g.title,team:g.team,world:g.world,entry_path:g.entry_path,external_url:g.external_url||null,exitHook});
-function validExternalUrl(value:unknown){try{const u=new URL(String(value||''));if(!['https:','http:'].includes(u.protocol)||u.username||u.password)throw new Error();return u.href;}catch{throw new PortalError('外部作品地址必须是有效的 HTTP(S) URL，且不能包含账号口令。');}}
+function validExternalUrl(value:unknown){try{const u=new URL(String(value||''));if(u.protocol!=='https:'||u.username||u.password)throw new Error();return u.href;}catch{throw new PortalError('外部作品地址必须是有效的 HTTPS URL，且不能包含账号口令。');}}
 async function automaticRoute(env:Env){
  const rows=await db(env).prepare("SELECT * FROM submissions WHERE status='approved' ORDER BY created_at ASC,id ASC LIMIT 200").all<Game>();
  const stages=rows.results.map(g=>stageOf(g));

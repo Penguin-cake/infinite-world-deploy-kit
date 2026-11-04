@@ -5,3 +5,5 @@
 - 静态版提供废土集市、幽冥戏班、接力及终局。多人投稿和主办方验收使用完整站。
 
 重新生成静态版时，在 `website/` 安装项目依赖，运行 `node --experimental-strip-types static-site/build.mjs ../docs`。将 `docs/` 的全部内容上传到你的静态空间即可。
+
+[参赛团队 5 分钟接入指南](<参赛团队 5 分钟接入指南.md>) · [引擎适配脚手架](adapters/)

@@ -13,7 +13,7 @@ let passed = 0;
 let id;
 let externalId;
 let publishedRouteId;
-const externalUrl = base + '/?source=external#relay-target';
+const externalUrl = 'https://example.com/?source=external#relay-target';
 
 async function test(name, fn) {
   await fn();
@@ -53,11 +53,11 @@ function form(files) {
   return body;
 }
 
-function externalForm() {
+function externalForm(url = externalUrl) {
   const body = new FormData();
   for (const [key, value] of Object.entries(metadata())) body.set(key, value);
   body.set('mode', 'url');
-  body.set('externalUrl', externalUrl);
+  body.set('externalUrl', url);
   return body;
 }
 
@@ -131,6 +131,9 @@ await test('正式路线、游戏HTML和素材可从云端存储读取', async (
 });
 
 await test('B轨外部URL可投稿并进入待验收队列', async () => {
+  const insecure = await req('upload', { method: 'POST', body: externalForm('http://example.com/') }, 'team');
+  assert.equal(insecure.status, 400);
+  assert.match(insecure.data.error, /HTTPS/);
   const result = await req('upload', { method: 'POST', body: externalForm() }, 'team');
   assert.equal(result.status, 201);
   assert.equal(result.data.status, 'pending');
