@@ -1,9 +1,12 @@
 # 无限世界 · 赛事大厅
 
-- `website/` 是赛事大厅的完整源码，包含投稿、验收、接力及云端存档所需接口。部署时配置自己的数据库、文件存储和口令。仓库不包含生产数据库、参赛者上传文件或口令。
-- `docs/` 是静态游玩版。可直接托管在任意静态服务器的任意子目录，也可解压后用 Chrome 或 Edge 打开 `index.html`。首页素材、脚本和两个示例关卡都在本地。进度保存在浏览器里。
-- 静态版提供废土集市、幽冥戏班、接力及终局。多人投稿和主办方验收使用完整站。
+- website/ 是完整平台源码。独立部署时配置自己的 D1、R2 绑定及运行时 ADMIN_KEY、UPLOAD_CODE。迁移按 0000 至 0003 顺序执行。
+- docs/ 是静态试玩版，可以托管在任意子目录，也可在 Chrome/Edge 离线打开 index.html。静态版进度保存在本机浏览器。
+- participant-delivery-kit-v2/ 是对齐后的选手交付包，包含协议、模拟器、种子卡、最小示例和引擎脚手架。
 
-重新生成静态版时，在 `website/` 安装项目依赖，运行 `node --experimental-strip-types static-site/build.mjs ../docs`。将 `docs/` 的全部内容上传到你的静态空间即可。
+完整平台的正式旅程使用服务器进度，网址只带 runId、step。管理员可在接线控制台配置初始状态、关序和出口钩子。验收作品仍会自动接入唯一一条无限世界。当前关卡和初始配置保存在路线快照，修改配置不会改写已经开始的旅程。
 
-[参赛团队 5 分钟接入指南](<参赛团队 5 分钟接入指南.md>) · [引擎适配脚手架](adapters/)
+[参赛团队 5 分钟接入指南](<participant-delivery-kit-v2/参赛团队 5 分钟接入指南.md>) · [平台侧对齐说明](平台侧对齐说明.md)
+
+复建静态版时，在 website/ 安装依赖，执行 node --experimental-strip-types static-site/build.mjs ../docs。
+复核平台逻辑时，在 website/ 执行 node --experimental-strip-types scripts/test-alignment.mjs（需 Node 24），以及 node scripts/test-core.mjs。

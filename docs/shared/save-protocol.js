@@ -43,6 +43,13 @@
     token: '信物', info: '情报', weapon: '武器', strange: '异物'
   };
 
+  /* 通用道具效果词表（宪章第二章）：有限集合，不开放自由字段。
+   * hp/sanity/max_hp/attack 的 value 必须在区间内；cleanse 只接受 true。 */
+  var EFFECT_STATS = ['hp', 'sanity', 'max_hp', 'cleanse', 'attack'];
+  var EFFECT_TRIGGERS = ['on_enter', 'passive'];
+  var EFFECT_RANGE = { hp: [1, 2], sanity: [1, 1], max_hp: [1, 1], attack: [1, 1] };
+  var ITEMS_MAX = 3;
+
   /* ---------------- 基础工具 ---------------- */
 
   function esc(text) {
@@ -77,24 +84,44 @@
     };
   }
 
-  /* 道具归一化：类型不在词表内 → 归为 strange（异物） */
+  /* 效果词条校验：不合规返回 null → 道具降级为纯装饰，不参与结算 */
+  function coerceEffect(raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    var stat = toStr(raw.stat, '').trim().toLowerCase();
+    if (EFFECT_STATS.indexOf(stat) === -1) return null;
+    var trigger = toStr(raw.trigger, '').trim().toLowerCase();
+    if (EFFECT_TRIGGERS.indexOf(trigger) === -1) return null;
+    if (stat === 'cleanse') {
+      if (raw.value !== true) return null;
+      return { stat: stat, value: true, trigger: trigger };
+    }
+    var range = EFFECT_RANGE[stat], n = raw.value;
+    if (typeof n !== 'number' || !Number.isInteger(n)) return null;
+    if (!range || n < range[0] || n > range[1]) return null;
+    return { stat: stat, value: n, trigger: trigger };
+  }
+
+  /* 道具归一化：类型不在词表内 → 归为 strange（异物）；effect 不合规 → 丢弃 */
   function coerceItem(raw) {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
     var type = toStr(raw.type, 'strange').trim().toLowerCase();
     if (ITEM_TYPES.indexOf(type) === -1) type = 'strange';
     var item = {
-      id: toStr(raw.id, '').trim() || 'item_' + Math.random().toString(36).slice(2, 8),
+      id: toStr(raw.id, '').trim().slice(0,64) || 'item_' + Math.random().toString(36).slice(2, 8),
       name: (toStr(raw.name, '未知物品').trim() || '未知物品').slice(0, 32),
       type: type,
       relic: raw.relic === true
     };
+    if (raw.desc !== undefined) item.desc = toStr(raw.desc, '').slice(0, 120);
+    var effect = coerceEffect(raw.effect);
+    if (effect) item.effect = effect;
     if (raw.durability !== undefined) item.durability = Math.max(0, toInt(raw.durability, 1, 0));
     return item;
   }
 
   function coerceItems(raw) {
     if (!Array.isArray(raw)) return [];
-    return raw.map(coerceItem).filter(Boolean).slice(0, 3);
+    return raw.map(coerceItem).filter(Boolean).slice(-ITEMS_MAX);
   }
 
   function coerceClues(raw) {
@@ -208,9 +235,12 @@
         level: Math.min(10, toInt(player.level, 1, 1)),
         sanity: toInt(player.sanity, 2, 0),
         status: status,
-        curses: Array.isArray(player.curses) ? player.curses.map(function (c) { return toStr(c, '').slice(0, 40); }).filter(Boolean).slice(0, 8) : []
+        curses: Array.isArray(player.curses) ? player.curses.map(function (c) { return toStr(c, '').slice(0, 40); }).filter(Boolean).slice(0, 8) : [],
+        deaths: toInt(player.deaths, 0, 0)
       },
       items: coerceItems(raw.items),
+      /* 已结算的 on_enter 道具 id：防止换关卡或刷新时重复回血 */
+      settled: Array.isArray(raw.settled) ? raw.settled.map(function (id) { return toStr(id, '').slice(0, 64); }).filter(Boolean).slice(-8) : [],
       clues: coerceClues(raw.clues).slice(-8),
       exit_hook: toStr(raw.exit_hook, ''),
       prev_world: toStr(raw.prev_world, ''),
@@ -245,7 +275,7 @@
         if (stored) raw = JSON.parse(stored);
       } catch (e) { /* ignore */ }
     }
-    var save = normalize(raw, levelNo);
+    var save = applyEntryEffects(normalize(raw, levelNo));
     if (!memoryInitialSave) memoryInitialSave = normalize(save, levelNo);
     return save;
   }
@@ -255,10 +285,39 @@
     return readSave();
   }
 
+  /* 通用道具 on_enter 结算：每件道具只结算一次（settled 标记随存档一路传递）。
+   * passive 效果不改数值，由下一关玩法自行读取 save.items[].effect。 */
+  function applyEntryEffects(save) {
+    var current = normalize(save, null);
+    var done = current.settled;
+    current.items.forEach(function (it) {
+      var fx = it.effect;
+      if (!fx || fx.trigger !== 'on_enter' || done.indexOf(it.id) !== -1) return;
+      if (fx.stat === 'hp') current.player.hp = Math.min(current.player.max_hp, current.player.hp + fx.value);
+      else if (fx.stat === 'sanity') current.player.sanity = Math.max(0, current.player.sanity + fx.value);
+      else if (fx.stat === 'max_hp') current.player.max_hp = Math.min(10, current.player.max_hp + fx.value);
+      else if (fx.stat === 'cleanse' && current.player.curses.length) {
+        current.player.curses.splice(0, 1);
+        if (current.player.status === 'cursed') current.player.status = 'normal';
+      }
+      done.push(it.id);
+    });
+    current.settled = done.slice(-8);
+    return current;
+  }
+
   function respawn() {
-    var initial = getInitialSave();
+    var initial = applyEntryEffects(getInitialSave());
+    initial.player.deaths = (initial.player.deaths || 0) + 1;
+    memoryInitialSave = normalize(initial, null);
     persist(initial);
     return initial;
+  }
+
+  /* 连续阵亡放水档位：0 正常 / 1 连死两次 / 2 连死三次以上；具体放水由选手实现 */
+  function assist(save) {
+    var n = toInt(save && save.player ? save.player.deaths : 0, 0, 0);
+    return n >= 3 ? 2 : n >= 2 ? 1 : 0;
   }
 
   /* ---------------- 游戏内编辑存档 ---------------- */
@@ -276,8 +335,18 @@
   }
 
   function addItem(save, item) {
+    var rawEffect = item && typeof item === 'object' ? item.effect : null;
     var it = coerceItem(item);
-    if (it) save.items.push(it);
+    if (it) {
+      if (rawEffect && !it.effect && typeof console !== 'undefined') {
+        console.warn('[WL] 道具「' + it.name + '」的 effect 不符合宪章词表，已降级为纯装饰道具。');
+      }
+      save.items.push(it);
+      if (save.items.length > ITEMS_MAX) {
+        save.items = save.items.slice(-ITEMS_MAX);
+        if (typeof console !== 'undefined') console.warn('[WL] 跨关道具最多 3 件，已丢弃最早的一件。');
+      }
+    }
     return save;
   }
 
@@ -393,15 +462,20 @@
   function completeLevel(config, save, opts) {
     opts = opts || {};
     config = config || {};
+    if (global.CONFIG && global.parent && global.parent !== global) { config = global.CONFIG; opts.exitHook = config.exitHook; opts.nextUrl = config.nextUrl; }
     var current = normalize(save, toInt(config.level, 1, 1));
     if (current.player.hp <= 0 || current.player.status === 'dead') {
       return failLevel('探索者生命耗尽', save, config);
     }
     var candidate = normalize(save, toInt(config.level, 1, 1) + 1);
+    candidate.player.deaths = 0;
     candidate.exit_hook = toStr(opts.exitHook, '').trim();
     candidate.prev_world = toStr(config.world, '').trim();
     candidate.next_world = toStr(config.nextWorld, '').trim();
     var warnings = softValidate(candidate);
+    if (Array.isArray(save.items) && save.items.length > 3) warnings.push('道具超过 3 件，已保留最近 3 件');
+    if (Array.isArray(save.clues) && save.clues.length > 2) warnings.push('线索超过 2 条，已保留最近 2 条');
+    if (warnings.length && typeof console !== 'undefined') console.warn('[WL] ' + warnings.join('；'));
     var errors = validateExit(candidate, config, opts);
     showExitErrors(errors);
     if (errors.length) return null;
@@ -585,10 +659,12 @@
   /* 外链作品没有云端注入桥时，也由核心库完成双向握手与裁判指令。 */
   if (typeof global.addEventListener === 'function') {
     global.addEventListener('message', function (event) {
+      if (global.parent && event.source !== global.parent) return;
       var message = event.data;
       if (!message || typeof message !== 'object') return;
       if (message.type === 'IW_INIT_SAVE' || message.type === 'iw-init') {
-        var incoming = normalize(message.save || readSave(), message.save && message.save.level);
+        if (message.config && typeof message.config === 'object') global.CONFIG = message.config;
+        var incoming = applyEntryEffects(normalize(message.save || readSave(), message.save && message.save.level));
         memoryInitialSave = normalize(incoming, incoming.level);
         persist(incoming);
         if (typeof global.dispatchEvent === 'function' && typeof global.CustomEvent === 'function') {
@@ -627,9 +703,12 @@
     version: SCHEMA,
     ITEM_TYPES: ITEM_TYPES,
     TYPE_LABELS: TYPE_LABELS,
+    EFFECT_STATS: EFFECT_STATS,
     readSave: readSave,
     getInitialSave: getInitialSave,
     respawn: respawn,
+    assist: assist,
+    settle: applyEntryEffects,
     normalize: normalize,
     completeLevel: completeLevel,
     failLevel: failLevel,

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>无限世界 · 选手本地沙盒仿真器 (Mock Runner)</title>
+  <style>
+    :root {
+      --bg: #0f141c;
+      --panel: #182230;
+      --border: #26354a;
+      --primary: #4ade80;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --danger: #f87171;
+      --accent: #38bdf8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 16px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+    .status-badge { font-size: 12px; background: rgba(74, 222, 128, 0.15); color: var(--primary); padding: 4px 10px; border-radius: 999px; }
+    
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 360px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 16px;
+      gap: 16px;
+    }
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-group label { font-size: 12px; font-weight: 500; color: var(--muted); }
+    input, select, textarea {
+      background: #0d1520;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
+    textarea { font-family: monospace; font-size: 12px; resize: vertical; height: 140px; }
+    
+    .btn {
+      background: var(--primary);
+      color: #0f172a;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn.secondary { background: var(--border); color: var(--text); }
+    .btn.danger { background: rgba(248, 113, 113, 0.2); color: var(--danger); border: 1px solid rgba(248, 113, 113, 0.4); }
+
+    .stage-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #000;
+      position: relative;
+    }
+    .stage-bar {
+      background: #111827;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    iframe {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    .log-panel {
+      height: 200px;
+      background: #0b1017;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .log-header {
+      padding: 6px 16px;
+      background: var(--panel);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .log-content {
+      flex: 1;
+      padding: 10px 16px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .log-item { display: flex; gap: 8px; }
+    .log-time { color: var(--muted); }
+    .log-ok { color: var(--primary); }
+    .log-info { color: var(--accent); }
+    .log-warn { color: #facc15; }
+    .log-err { color: var(--danger); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span>🎮</span> 无限世界 · 选手本地沙盒仿真器</h1>
+    <span class="status-badge">SAVE_STATE v3 仿真容器已就绪</span>
+  </header>
+
+  <div class="main-container">
+    <aside class="sidebar">
+      <div class="field-group">
+        <label>游戏入口路径或本地服务地址：</label>
+        <input type="text" id="gameUrl" value="examples/01-minimal-html5-level/index.html" placeholder="例如: index.html 或 http://localhost:5173">
+      </div>
+
+      <div class="field-group">
+        <label>模拟上游初始小人卡片：</label>
+        <select id="presetSelect">
+          <option value="standard">标准满状态 (HP:3, San:2, 启程火炬)</option>
+          <option value="wounded">负伤残血 (HP:1, San:1, 破损短刀)</option>
+          <option value="relic">继承者探墓 (HP:3, 遗物: 前人的旧短刀, 墓碑)</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>初始卡片 JSON (可自由微调测试边界)：</label>
+        <textarea id="saveJson"></textarea>
+      </div>
+
+      <button class="btn" id="btnLaunch">🚀 启动并在沙盒中运行</button>
+      <button class="btn secondary" id="btnReload">🔄 重新载入当前关卡</button>
+      <button class="btn danger" id="btnMockFail">⚡ 模拟触发 180s 超时 / 失败熔断</button>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;">注意：本页 iframe 与线上一致，未开 <code>allow-modals</code>，所以 <code>alert()/confirm()</code> 在调试时也会被浏览器拒绝；请改用页面内提示元素。</p>
+    </aside>
+
+    <main class="stage-view">
+      <div class="stage-bar">
+        <div><span>当前模拟关卡：</span><b id="worldDisplay">未知世界</b></div>
+        <div><span>沙盒通信模式：</span><span class="log-ok">Iframe postMessage 双向监听</span></div>
+      </div>
+      <iframe id="gameFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+      
+      <div class="log-panel">
+        <div class="log-header">
+          <span>通信与卡片校验监控台</span>
+          <a href="#" style="color:var(--muted); text-decoration:none;" id="btnClearLog">清空日志</a>
+        </div>
+        <div class="log-content" id="logBox">
+          <div class="log-item"><span class="log-time">[就绪]</span><span class="log-info">沙盒仿真器已初始化。点击“启动”加载你的游戏。</span></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const presets = {
+      standard: {
+        schema: "v3", level: 1, world: "启程神殿",
+        player: { hp: 3, max_hp: 3, sanity: 2, level: 1, status: "normal", curses: [] },
+        items: [{ id: "torch", name: "启程火炬", type: "light", desc: "照明微光", effect: { stat: "sanity", value: 1, trigger: "passive" }, relic: false }],
+        clues: ["时空裂隙在不断扩张"], exit_hook: "石门开启，风暴呼啸...", prev_world: "虚空奇点", next_world: "你的世界", tombstone: {}
+      },
+      wounded: {
+        schema: "v3", level: 2, world: "幽暗密林",
+        player: { hp: 1, max_hp: 3, sanity: 1, level: 1, status: "wounded", curses: ["虚弱"] },
+        items: [{ id: "blade", name: "生锈小刀", type: "weapon", desc: "锋刃微卷", effect: { stat: "attack", value: 1, trigger: "passive" }, relic: false }],
+        clues: ["林中有怪物在巡逻"], exit_hook: "踏过枯枝，来到你的门前...", prev_world: "启程神殿", next_world: "你的世界", tombstone: {}
+      },
+      relic: {
+        schema: "v3", level: 3, world: "坍塌遗迹",
+        player: { hp: 3, max_hp: 3, sanity: 1, level: 1, status: "normal", curses: ["恐惧"] },
+        items: [{ id: "relic_knife", name: "前人的·旧短刀", type: "weapon", desc: "前任探索者留下的遗物", effect: { stat: "attack", value: 1, trigger: "passive" }, relic: true }],
+        clues: ["前人未能走出的迷宫"], exit_hook: "继承者拾起短刀，推门而入...", prev_world: "深渊裂谷", next_world: "你的世界",
+        tombstone: { fallen_level: 2, cause: "跌落暗刺陷阱", epitaph: "[第2关] 跌落暗刺陷阱" }
+      }
+    };
+
+    const saveText = document.getElementById('saveJson');
+    const presetSelect = document.getElementById('presetSelect');
+    const logBox = document.getElementById('logBox');
+    const iframe = document.getElementById('gameFrame');
+
+    function applyPreset(key) {
+      saveText.value = JSON.stringify(presets[key] || presets.standard, null, 2);
+    }
+    presetSelect.addEventListener('change', (e) => applyPreset(e.target.value));
+    applyPreset('standard');
+
+    function log(msg, type = 'info') {
+      const now = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'log-item';
+      div.innerHTML = `<span class="log-time">[${now}]</span><span class="log-${type}">${msg}</span>`;
+      logBox.appendChild(div);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+    document.getElementById('btnClearLog').onclick = (e) => { e.preventDefault(); logBox.innerHTML = ''; };
+
+    function launch() {
+      try {
+        const save = JSON.parse(saveText.value);
+        const urlInput = document.getElementById('gameUrl').value.trim();
+        if (!urlInput) return alert('请输入游戏入口路径！');
+        
+        document.getElementById('worldDisplay').innerText = save.next_world || save.world || '测试世界';
+        const b64Save = btoa(unescape(encodeURIComponent(JSON.stringify(save))));
+        const delimiter = urlInput.includes('?') ? '&' : '?';
+        const targetUrl = `${urlInput}${delimiter}save=${encodeURIComponent(b64Save)}`;
+        
+        log(`正在加载游戏: ${urlInput}`, 'info');
+        iframe.src = targetUrl;
+      } catch (e) {
+        log(`初始 JSON 解析失败: ${e.message}`, 'err');
+      }
+    }
+    document.getElementById('btnLaunch').onclick = launch;
+    document.getElementById('btnReload').onclick = () => { if (iframe.src) iframe.src = iframe.src; };
+
+    // 监听子 Iframe 发送的 postMessage 握手
+    window.addEventListener('message', (e) => {
+      if (e.source !== iframe.contentWindow) return;
+      const d = e.data;
+      if (!d || typeof d !== 'object') return;
+
+      if (d.type === 'IW_READY' || d.type === 'iw-enter') {
+        log(`📥 收到子游戏初始化通知 (${d.type})，握手成功！`, 'ok');
+        // 回发当前存档供 B 轨使用
+        try {
+          const currentSave = JSON.parse(saveText.value);
+          iframe.contentWindow.postMessage({ type: 'IW_INIT_SAVE', save: currentSave, config: {level:currentSave.level||1,world:currentSave.world||'测试世界',prevWorld:currentSave.prev_world||'起点',nextWorld:currentSave.next_world||'下一世界',exitHook:currentSave.exit_hook||'平台测试出口',nextUrl:'#finished',passViaUrl:true} }, '*');
+        } catch {}
+      }
+
+      if (d.type === 'IW_COMPLETE' || d.type === 'iw-save') {
+        log(`🎉 收到通关胜利事件！(${d.type})`, 'ok');
+        validateAndReport(d.save);
+      }
+
+      if (d.type === 'IW_FAIL') {
+        log(`⚠️ 收到阵亡/放弃失败事件！原因: 「${d.reason || '力竭'}」`, 'warn');
+        if (d.fallenSave) log(`墓碑与遗物已生成，可交接给下位继承者。`, 'info');
+      }
+    });
+
+    function validateAndReport(save) {
+      if (!save) return log('❌ 严重错误: 通关传出的 save 为空！', 'err');
+      let errors = [];
+      if (save.schema !== 'v3') errors.push(`schema 必须为 "v3"（当前为: ${save.schema}）`);
+      if (!Array.isArray(save.items)) errors.push('items 必须是数组');
+      else if (save.items.length > 3) errors.push(`items 道具数超过上限 3 件（当前: ${save.items.length} 件）`);
+      if (!Array.isArray(save.clues)) errors.push('clues 必须是数组');
+      else if (save.clues.length > 2) errors.push(`clues 线索数超过上限 2 条（当前: ${save.clues.length} 条）`);
+      if (!save.exit_hook || !String(save.exit_hook).trim()) errors.push('exit_hook 出口故事钩子不能为空！');
+
+      if (errors.length) {
+        errors.forEach(err => log(`❌ 校验不合格: ${err}`, 'err'));
+      } else {
+        log(`✅ 恭喜！通关数据 100% 符合交接规范！可以直接打包提交！`, 'ok');
+        log(`下发卡片简报: [道具: ${save.items.map(i=>i.name).join(', ')||'无'}] [线索: ${save.clues.length}条] [钩子: "${save.exit_hook.slice(0,30)}..."]`, 'info');
+      }
+    }
+
+    document.getElementById('btnMockFail').onclick = () => {
+      log('⚡ 仿真触发: 宿主向游戏注入强制超时熔断...', 'warn');
+      iframe.contentWindow.postMessage({ type: 'IW_TIMEOUT' }, '*');
+    };
+  </script>
+</body>
+</html>
+
