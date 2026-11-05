@@ -280,6 +280,13 @@
     return save;
   }
 
+  function freezeSnapshot(value) {
+    if (value && typeof value === 'object') {
+      Object.keys(value).forEach(function (key) { freezeSnapshot(value[key]); });
+      Object.freeze(value);
+    }
+    return value;
+  }
   function getInitialSave() {
     if (memoryInitialSave) return normalize(memoryInitialSave, null);
     return readSave();

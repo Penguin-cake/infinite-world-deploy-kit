@@ -70,7 +70,7 @@ function bridgeRuntime(C,seed){
   if(!value||value.__portalBridge)return value;
   const read=value.readSave,complete=value.completeLevel,history=value.readHistory;
   value.readSave=()=>initial?clone(initial):read.call(value,C.slot+1);
-  value.getInitialSave=()=>initial?clone(initial):read.call(value,C.slot+1);
+  value.getInitialSave=()=>freeze(initial?clone(initial):read.call(value,C.slot+1));
   value.readHistory=()=>Array.isArray(C.history)?clone(C.history):history.call(value);
   value.completeLevel=(c,save,opts)=>{
    const result=complete.call(value,fix(c),save,{...opts,nextUrl:C.nextUrl,exitHook:C.exitHook,passViaUrl:true});
