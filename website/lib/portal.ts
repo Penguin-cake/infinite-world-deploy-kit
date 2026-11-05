@@ -159,6 +159,16 @@ export async function handleApi(req:Request,env:Env){try{
   if(path[1]==='group-results'&&path[2]&&req.method==='GET'){
    const group=await groupById(db(env),path[2]);const rows=await db(env).prepare('SELECT value FROM settings WHERE key LIKE ? ORDER BY key LIMIT 2000').bind('result:'+group.id+':%').all<{value:string}>();return json({group,results:rows.results.map(r=>JSON.parse(r.value)),source:'player-reported',notice:'玩家提交的终局记录，需人工复核，不作为防作弊凭据。'});
   }
+  if(path[1]==='health'&&req.method==='POST'){
+   const schema=await db(env).prepare('SELECT slot FROM submissions LIMIT 1').all();
+   const probe=crypto.randomUUID(),key='games/_health/'+probe+'.txt';
+   try{
+    await env.BUCKET!.put(key,probe,{httpMetadata:{contentType:'text/plain'}});
+    const object=await env.BUCKET!.get(key);
+    if(!object||await object.text()!==probe)throw new PortalError('对象存储读写检查失败。',503);
+   }finally{await env.BUCKET!.delete(key);}
+   return json({ok:true,database:true,slotMigration:true,objectStorage:true,probeRemoved:true});
+  }
   if(path[1]==='route-snapshots'&&req.method==='GET'){
    const rows=await db(env).prepare('SELECT id,title,created_at FROM routes ORDER BY created_at DESC LIMIT 200').all();
    const active=await db(env).prepare("SELECT value FROM settings WHERE key='active_route'").first<{value:string}>();

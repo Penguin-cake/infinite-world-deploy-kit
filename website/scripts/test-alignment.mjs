@@ -19,7 +19,7 @@ class Statement{
 const DB={prepare:sql=>new Statement(sql),batch:async statements=>{database.exec('BEGIN');try{const out=await Promise.all(statements.map(s=>s.run()));database.exec('COMMIT');return out;}catch(error){database.exec('ROLLBACK');throw error;}}};
 const objects=new Map();
 const BUCKET={
- async put(key,bytes){objects.set(key,new Uint8Array(bytes));},
+ async put(key,bytes){objects.set(key,typeof bytes==='string'?new TextEncoder().encode(bytes):new Uint8Array(bytes));},
  async get(key){const value=objects.get(key);return value?{body:value,text:async()=>new TextDecoder().decode(value),httpEtag:'"test"'}:null;},
  async delete(keys){for(const key of Array.isArray(keys)?keys:[keys])objects.delete(key);}
 };
@@ -150,6 +150,9 @@ const previewResponse=await handleGame(new Request('https://local.test'+preview.
 assert.equal(previewResponse.status,200);
 assert.ok((await previewResponse.text()).includes('bridgeRuntime'));checks++;
 
+const health=await api('admin/health',{},true);
+assert.equal(health.status,200);assert.equal(health.data.probeRemoved,true);
+assert.ok([...objects.keys()].every(key=>!key.startsWith('games/_health/')));checks++;
 globalThis.__alignmentPortal={routeById};
 let workerSource=fs.readFileSync('worker/index.ts','utf8')
  .replace("import {routeById} from '../lib/portal';","const {routeById}=globalThis.__alignmentPortal;")
