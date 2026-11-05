@@ -7,7 +7,7 @@ import {games, route} from './catalog.mjs';
 import {exampleAssets} from '../lib/example-assets.ts';
 import {officialProtocol} from '../lib/protocol.ts';
 import {inlineGameAssets} from '../lib/inline-assets.mjs';
-import {makeBridge} from '../lib/portal-core.mjs';
+import {makeBridge, safeJSON} from '../lib/portal-core.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const project = resolve(root, '..');
@@ -15,7 +15,7 @@ const output = resolve(process.argv[2] || resolve(project, 'static-dist'));
 
 function staticOverrides() {
   const catalog = resolve(root, 'catalog.mjs').replaceAll('\\', '/');
-  const importCatalog = `import {staticRequest} from ${JSON.stringify(catalog)};\n`;
+  const importCatalog = `import {staticRequest,staticDocument} from ${JSON.stringify(catalog)};\n`;
   return {
     name: 'infinite-worlds-static',
     enforce: 'pre',
@@ -26,6 +26,7 @@ function staticOverrides() {
           .replace(/const request=useCallback[^\n]+/, 'const request=useCallback(staticRequest,[]);')
           .replace('TABS.map(t=>', "TABS.filter(t=>t.id==='home'||t.id==='games').map(t=>")
           .replace('href="/"', 'href="./index.html"')
+          .replaceAll('href="/participant-delivery-kit-v2.zip"', 'href="./participant-delivery-kit-v2.zip"')
           .replace('<button className="subtle-button"', '<button hidden className="subtle-button"')
           .replace('<button aria-label="主办方登录"', '<button hidden aria-label="主办方登录"')
           .replace('上传一关，连接所有可能','从这里开启接力旅程')
@@ -35,6 +36,7 @@ function staticOverrides() {
           .replace("{tab==='home'&&<button className=\"add-world\"", "{false&&<button className=\"add-world\"")
           .replace("setSrc(u.origin===location.origin?u.pathname+u.search:u.href)", 'setSrc(u.href)')
           .replace('new URL(url,location.origin)', 'new URL(url,location.href)')
+          .replace('src={src}', 'srcDoc={staticDocument(url,context)}')
           .replace("pathname.split('/')[2]", "searchParams.get('run')")
           .replace('连接云端中', '正在读取作品')
           .replace('云端已连接', '静态游玩版')
@@ -45,6 +47,8 @@ function staticOverrides() {
       }
       if (file.endsWith('/app/run/[id]/run.tsx')) {
         return importCatalog + code
+          .replace(/async function request\(path:string,body\?:unknown\)\{[^]*?\n\}/, 'const request=staticRequest;')
+          .replace("'/play/'+id+'/'+state.step+'/'", "'./games/route/'+state.step+'/'")
           .replace("import Link from 'next/link';", '')
           .replaceAll('<Link ', '<a ').replaceAll('</Link>', '</a>')
           .replaceAll('href="/"', 'href="./index.html"')
@@ -59,6 +63,18 @@ function staticOverrides() {
   };
 }
 
+const pages={};
+for(const [slot,game] of games.entries()){
+ const bundle=exampleAssets[game.id];
+ const page=await inlineGameAssets(bundle[game.entry],async reference=>{
+  const path=posix.normalize(posix.join(posix.dirname(game.entry),reference.split(/[?#]/)[0]));
+  return path==='shared/save-protocol.js'?officialProtocol:bundle[path]??null;
+ });
+ const context={routeId:route.id,slot,gameId:game.id,world:game.world,prevWorld:slot?games[slot-1].world:'主神大厅',nextWorld:games[slot+1]?.world||'终局结算',exitHook:game.exitHook,nextUrl:'#finished'};
+ const bridge=makeBridge(context).replace('('+safeJSON(context)+',{});','(window.__iw_staticContext||'+safeJSON(context)+',{});');
+ pages[game.id]=page.replace(/<head\b[^>]*>/i,head=>head+'<script>'+bridge+'</script>');
+}
+await writeFile(resolve(root,'game-pages.mjs'),'export const pages='+JSON.stringify(pages)+';');
 await build({
   configFile: false, root, base: './', publicDir: resolve(project, 'public'),
   plugins: [staticOverrides(), react()],

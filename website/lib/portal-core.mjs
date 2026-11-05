@@ -45,7 +45,48 @@ export function validateMeta(input){
 export function safeJSON(value){return JSON.stringify(value).replace(/</g,'\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');}
 export function mime(path){const ext=path.split('.').pop().toLowerCase();return ({html:'text/html; charset=utf-8',htm:'text/html; charset=utf-8',js:'application/javascript; charset=utf-8',mjs:'application/javascript; charset=utf-8',css:'text/css; charset=utf-8',json:'application/json',svg:'image/svg+xml',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif',avif:'image/avif',ico:'image/x-icon',mp3:'audio/mpeg',ogg:'audio/ogg',wav:'audio/wav',m4a:'audio/mp4',mp4:'video/mp4',webm:'video/webm',woff:'font/woff',woff2:'font/woff2',ttf:'font/ttf',otf:'font/otf',wasm:'application/wasm',txt:'text/plain; charset=utf-8',md:'text/plain; charset=utf-8',map:'application/json'})[ext]||'application/octet-stream';}
 export function makeBridge(context,initialStorage={}){
- return `;(function(){'use strict';const C=${safeJSON(context)},seed=${safeJSON(initialStorage)};const memory=Object.assign(Object.create(null),seed);const tell=(type,data)=>{if(parent!==window)parent.postMessage(Object.assign({type,routeId:C.routeId,slot:C.slot,gameId:C.gameId},data||{}),'*')};const storage={getItem:k=>Object.prototype.hasOwnProperty.call(memory,String(k))?memory[String(k)]:null,setItem(k,v){k=String(k);v=String(v);if(k.length>150||v.length>65536)return;memory[k]=v;tell('iw-storage',{key:k,value:v})},removeItem(k){k=String(k);delete memory[k];tell('iw-storage',{key:k,value:null})},clear(){Object.keys(memory).forEach(k=>storage.removeItem(k))},key:i=>Object.keys(memory)[i]||null};Object.defineProperty(storage,'length',{get:()=>Object.keys(memory).length});try{Object.defineProperty(window,'localStorage',{configurable:true,get:()=>storage})}catch(e){}let config,wl;const fix=v=>Object.assign({},v||{},{level:C.slot+1,world:C.world,prevWorld:C.prevWorld,nextWorld:C.nextWorld,nextUrl:C.nextUrl,passViaUrl:true});try{Object.defineProperty(window,'CONFIG',{configurable:true,get:()=>config,set:v=>{config=fix(v)}})}catch(e){}const install=v=>{if(!v||v.__portalBridge)return v;const read=v.readSave,complete=v.completeLevel;v.readSave=function(){return read.call(v,C.slot+1)};v.completeLevel=function(c,s,o){o=Object.assign({},o||{},{nextUrl:C.nextUrl,passViaUrl:true});if(C.exitHook)o.exitHook=C.exitHook;const result=complete.call(v,fix(c),s,o);if(result){tell('iw-save',{save:result,history:v.readHistory()});tell('IW_SAVE',{save:result,history:v.readHistory()})}return result};v.__portalBridge=true;return v};try{Object.defineProperty(window,'WL',{configurable:true,get:()=>wl,set:v=>{wl=install(v)}})}catch(e){if(window.WL)install(window.WL)}addEventListener('load',()=>{tell('iw-enter',{world:C.world,search:location.search});tell('IW_READY',{world:C.world,search:location.search})});})();`;
+ return '('+bridgeRuntime.toString()+')('+safeJSON(context)+','+safeJSON(initialStorage)+');';
+}
+function bridgeRuntime(C,seed){
+ 'use strict';
+ const memory=Object.assign(Object.create(null),seed);
+ const tell=(type,data)=>parent.postMessage({...data,type,routeId:C.routeId,slot:C.slot,gameId:C.gameId},'*');
+ const storage={
+  getItem:key=>Object.hasOwn(memory,String(key))?memory[String(key)]:null,
+  setItem(key,value){key=String(key);value=String(value);if(key.length>150||value.length>65536)return;memory[key]=value;tell('iw-storage',{key,value});},
+  removeItem(key){delete memory[String(key)];tell('iw-storage',{key:String(key),value:null});},
+  clear(){Object.keys(memory).forEach(key=>storage.removeItem(key));},
+  key:index=>Object.keys(memory)[index]||null
+ };
+ Object.defineProperty(storage,'length',{get:()=>Object.keys(memory).length});
+ try{Object.defineProperty(window,'localStorage',{get:()=>storage});}catch{}
+ const clone=value=>JSON.parse(JSON.stringify(value));
+ const freeze=value=>{if(value&&typeof value==='object'){Object.values(value).forEach(freeze);Object.freeze(value);}return value;};
+ const initial=C.save?freeze(clone(C.save)):null;
+ const fix=config=>({...config,level:C.slot+1,world:C.world,prevWorld:C.prevWorld,nextWorld:C.nextWorld,nextUrl:C.nextUrl,exitHook:C.exitHook,passViaUrl:true});
+ let config=fix({}),wl;
+ Object.defineProperty(window,'CONFIG',{configurable:true,get:()=>config,set:value=>{config=fix(value);}});
+ const install=value=>{
+  if(!value||value.__portalBridge)return value;
+  const read=value.readSave,complete=value.completeLevel,history=value.readHistory;
+  value.readSave=()=>initial?clone(initial):read.call(value,C.slot+1);
+  value.getInitialSave=()=>initial?clone(initial):read.call(value,C.slot+1);
+  value.readHistory=()=>Array.isArray(C.history)?clone(C.history):history.call(value);
+  value.completeLevel=(c,save,opts)=>{
+   const result=complete.call(value,fix(c),save,{...opts,nextUrl:C.nextUrl,exitHook:C.exitHook,passViaUrl:true});
+   if(result)tell('iw-save',{save:result,history:value.readHistory()});
+   return result;
+  };
+  value.__portalBridge=true;return value;
+ };
+ Object.defineProperty(window,'WL',{configurable:true,get:()=>wl,set:value=>{wl=install(value);}});
+ addEventListener('message',event=>{
+  if(event.source!==parent||!event.data||typeof event.data!=='object')return;
+  if(event.data.type==='IW_STORAGE_INIT'&&event.data.values&&typeof event.data.values==='object'){
+   for(const [key,value]of Object.entries(event.data.values))if(key.length<150&&typeof value==='string'&&value.length<=65536)memory[key]=value;
+  }
+ });
+ addEventListener('load',()=>tell('IW_READY',{world:C.world}));
 }
 export function injectBridge(html,context,storage){const tag='<script>'+makeBridge(context,storage)+'</script>';return /<head\b[^>]*>/i.test(html)?html.replace(/<head\b[^>]*>/i,m=>m+tag):html.replace(/^(\s*<!doctype[^>]*>)?/i,m=>m+tag);}
-export function gameHeaders(type,html=false){return {'Content-Type':type,'Access-Control-Allow-Origin':'*','Cross-Origin-Opener-Policy':'same-origin','Cross-Origin-Embedder-Policy':'credentialless','Cross-Origin-Resource-Policy':'cross-origin','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Cache-Control':html?'no-store':'public, max-age=31536000, immutable','Content-Security-Policy':"sandbox allow-scripts allow-modals allow-pointer-lock allow-orientation-lock; default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' https: http: blob:; style-src 'unsafe-inline' https: http:; img-src https: http: data: blob:; font-src https: http: data:; media-src https: http: data: blob:; connect-src https: http: data: blob:; worker-src blob: https: http:; child-src blob: https: http:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"};}
+export function gameHeaders(type,html=false){return {'Content-Type':type,'Access-Control-Allow-Origin':'*','Cross-Origin-Opener-Policy':'same-origin','Cross-Origin-Embedder-Policy':'credentialless','Cross-Origin-Resource-Policy':'cross-origin','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Cache-Control':html?'no-store':'public, max-age=31536000, immutable','Content-Security-Policy':"sandbox allow-scripts allow-pointer-lock allow-orientation-lock; default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' https: http: blob:; style-src 'unsafe-inline' https: http:; img-src https: http: data: blob:; font-src https: http: data:; media-src https: http: data: blob:; connect-src https: http: data: blob:; worker-src blob: https: http:; child-src blob: https: http:; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"};}

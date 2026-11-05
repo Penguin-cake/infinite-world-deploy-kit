@@ -22,6 +22,13 @@
       "when": 1793719592663,
       "tag": "0002_external_url",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1793860330700,
+      "tag": "0003_submissions_slot",
+      "breakpoints": true
     }
   ]
 }
