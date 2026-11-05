@@ -159,6 +159,19 @@ export async function handleApi(req:Request,env:Env){try{
   if(path[1]==='group-results'&&path[2]&&req.method==='GET'){
    const group=await groupById(db(env),path[2]);const rows=await db(env).prepare('SELECT value FROM settings WHERE key LIKE ? ORDER BY key LIMIT 2000').bind('result:'+group.id+':%').all<{value:string}>();return json({group,results:rows.results.map(r=>JSON.parse(r.value)),source:'player-reported',notice:'玩家提交的终局记录，需人工复核，不作为防作弊凭据。'});
   }
+  if(path[1]==='route-snapshots'&&req.method==='GET'){
+   const rows=await db(env).prepare('SELECT id,title,created_at FROM routes ORDER BY created_at DESC LIMIT 200').all();
+   const active=await db(env).prepare("SELECT value FROM settings WHERE key='active_route'").first<{value:string}>();
+   return json({routes:rows.results,activeRoute:active?.value||null});
+  }
+  if(path[1]==='activate-route'&&req.method==='POST'){
+   const body=await boundedJson(req);
+   if(body.id==='infinite-world')throw new PortalError('请选择一个已保存的正式快照。');
+   const route=await routeById(env,String(body.id||''));
+   if(!route.stages.length)throw new PortalError('不能启用空路线。',409);
+   await db(env).prepare("INSERT INTO settings(key,value) VALUES('active_route',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").bind(route.id).run();
+   return json({id:route.id,url:'/run/'+route.id});
+  }
   if(path[1]==='configure'&&req.method==='POST'){
    const body=await boundedJson(req);
    if(!Array.isArray(body.stages)||!body.stages.length||body.stages.length>200)throw new PortalError('请配置至少一个已验收关卡。');

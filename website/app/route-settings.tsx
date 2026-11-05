@@ -3,6 +3,7 @@ import {useEffect,useState} from 'react';
 
 export function RouteSettings({games,adminKey,onChanged}:{games:any[];adminKey:string;onChanged:()=>void}){
  const [rows,setRows]=useState<any[]>([]);
+ const [snapshots,setSnapshots]=useState<any[]>([]),[selected,setSelected]=useState('');
  const [player,setPlayer]=useState({hp:3,max_hp:3,sanity:2,curses:''});
  const [notice,setNotice]=useState(''),[busy,setBusy]=useState(false);
  useEffect(()=>{
@@ -16,6 +17,24 @@ export function RouteSettings({games,adminKey,onChanged}:{games:any[];adminKey:s
   }).catch(()=>{});
   return()=>{live=false;};
  },[]);
+ async function loadSnapshots(){
+  setBusy(true);setNotice('');
+  try{
+   const response=await fetch('/api/admin/route-snapshots',{headers:{'x-admin-key':adminKey}});
+   const result=await response.json() as any;
+   if(!response.ok)throw Error(result.error);
+   setSnapshots(result.routes);setSelected(result.activeRoute||result.routes[0]?.id||'');
+  }catch(error){setNotice((error as Error).message);}finally{setBusy(false);}
+ }
+ async function activate(){
+  if(!selected)return;setBusy(true);setNotice('');
+  try{
+   const response=await fetch('/api/admin/activate-route',{method:'POST',headers:{'Content-Type':'application/json','x-admin-key':adminKey},body:JSON.stringify({id:selected})});
+   const result=await response.json() as any;
+   if(!response.ok)throw Error(result.error);
+   setNotice('已切换正式快照，已开始的旅程继续使用原快照。');onChanged();
+  }catch(error){setNotice((error as Error).message);}finally{setBusy(false);}
+ }
  async function save(event:React.FormEvent){
   event.preventDefault();setBusy(true);setNotice('');
   try{
@@ -39,6 +58,6 @@ export function RouteSettings({games,adminKey,onChanged}:{games:any[];adminKey:s
    <label>{row.world} · 关序<input required type="number" min="0" max="10000" value={row.slot} onChange={e=>setRows(rows.map((v,i)=>i===index?{...v,slot:e.target.value}:v))}/></label>
    <label>平台出口钩子<textarea required rows={2} maxLength={400} value={row.exitHook} onChange={e=>setRows(rows.map((v,i)=>i===index?{...v,exitHook:e.target.value}:v))}/></label>
   </div>)}
-  <button className="button outline" disabled={busy||!rows.length}>{busy?'正在保存…':'保存并更新世界线'}</button><p role="status">{notice}</p>
+  <button type="button" className="button outline" disabled={busy} onClick={loadSnapshots}>查看历史快照</button>{snapshots.length>0&&<div className="form-grid"><label>正式世界线快照<select value={selected} onChange={event=>setSelected(event.target.value)}>{snapshots.map(snapshot=><option key={snapshot.id} value={snapshot.id}>{snapshot.title} · {snapshot.created_at} · {snapshot.id.slice(-8)}</option>)}</select></label><button type="button" className="button outline" disabled={busy||!selected} onClick={activate}>切换到此快照</button></div>}<button className="button outline" disabled={busy||!rows.length}>{busy?'正在保存…':'保存并更新世界线'}</button><p role="status">{notice}</p>
  </form>;
 }
