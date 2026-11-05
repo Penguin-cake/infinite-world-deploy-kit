@@ -67,6 +67,11 @@ const formal=await handleGame(new Request('https://local.test/play/'+route.id+'/
 assert.equal(formal.status,200);assert.ok((await formal.text()).includes('"hp":1'));checks++;
 const stale=await handleGame(new Request('https://local.test/play/'+route.id+'/0/'+route.stages[0].entry_path+'?runId='+next.runId),env);
 assert.equal(stale.status,409);checks++;
+const rescue=(await api('runs',{routeId:route.id})).data;
+const invalid=await api('runs/'+rescue.runId,{routeId:route.id,step:0,revision:0,save:{}});
+assert.equal(invalid.status,400);
+const healed=(await api('runs/'+rescue.runId,{routeId:route.id,step:0,revision:0,action:'heal'})).data;
+assert.equal(healed.step,0);assert.equal(healed.save.player.hp,5);assert.equal(healed.enteredAt,rescue.enteredAt);checks++;
 const longRoute={id:'long-route',stages:Array.from({length:25},(_,i)=>({id:'stage-'+i,world:'世界'+i,exitHook:'出口'+i}))};
 let state={runId:crypto.randomUUID(),routeId:longRoute.id,save:initialSave(),step:0,history:[],revision:0,done:false};
 for(let i=0;i<25;i++){state=advanceState(state,longRoute,{step:i,save:state.save});const uri='https://local.test/run/long-route?runId='+state.runId+'&step='+state.step;assert.ok(uri.length<2000);}

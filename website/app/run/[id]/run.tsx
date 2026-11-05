@@ -108,7 +108,15 @@ export default function Run({id}:{id:string}){
   addEventListener('keydown',key);return()=>removeEventListener('keydown',key);
  },[]);
  function reloadCurrent(){if(stateRef.current)apply(stateRef.current,routeRef.current,true);}
- function heal(){setCommand({type:'heal',nonce:Date.now()});setRescueNotice('已发送满血恢复指令。');}
+ async function heal(){
+  if(busyRef.current||!stateRef.current||stateRef.current.done)return;
+  busyRef.current=true;
+  try{
+   const current=stateRef.current;
+   const next=await request('runs/'+current.runId,{routeId:id,step:current.step,revision:current.revision,action:'heal'});
+   apply(next,routeRef.current,true);setRescueNotice('已恢复满血并重新载入当前关。');
+  }catch(error){setError((error as Error).message);}finally{busyRef.current=false;}
+ }
  function forceSkip(){void advance(stateRef.current?.save,true,'裁判强制跳关');setRescueOpen(false);}
  function rescueAudio(){unlockAudio();setCommand({type:'audio',nonce:Date.now()});setRescueNotice('已发送音频解锁指令。');}
  function logoClick(){const now=Date.now();logoClicks.current=now-logoClicks.current.at<1200?{count:logoClicks.current.count+1,at:now}:{count:1,at:now};if(logoClicks.current.count>=3){setRescueOpen(true);logoClicks.current.count=0;}}
