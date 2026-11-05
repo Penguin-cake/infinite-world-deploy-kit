@@ -30,7 +30,8 @@ export async function staticRequest(path,body) {
  if(path.startsWith('runs/')){
   const key='iw-static-run:'+path.slice(5),stored=localStorage.getItem(key);
   if(!stored)throw Error('进度不存在，请全新开始。');
-  const state=JSON.parse(stored),next=body?advanceState(state,route,body):state;
+  const state=JSON.parse(stored);
+  const next=body?.action==='heal'?{...state,save:{...state.save,player:{...state.save.player,hp:state.save.player.max_hp,status:'normal'}},revision:state.revision+1}:body?advanceState(state,route,body):state;
   localStorage.setItem(key,JSON.stringify(next));return next;
  }
  if(path==='results')return {ok:true};

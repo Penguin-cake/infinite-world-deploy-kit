@@ -99,10 +99,15 @@ export async function handleApi(req:Request,env:Env){try{
    const body=await boundedJson(req),route=await routeById(env,state.routeId);
    if(body.routeId!==state.routeId)throw new PortalError('旅程与世界线不符。',409);
    if(body.step!==state.step||body.revision!==state.revision||state.done)return json(state);
-   if(body.failure!==true&&Number(body.save?.player?.hp)>0&&body.save?.player?.status!=='dead'){
-    if(!Array.isArray(body.save?.items)||!body.save.items.length||!Array.isArray(body.save?.clues)||!body.save.clues.length)throw new PortalError('通关交接至少需要一件道具和一条线索。');
+   if(!body.action&&body.failure!==true&&(!body.save||typeof body.save!=='object'))throw new PortalError('缺少通关存档。');
+   if(!body.action&&body.failure!==true){
+    const normalized=stageSave(body.save,route,state.step,{settle:false});
+    if(normalized.player.hp>0&&normalized.player.status!=='dead'&&(!normalized.items.length||!normalized.clues.length))throw new PortalError('通关交接至少需要一件道具和一条线索。');
    }
-   const next=advanceState(state,route,body);
+   if(body.action&&body.action!=='heal')throw new PortalError('未知的救援操作。');
+   const next=body.action==='heal'?{
+    ...state,save:{...state.save,player:{...state.save.player,hp:state.save.player.max_hp,status:'normal'}},revision:state.revision+1
+   }:advanceState(state,route,body);
    const updated=await db(env).prepare('UPDATE settings SET value=? WHERE key=? AND value=?').bind(JSON.stringify(next),'run:'+state.runId,raw).run();
    if(!updated.meta.changes)return json((await readRun(env,state.runId)).state);
    return json(next);
